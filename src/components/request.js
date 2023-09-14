@@ -1,25 +1,46 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 class RequestData extends Component {
   constructor(props) {
     super(props);
     this.state = {
       articleTitle: "",
-      totalPoints: "",
       articleCopy: "",
+      totalPoints: "",
       data: [],
     };
   }
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Submitted Info: ${this.state.articleTitle}`);
+    console.log(`Submitted Title: ${this.state.articleTitle}`);
     console.log(this.state);
     const requestData = {
-      points: this.state.totalPoints,
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
+      points: this.state.totalPoints,
     };
-    console.log(requestData);
+
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/engines/davince/completions", // MUST MODIFY TO GET CORRECT ENDPOINT. ALSO FIGURE OUT TOKENS IN PROMPT AND COMPLETION...
+        {
+          prompt: `Please respond to the following questions: 1) who should read the following article, 2) what are the ${requestData.points} most salient takeaways of the piece? ${requestData.copy}`,
+          max_tokens: 50, // Adjust as needed
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      const generatedResponse = response.data.choices[0].text;
+
+      console.log("Generated Response:", generatedResponse);
+    } catch (error) {
+      console.error("Error sending request to ChatGPT:", error);
+    }
   };
 
   handleChange = (event) => {
