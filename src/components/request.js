@@ -23,10 +23,11 @@ class RequestData extends Component {
 
     try {
       const response = await axios.post(
-        "https://api.openai.com/v1/engines/davince/completions", // MUST MODIFY TO GET CORRECT ENDPOINT. ALSO FIGURE OUT TOKENS IN PROMPT AND COMPLETION...
+        "https://api.openai.com/v1/completions",
         {
-          prompt: `Please respond to the following questions: 1) who should read the following article, 2) what are the ${requestData.points} most salient takeaways of the piece? ${requestData.copy}`,
-          max_tokens: 50, // Adjust as needed
+          model: "gpt-3.5-turbo",
+          prompt: `Please respond to the following questions: 1) who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}"`,
+          // max_tokens: 50,
         },
         {
           headers: {
