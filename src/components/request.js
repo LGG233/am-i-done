@@ -9,12 +9,12 @@ class RequestData extends Component {
       articleCopy: "",
       totalPoints: "",
       data: [],
+      generatedResponse: "",
+      error: null,
     };
   }
   handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Submitted Title: ${this.state.articleTitle}`);
-    console.log(this.state);
     const requestData = {
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
@@ -23,11 +23,15 @@ class RequestData extends Component {
 
     try {
       const response = await axios.post(
-        "https://api.openai.com/v1/completions",
+        "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-3.5-turbo",
-          prompt: `Please respond to the following questions: 1) who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}"`,
-          // max_tokens: 50,
+          messages: [
+            {
+              role: "user",
+              content: `Please respond to the following questions: 1) based on the subject and style, who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}"`,
+            },
+          ],
         },
         {
           headers: {
@@ -36,11 +40,16 @@ class RequestData extends Component {
           },
         }
       );
-      const generatedResponse = response.data.choices[0].text;
+
+      console.log("Response Data:", response.data);
+
+      const generatedResponse = response.data.choices[0].message.content;
 
       console.log("Generated Response:", generatedResponse);
+      this.setState({ generatedResponse });
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
+      this.setState({ error, generatedResponse: "" });
     }
   };
 
@@ -57,6 +66,8 @@ class RequestData extends Component {
   };
 
   render() {
+    const { generatedResponse, error } = this.state;
+
     return (
       <div>
         <div className="container-fluid">
@@ -97,6 +108,19 @@ class RequestData extends Component {
             <button onClick={this.handleCancel}>Cancel</button>
           </div>
         </div>
+        {/* Display the response or error */}
+        {generatedResponse && (
+          <div>
+            <h2>ChatGPT Response</h2>
+            <p>{generatedResponse}</p>
+          </div>
+        )}
+        {error && (
+          <div>
+            <h2>Error</h2>
+            <p>{error.message}</p>
+          </div>
+        )}
       </div>
     );
   }

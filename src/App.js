@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import RequestData from "./components/request";
 import ResponseDisplayForm from "./components/response";
-import axios from "axios";
 
 class App extends Component {
   constructor(props) {
