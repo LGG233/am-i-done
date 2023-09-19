@@ -29,7 +29,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please respond to the following questions: 1) based on the subject and style, who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}"`,
+              content: `Please respond to the following questions: 1) based on the subject and style, who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}", and 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers.`,
             },
           ],
         },
@@ -43,9 +43,10 @@ class RequestData extends Component {
 
       console.log("Response Data:", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
+      const generatedResponse = response.data.choices.map(
+        (choice) => choice.message.content
+      );
 
-      console.log("Generated Response:", generatedResponse);
       this.setState({ generatedResponse });
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
