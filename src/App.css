@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -18,7 +18,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -35,4 +35,33 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+input[type=text] {
+  width: 90%;
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+textarea[type=text] {
+  width: 90%;
+  height: 200px;
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+button {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+p{
+  font-size: medium;
 }

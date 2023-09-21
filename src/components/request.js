@@ -29,7 +29,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please respond to the following questions: 1) based on the subject and style, who should read the following article and 2) what are the ${requestData.points} most salient takeaways of the piece? "${requestData.copy}", and 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers.`,
+              content: `Please respond to the following questions: 1) Based on the subject and style, who should read the article?,  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?, and 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers.`,
             },
           ],
         },
@@ -41,11 +41,12 @@ class RequestData extends Component {
         }
       );
 
+      console.log(response);
       console.log("Response Data:", response.data);
 
-      const generatedResponse = response.data.choices.map(
-        (choice) => choice.message.content
-      );
+      const generatedResponse = response.data.choices[0].message.content;
+
+      console.log("Generated Response:", generatedResponse);
 
       this.setState({ generatedResponse });
     } catch (error) {
@@ -80,16 +81,18 @@ class RequestData extends Component {
                 className="form-control"
                 id="articleTitle"
                 name="articleTitle"
+                placeholder="Title"
                 value={this.state.articleTitle}
                 onChange={this.handleChange}
               />
               <br></br>
               <label htmlFor="articleCopy">Content: </label>
-              <input
+              <textarea
                 type="text"
                 className="form-control"
                 id="articleCopy"
                 name="articleCopy"
+                placeholder="Content"
                 value={this.state.articleCopy}
                 onChange={this.handleChange}
               />
@@ -113,9 +116,27 @@ class RequestData extends Component {
         {generatedResponse && (
           <div>
             <h2>ChatGPT Response</h2>
-            <p>{generatedResponse}</p>
+            <p>
+              {generatedResponse.split("\n\n").map((item, index) => (
+                <React.Fragment key={index}>
+                  {index === 0 ? (
+                    item
+                  ) : (
+                    <React.Fragment>
+                      {(index === 1) | 2 && <br />}{" "}
+                      {/* Add line break after the first item */}{" "}
+                      {item.replace(
+                        /\s*(\d+\.\s*|\-\s*|[A-Za-z]+\)\s*)/g,
+                        "\r\n"
+                      )}
+                    </React.Fragment>
+                  )}
+                  <br />
+                </React.Fragment>
+              ))}
+            </p>
           </div>
-        )}
+        )}{" "}
         {error && (
           <div>
             <h2>Error</h2>
