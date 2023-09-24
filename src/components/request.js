@@ -10,11 +10,13 @@ class RequestData extends Component {
       totalPoints: "",
       data: [],
       generatedResponse: "",
+      isLoading: false,
       error: null,
     };
   }
   handleSubmit = async (event) => {
     event.preventDefault();
+    this.setState({ isLoading: true });
     const requestData = {
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
@@ -47,6 +49,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
 
       console.log("Generated Response:", generatedResponse);
+      this.setState({ isLoading: false });
 
       this.setState({ generatedResponse });
     } catch (error) {
@@ -123,11 +126,11 @@ class RequestData extends Component {
                     item
                   ) : (
                     <React.Fragment>
-                      {(index === 1) | 2 && <br />}{" "}
-                      {/* Add line break after the first item */}{" "}
+                      {(index === 1 || index === 2) && <br />}{" "}
+                      {/* Add line break after the first two items */}{" "}
                       {item.replace(
-                        /\s*(\d+\.\s*|\-\s*|[A-Za-z]+\)\s*)/g,
-                        "\r\n"
+                        /\s*(\d+\.\s*|\-\s|[A-Za-z]+\)\s*)/g,
+                        "\n*) "
                       )}
                     </React.Fragment>
                   )}
