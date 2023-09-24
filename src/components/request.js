@@ -9,6 +9,8 @@ class RequestData extends Component {
       articleCopy: "",
       totalPoints: "",
       data: [],
+      questionDisplay: true,
+      responseDisplay: false,
       generatedResponse: "",
       isLoading: false,
       error: null,
@@ -16,7 +18,7 @@ class RequestData extends Component {
   }
   handleSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, questionDisplay: false });
     const requestData = {
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
@@ -49,8 +51,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
 
       console.log("Generated Response:", generatedResponse);
-      this.setState({ isLoading: false });
-
+      this.setState({ isLoading: false, responseDisplay: true });
       this.setState({ generatedResponse });
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
@@ -66,6 +67,18 @@ class RequestData extends Component {
     });
   };
 
+  handleNewRequest = () => {
+    this.setState({
+      articleTitle: "",
+      articleCopy: "",
+      totalPoints: "",
+      generatedResponse: "",
+      error: null,
+      questionDisplay: true,
+      responseDisplay: false,
+    });
+  };
+
   handleCancel = (event) => {
     window.location.replace("./components/request");
   };
@@ -76,47 +89,49 @@ class RequestData extends Component {
     return (
       <div>
         <div className="container-fluid">
-          <div className="QueryForm">
-            <form className="FormField">
-              <label htmlFor="articleTitle">Title: </label>
-              <input
-                type="text"
-                className="form-control"
-                id="articleTitle"
-                name="articleTitle"
-                placeholder="Title"
-                value={this.state.articleTitle}
-                onChange={this.handleChange}
-              />
+          {this.state.questionDisplay && (
+            <div className="QueryForm">
+              <form className="FormField">
+                <label htmlFor="articleTitle">Title: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="articleTitle"
+                  name="articleTitle"
+                  placeholder="Title"
+                  value={this.state.articleTitle}
+                  onChange={this.handleChange}
+                />
+                <br></br>
+                <label htmlFor="articleCopy">Content: </label>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  id="articleCopy"
+                  name="articleCopy"
+                  placeholder="Content"
+                  value={this.state.articleCopy}
+                  onChange={this.handleChange}
+                />
+                <br></br>
+                <label htmlFor="totalPoints"># of Takeaways: </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="totalPoints"
+                  name="totalPoints"
+                  value={this.state.totalPoints}
+                  onChange={this.handleChange}
+                />
+              </form>
+              <button onClick={this.handleSubmit}>Submit</button>
               <br></br>
-              <label htmlFor="articleCopy">Content: </label>
-              <textarea
-                type="text"
-                className="form-control"
-                id="articleCopy"
-                name="articleCopy"
-                placeholder="Content"
-                value={this.state.articleCopy}
-                onChange={this.handleChange}
-              />
-              <br></br>
-              <label htmlFor="totalPoints"># of Takeaways: </label>
-              <input
-                type="number"
-                className="form-control"
-                id="totalPoints"
-                name="totalPoints"
-                value={this.state.totalPoints}
-                onChange={this.handleChange}
-              />
-            </form>
-            <button onClick={this.handleSubmit}>Submit</button>
-            <br></br>
-            <button onClick={this.handleCancel}>Cancel</button>
-          </div>
+              <button onClick={this.handleCancel}>Cancel</button>
+            </div>
+          )}
         </div>
         {/* Display the response or error */}
-        {generatedResponse && (
+        {this.state.responseDisplay && generatedResponse && (
           <div>
             <h2>ChatGPT Response</h2>
             <p>
@@ -138,9 +153,10 @@ class RequestData extends Component {
                 </React.Fragment>
               ))}
             </p>
+            <button onClick={this.handleNewRequest}>New Request</button>
           </div>
         )}{" "}
-        {error && (
+        {this.state.error && (
           <div>
             <h2>Error</h2>
             <p>{error.message}</p>
