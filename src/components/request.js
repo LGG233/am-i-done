@@ -130,10 +130,9 @@ class RequestData extends Component {
             </div>
           )}
         </div>
-        {/* Display the response or error */}
         {this.state.responseDisplay && generatedResponse && (
           <div>
-            <h2>ChatGPT Response</h2>
+            <h2>{this.state.articleTitle}</h2>
             <p>
               {generatedResponse.split("\n\n").map((item, index) => (
                 <React.Fragment key={index}>
