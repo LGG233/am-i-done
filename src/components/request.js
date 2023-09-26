@@ -115,8 +115,15 @@ class RequestData extends Component {
                 />
                 <br></br>
                 <label htmlFor="totalPoints"># of Takeaways: </label>
+                <datalist id="totalPoints">
+                  <option value="1"></option>
+                  <option value="2"></option>
+                  <option value="3"></option>
+                  <option value="4"></option>
+                  <option value="5"></option>
+                </datalist>
                 <input
-                  type="number"
+                  list="totalPoints"
                   className="form-control"
                   id="totalPoints"
                   name="totalPoints"
@@ -132,7 +139,11 @@ class RequestData extends Component {
         </div>
         {this.state.responseDisplay && generatedResponse && (
           <div>
-            <h2>{this.state.articleTitle}</h2>
+            <h2>
+              <em>
+                <b>{this.state.articleTitle}</b>
+              </em>
+            </h2>
             <p>
               {generatedResponse.split("\n\n").map((item, index) => (
                 <React.Fragment key={index}>
