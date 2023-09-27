@@ -33,7 +33,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please respond to the following questions: 1) Based on the subject and style, who should read the article?,  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?, 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers, and 4) please provide a 200-word overview of the piece written in the first person plural.`,
+              content: `Please respond to the following questions: 1) Based on the subject and style, who should read the article?,  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?, 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers, and 4) draft a 200-word synopsis of the piece in the first person plural with the title: "Draft Synopsis".`,
             },
           ],
         },
