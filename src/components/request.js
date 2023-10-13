@@ -33,7 +33,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please respond to the following questions: 1) Based on the subject and style, who should read the article?,  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?, 3) Based on best SEO practices and the primary focus of the piece, please review the proposed title of "${requestData.title}" and provide three alternative titles that may attract more readers, and 4) draft a 200-word synopsis of the piece in the first person plural with the title: "Draft Synopsis".`,
+              content: `Please respond to the following questions using bullet points and spaces to separate the individual answers: 1) Based on the languaged and framing of the subject, who is the intended audience of the piece as it is written? Provide an answer that is one single sentence, prefaced with "1. Target Audience:";  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?. Please preface this section with "2. Key Takeaways:"; 3) Based on the primary focus of the piece, please review the proposed title of "${requestData.title}". On a scale of 1 - 5, how well does title convey that it is targeting the audience identified in question 1? If '5', please respond with "The chosen title frames the audience well." If less than 5, please provide three alternative titles that may better articulate who should read the article, prefaced with “3. Potential Alternate Titles:”; 4) draft a 25-word synopsis of the piece with the title that the author can use to introduce the article in an email communication. Use the heading "4. Email Ready Synopsis:"; 5) please sum up the piece in a single sentence that will compel the target audience to read it with the header "5. Article Summary:".`,
             },
           ],
         },
@@ -92,7 +92,7 @@ class RequestData extends Component {
           {this.state.questionDisplay && (
             <div className="QueryForm">
               <form className="FormField">
-                <label htmlFor="articleTitle">Title: </label>
+                <label htmlFor="articleTitle">Proposed Title: </label>
                 <input
                   type="text"
                   className="form-control"
@@ -103,7 +103,7 @@ class RequestData extends Component {
                   onChange={this.handleChange}
                 />
                 <br></br>
-                <label htmlFor="articleCopy">Content: </label>
+                <label htmlFor="articleCopy">Draft Content: </label>
                 <textarea
                   type="text"
                   className="form-control"
@@ -114,7 +114,9 @@ class RequestData extends Component {
                   onChange={this.handleChange}
                 />
                 <br></br>
-                <label htmlFor="totalPoints"># of Takeaways: </label>
+                <label htmlFor="totalPoints">
+                  Select the Number of Takeaways You'd Like to See:{" "}
+                </label>
                 <datalist id="totalPoints">
                   <option value="1"></option>
                   <option value="2"></option>
@@ -131,6 +133,7 @@ class RequestData extends Component {
                   onChange={this.handleChange}
                 />
               </form>
+              <br></br>
               <button onClick={this.handleSubmit}>Submit</button>
               <br></br>
               <button onClick={this.handleCancel}>Cancel</button>

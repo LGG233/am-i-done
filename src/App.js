@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import RequestData from "./components/request";
 import ResponseDisplayForm from "./components/response";
-
+import Title from "./components/Title";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +28,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Am I Done?</h1>
+          <Title />
+          <br></br>
           <RequestData
             onRequestData={this.handleRequestData}
             onResponse={this.handleResponse}
