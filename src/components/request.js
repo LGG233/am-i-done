@@ -12,6 +12,9 @@ class RequestData extends Component {
       questionDisplay: true,
       responseDisplay: false,
       generatedResponse: "",
+      generatedResponse1: "",
+      generatedResponse2: "",
+      generatedResponse3: "",
       isLoading: false,
       error: null,
     };
@@ -26,14 +29,14 @@ class RequestData extends Component {
     };
 
     try {
-      const response = await axios.post(
+      const response1 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-3.5-turbo",
           messages: [
             {
               role: "user",
-              content: `Please respond to the following questions using bullet points and spaces to separate the individual answers: 1) Based on the languaged and framing of the subject, who is the intended audience of the piece as it is written? Provide an answer that is one single sentence, prefaced with "1. Target Audience:";  2) what are the ${requestData.points} most salient takeaways of "${requestData.copy}"?. Please preface this section with "2. Key Takeaways:"; 3) Based on the primary focus of the piece, please review the proposed title of "${requestData.title}". On a scale of 1 - 5, how well does title convey that it is targeting the audience identified in question 1? If '5', please respond with "The chosen title frames the audience well." If less than 5, please provide three alternative titles that may better articulate who should read the article, prefaced with “3. Potential Alternate Titles:”; 4) draft a 25-word synopsis of the piece with the title that the author can use to introduce the article in an email communication. Use the heading "4. Email Ready Synopsis:"; 5) please sum up the piece in a single sentence that will compel the target audience to read it with the header "5. Article Summary:".`,
+              content: `Based on the languaged and framing of "${requestData.copy}", who is the intended audience of the piece as it is written? Provide an answer that is one single sentence`,
             },
           ],
         },
@@ -45,14 +48,67 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data:", response.data);
+      console.log(response1);
+      console.log("Response Data 1:", response1.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
+      const response2 = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `What are the ${requestData.points} most salient takeaways of "${requestData.copy}"?`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+      console.log(response2);
+      console.log("Response Data 2:", response2.data);
 
-      console.log("Generated Response:", generatedResponse);
-      this.setState({ isLoading: false, responseDisplay: true });
-      this.setState({ generatedResponse });
+      const response3 = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `Based on the primary focus of "${requestData.copy}", please provide three alternative titles to "${requestData.title}" that communicate the primary focus of the article to the intended audience.`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+
+      console.log(response3);
+      console.log("Response Data 3:", response3.data);
+
+      const generatedResponse1 = response1.data.choices[0].message.content;
+      const generatedResponse2 = response2.data.choices[0].message.content;
+      const generatedResponse3 = response3.data.choices[0].message.content;
+      const generatedResponse =
+        generatedResponse1 + generatedResponse2 + generatedResponse3;
+
+      console.log("Generated Responses: ", generatedResponse);
+      this.setState({
+        isLoading: false,
+        responseDisplay: true,
+        generatedResponse,
+        generatedResponse1,
+        generatedResponse2,
+        generatedResponse3,
+      });
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
       this.setState({ error, generatedResponse: "" });
@@ -84,7 +140,12 @@ class RequestData extends Component {
   };
 
   render() {
-    const { generatedResponse, error } = this.state;
+    const {
+      generatedResponse1,
+      generatedResponse2,
+      generatedResponse3,
+      error,
+    } = this.state;
 
     return (
       <div>
@@ -140,35 +201,34 @@ class RequestData extends Component {
             </div>
           )}
         </div>
-        {this.state.responseDisplay && generatedResponse && (
-          <div>
-            <h2>
-              <em>
-                <b>{this.state.articleTitle}</b>
-              </em>
-            </h2>
-            <p>
-              {generatedResponse.split("\n\n").map((item, index) => (
-                <React.Fragment key={index}>
-                  {index === 0 ? (
-                    item
-                  ) : (
-                    <React.Fragment>
-                      {(index === 1 || index === 2 || index === 3) && <br />}{" "}
-                      {/* Add line break after the first two items */}{" "}
-                      {item.replace(
-                        /\s*(\d+\.\s*|\-\s|[A-Za-z]+\)\s*)/g,
-                        "\n*) "
-                      )}
-                    </React.Fragment>
-                  )}
-                  <br />
-                </React.Fragment>
-              ))}
-            </p>
-            <button onClick={this.handleNewRequest}>New Request</button>
-          </div>
-        )}{" "}
+        {this.state.responseDisplay &&
+          generatedResponse1 &&
+          generatedResponse2 &&
+          generatedResponse3 && (
+            <div>
+              <h4>
+                <em>
+                  <b>{this.state.articleTitle}</b>
+                </em>
+              </h4>
+              <p>
+                <b>Target Audience</b>
+                <br />
+                {generatedResponse1}
+              </p>
+              <p>
+                <b>Key Takeaways</b>
+                <br />
+                {generatedResponse2.replace(/(\d\.\s)/g, "\n$1")}
+              </p>
+              <p>
+                <b>Alternative Titles</b>
+                <br />
+                {generatedResponse3.replace(/(\d\.\s)/g, "\n$1")}
+              </p>
+              <button onClick={this.handleNewRequest}>New Request</button>
+            </div>
+          )}{" "}
         {this.state.error && (
           <div>
             <h2>Error</h2>
