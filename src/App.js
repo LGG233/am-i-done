@@ -29,7 +29,6 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <Title />
-          <br></br>
           <RequestData
             onRequestData={this.handleRequestData}
             onResponse={this.handleResponse}

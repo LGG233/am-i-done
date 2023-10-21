@@ -15,6 +15,8 @@ class RequestData extends Component {
       generatedResponse1: "",
       generatedResponse2: "",
       generatedResponse3: "",
+      generatedResponse4: "",
+      generatedResponse5: "",
       isLoading: false,
       error: null,
     };
@@ -91,14 +93,58 @@ class RequestData extends Component {
         }
       );
 
+      const response4 = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `Draft a 25-word synopsis of "${requestData.copy}" that the author can use to present the article.`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+
+      const response5 = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: `Provide a compelling 10 word summary of "${requestData.title}" that can be used to promote the article on Twitter, LinkedIn, and other social media.`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+
       console.log(response3);
       console.log("Response Data 3:", response3.data);
 
       const generatedResponse1 = response1.data.choices[0].message.content;
       const generatedResponse2 = response2.data.choices[0].message.content;
       const generatedResponse3 = response3.data.choices[0].message.content;
+      const generatedResponse4 = response4.data.choices[0].message.content;
+      const generatedResponse5 = response5.data.choices[0].message.content;
       const generatedResponse =
-        generatedResponse1 + generatedResponse2 + generatedResponse3;
+        generatedResponse1 +
+        generatedResponse2 +
+        generatedResponse3 +
+        generatedResponse4 +
+        generatedResponse5;
 
       console.log("Generated Responses: ", generatedResponse);
       this.setState({
@@ -108,6 +154,8 @@ class RequestData extends Component {
         generatedResponse1,
         generatedResponse2,
         generatedResponse3,
+        generatedResponse4,
+        generatedResponse5,
       });
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
@@ -144,6 +192,8 @@ class RequestData extends Component {
       generatedResponse1,
       generatedResponse2,
       generatedResponse3,
+      generatedResponse4,
+      generatedResponse5,
       error,
     } = this.state;
 
@@ -225,6 +275,16 @@ class RequestData extends Component {
                 <b>Alternative Titles</b>
                 <br />
                 {generatedResponse3.replace(/(\d\.\s)/g, "\n$1")}
+              </p>
+              <p>
+                <b>Email-Ready Synopsis</b>
+                <br />
+                {generatedResponse4}
+              </p>
+              <p>
+                <b>Social Media Post</b>
+                <br />
+                {generatedResponse5}
               </p>
               <button onClick={this.handleNewRequest}>New Request</button>
             </div>
