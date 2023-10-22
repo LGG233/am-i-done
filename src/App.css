@@ -67,7 +67,6 @@ p {
   font-size: medium;
 }
 
-.loading {
-  cursor: wait;
+.isLoading {
+  text-align: center;
 }
-

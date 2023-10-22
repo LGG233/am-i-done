@@ -157,6 +157,11 @@ class RequestData extends Component {
         generatedResponse4,
         generatedResponse5,
       });
+
+      this.setState({
+        isLoading: false,
+        questionDisplay: false,
+      })
     } catch (error) {
       console.error("Error sending request to ChatGPT:", error);
       this.setState({ error, generatedResponse: "" });
@@ -194,11 +199,19 @@ class RequestData extends Component {
       generatedResponse3,
       generatedResponse4,
       generatedResponse5,
+      isLoading,
       error,
     } = this.state;
 
     return (
       <div>
+        <div className="container-fluid">
+          {isLoading && (
+            <div className="isLoading">
+            <h3>We're analyzing your content...</h3>
+            </div>
+          )}
+        </div>
         <div className="container-fluid">
           {this.state.questionDisplay && (
             <div className="QueryForm">
