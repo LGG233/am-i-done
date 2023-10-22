@@ -81,7 +81,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the primary focus of "${requestData.copy}", please provide three alternative titles to "${requestData.title}" that communicate the primary focus of the article to the intended audience.`,
+              content: `Based on the primary focus of "${requestData.copy}", please provide three alternative titles to "${requestData.title}" that communicate the primary focus of the article to the intended audience. Please provide the output in text format. Please put each individual title into a numbered list.`,
             },
           ],
         },
@@ -267,14 +267,22 @@ class RequestData extends Component {
                 {generatedResponse1}
               </p>
               <p>
-                <b>Key Takeaways</b>
-                <br />
-                {generatedResponse2.replace(/(\d\.\s)/g, "\n$1")}
-              </p>
+  <b>Key Takeaways</b>
+  <br />
+  <ul>
+    {generatedResponse2.split('\n\n').map(paragraph => (
+      <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
+    ))}
+  </ul>
+</p>
               <p>
                 <b>Alternative Titles</b>
                 <br />
-                {generatedResponse3.replace(/(\d\.\s)/g, "\n$1")}
+                <ul>
+                {generatedResponse3.split('\n').map((line, index) => (
+      <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
+    ))}
+  </ul>
               </p>
               <p>
                 <b>Email-Ready Synopsis</b>
