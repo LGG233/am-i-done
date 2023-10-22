@@ -60,7 +60,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What are the ${requestData.points} most salient takeaways of "${requestData.copy}"?`,
+              content: `What are the ${requestData.points} most salient takeaways of "${requestData.copy}"? Please output as a numbered list.`,
             },
           ],
         },
@@ -267,22 +267,22 @@ class RequestData extends Component {
                 {generatedResponse1}
               </p>
               <p>
-  <b>Key Takeaways</b>
-  <br />
-  <ul>
-    {generatedResponse2.split('\n\n').map(paragraph => (
-      <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
-    ))}
-  </ul>
-</p>
+                <b>Key Takeaways</b>
+                <br />
+                <ul>
+                  {generatedResponse2.split('\n').map((paragraph) => (
+                    <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
+                  ))}
+                </ul>
+              </p>
               <p>
                 <b>Alternative Titles</b>
                 <br />
                 <ul>
-                {generatedResponse3.split('\n').map((line, index) => (
-      <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
-    ))}
-  </ul>
+                  {generatedResponse3.split('\n').map((line, index) => (
+                    <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
+                  ))}
+                </ul>
               </p>
               <p>
                 <b>Email-Ready Synopsis</b>
