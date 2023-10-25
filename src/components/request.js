@@ -24,6 +24,7 @@ class RequestData extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     this.setState({ isLoading: true, questionDisplay: false });
+    console.log("sending request...")
     const requestData = {
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
@@ -38,7 +39,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the languaged and framing of "${requestData.copy}", who is the intended audience of the piece as it is written? Provide an answer that is one single sentence`,
+              content: `Based on the languaged and framing of "${requestData.copy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer that is one single sentence`,
             },
           ],
         },
@@ -300,7 +301,7 @@ class RequestData extends Component {
               <p>
                 <b>Email-Ready Synopsis</b>
                 <br />
-                {generatedResponse4}
+                {generatedResponse4} 
               </p>
               <p>
                 <b>Social Media Post</b>
