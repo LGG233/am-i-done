@@ -21,9 +21,9 @@ class RequestData extends Component {
       loadingMessages: [
         "We're analyzing your audience...",
         "We're extracting key takeaways...",
-        "We're drafting alternative titles...",
-        "We're writing an abstract...",
-        "We're crafting a social media post...",
+        "We're preparing alternative titles...",
+        "We're drafting an abstract...",
+        "We're writing a social media post...",
         "We're generating an executive summary..."
       ],
       currentLoadingMessage: "",
@@ -33,9 +33,9 @@ class RequestData extends Component {
   };
 
   componentDidMount() {
-    this.loadingMessageTimer = setInterval(this.changeLoadingMessage, 5000);
     this.setState({currentLoadingMessage: "We're reviewing your content..."});
-    setTimeout(this.changeLoadingMessage, 5000);
+    this.loadingMessageTimer = setInterval(this.changeLoadingMessage, 10000);
+    setTimeout(this.changeLoadingMessage, 10000);
   };
 
   componentWillUnmount() {
@@ -51,7 +51,7 @@ class RequestData extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ isLoading: true, questionDisplay: false, responseDisplay: false});
+    this.setState({ isLoading: true, questionDisplay: false, responseDisplay: false, currentLoadingMessage: "We're reviewing your content..."});
     console.log("sending request...")
     const requestData = {
       title: this.state.articleTitle,
@@ -361,23 +361,24 @@ class RequestData extends Component {
                 </ul>
               </p>
               <p>
-                <b>Executive Summary (under 25 words)</b>
+                <b>Executive Summary</b>
                 <br />
                 {generatedResponse4} 
               </p>
               <p>
-                <b>Abstract (approximately 200 words)</b>
+                <b>Abstract</b>
                 <br />
                  {generatedResponse6.split('\n').map((paragraph) => (
                     <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
                     ))}
                     </p>
               <p>
-                <b>Social Media Post (under 120 characters)</b>
+                <b>Social Media Post</b>
                 <br />
                 {generatedResponse5}
               </p>
               <button onClick={this.handleNewRequest}>New Request</button>
+              <br />
               <button onClick={this.handleSubmit}>Regenerate Reponse</button>
             </div>
           )}{" "}
