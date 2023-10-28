@@ -67,7 +67,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the languaged and framing of "${requestData.copy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer that is one single sentence`,
+              content: `Based on the language and framing of "${requestData.copy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Then answer these questions: "How well does the piece position itself to reach its target audience? Is it clear in the title, the introduction, and the framing that the article is for that audience? How could it do a better job to frame the content for the target audience?`,
             },
           ],
         },

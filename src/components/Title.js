@@ -8,7 +8,7 @@ function Title() {
     <div className="Title">
       <img src={ggheader} alt="Logo" />
       <h2>Am I Done?</h2>
-      <h5>Your AI-Powered Content Strategy Assistant</h5>
+      <h5>Your AI-powered Editor</h5>
       {/* <Selectors /> */}
     </div>
   );
