@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "./css/request.css";
 
 class RequestData extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class RequestData extends Component {
   };
 
   componentDidMount() {
-    this.setState({currentLoadingMessage: "We're reviewing your content..."});
+    this.setState({ currentLoadingMessage: "We're reviewing your content..." });
     this.loadingMessageTimer = setInterval(this.changeLoadingMessage, 10000);
     setTimeout(this.changeLoadingMessage, 10000);
   };
@@ -42,16 +43,16 @@ class RequestData extends Component {
     clearInterval(this.loadingMessageTimer);
   };
 
-  changeLoadingMessage = () =>{
-    const {loadingMessages} = this.state;
+  changeLoadingMessage = () => {
+    const { loadingMessages } = this.state;
     const randomIndex = Math.floor(Math.random() * loadingMessages.length);
     const newMessage = loadingMessages[randomIndex];
-    this.setState({currentLoadingMessage: newMessage});
+    this.setState({ currentLoadingMessage: newMessage });
   };
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ isLoading: true, questionDisplay: false, responseDisplay: false, currentLoadingMessage: "We're reviewing your content..."});
+    this.setState({ isLoading: true, questionDisplay: false, responseDisplay: false, currentLoadingMessage: "We're reviewing your content..." });
     console.log("sending request...")
     const requestData = {
       title: this.state.articleTitle,
@@ -167,7 +168,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 200-word abstract of "${requestData.copy}".`,
+              content: `Please provide a 150-word abstract of "${requestData.copy}".`,
             },
           ],
         },
@@ -249,7 +250,7 @@ class RequestData extends Component {
   };
 
   render() {
-    const {currentLoadingMessage} = this.state;
+    const { currentLoadingMessage } = this.state;
     const {
       generatedResponse1,
       generatedResponse2,
@@ -266,7 +267,7 @@ class RequestData extends Component {
         <div className="container-fluid">
           {isLoading && (
             <div className="isLoading">
-            <h3>{currentLoadingMessage}</h3>
+              <h3>{currentLoadingMessage}</h3>
             </div>
           )}
         </div>
@@ -332,51 +333,74 @@ class RequestData extends Component {
           generatedResponse2 &&
           generatedResponse3 && (
             <div>
-              <h4>
-                <em>
-                  <b>{this.state.articleTitle}</b>
-                </em>
-              </h4>
-              <p>
-                <b>Target Audience</b>
-                <br />
-                {generatedResponse1}
-              </p>
-              <p>
-                <b>Key Takeaways</b>
-                <br />
-                <ul>
-                  {generatedResponse2.split('\n').map((paragraph) => (
-                    <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
-                  ))}
-                </ul>
-              </p>
-              <p>
-                <b>Alternative Titles</b>
-                <br />
-                <ul>
-                  {generatedResponse3.split('\n').map((line, index) => (
-                    <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
-                  ))}
-                </ul>
-              </p>
-              <p>
-                <b>Executive Summary</b>
-                <br />
-                {generatedResponse4} 
-              </p>
-              <p>
-                <b>Abstract</b>
-                <br />
-                 {generatedResponse6.split('\n').map((paragraph) => (
-                    <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
+              <div className="article-title">
+                <h4>
+                  <b>"{this.state.articleTitle}"</b>
+                </h4>
+              </div>
+              <div className="split-screen">
+                <div className="right-panel">
+                  <h4>
+                    <b>Original Content</b>
+                  </h4><em>
+                    {this.state.articleCopy.split('\n').map((paragraph) => (
+                      <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
                     ))}
+                  </em>
+                </div>
+                <div className="left-panel">
+                  <div>
+                    <h4><em>Am I Done?</em> Analysis</h4>
+                    <p>
+                      <b>Target Audience</b>
+                      <br />
+                      {generatedResponse1.split('\n').map((paragraph) => (
+                        <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
+                      ))}
                     </p>
-              <p>
-                <b>Social Media Post</b>
-                <br />
-                {generatedResponse5}
-              </p>
+                    <br />
+                    <p>
+                      <b>Key Takeaways</b>
+                    </p>
+                    <ul>
+                      {generatedResponse2.split('\n').map((paragraph) => (
+                        <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
+                      ))}
+                    </ul>
+                    <br />
+                    <p>
+                      <b>Alternative Titles</b>
+                    </p>
+                    <ul>
+                      {generatedResponse3.split('\n').map((line, index) => (
+                        <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
+                      ))}
+                    </ul>
+                    <br />
+                    <p>
+                      <b>Executive Summary</b>
+                      <br />
+                      <br />
+                      {generatedResponse4}
+                    </p>
+                    <br />
+                    <p>
+                      <b>Abstract</b>
+                      <br />
+                      {generatedResponse6.split('\n').map((paragraph) => (
+                        <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
+                      ))}
+                    </p>
+                    <br />
+                    <p>
+                      <b>Social Media Post</b>
+                      <br />
+                      <br />
+                      {generatedResponse5}
+                    </p>
+                  </div>
+                </div>
+              </div>
               <button onClick={this.handleNewRequest}>New Request</button>
               <br />
               <button onClick={this.handleSubmit}>Regenerate Reponse</button>
