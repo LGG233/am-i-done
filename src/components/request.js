@@ -68,7 +68,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the language and framing of "${requestData.copy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Then answer these questions: "How well does the piece position itself to reach its target audience? Is it clear in the title, the introduction, and the framing that the article is for that audience? How could it do a better job to frame the content for the target audience?`,
+              content: `Based on the language and framing of "${requestData.copy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Then answer these questions: "How well does the piece position itself to reach its target audience? Is it clear in the title "${requestData.title}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? `,
             },
           ],
         },
@@ -111,7 +111,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the primary focus of "${requestData.copy}", please provide three alternative titles to "${requestData.title}" that communicate the primary focus of the article to the intended audience. Please provide the output in text format. Please put each individual title into a numbered list.`,
+              content: `Please provide three alternative titles for "${requestData.copy}" that reference the intended audience and articuiate why they should read it.`,
             },
           ],
         },
@@ -122,7 +122,8 @@ class RequestData extends Component {
           },
         }
       );
-
+      console.log(response3);
+      console.log("Response Data 3:", response3.data);
       const response4 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -130,7 +131,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Draft a 25-word synopsis of "${requestData.copy}" that the author can use to present the article.`,
+              content: `Draft a 25 - word synopsis of "${requestData.copy}" that the author can use to present the article.`,
             },
           ],
         },
@@ -141,7 +142,8 @@ class RequestData extends Component {
           },
         }
       );
-
+      console.log(response4);
+      console.log("Response Data 4:", response4.data);
       const response5 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -149,7 +151,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Provide a compelling summary of "${requestData.title}" that can be used to promote the article on Twitter, LinkedIn, and other social media. Include at least three appropriate hashtags. The entire post, including spaces and hashtags, should be no more than 120 characters.`,
+              content: `Provide a compelling summary of "${requestData.title}" that can be used to promote the article on Twitter, LinkedIn, and other social media.Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters.`,
             },
           ],
         },
@@ -160,7 +162,8 @@ class RequestData extends Component {
           },
         }
       );
-
+      console.log(response5);
+      console.log("Response Data 5:", response5.data);
       const response6 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -168,7 +171,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150-word abstract of "${requestData.copy}".`,
+              content: `Please provide a 150 - word abstract of "${requestData.copy}".`,
             },
           ],
         },
@@ -182,12 +185,6 @@ class RequestData extends Component {
 
       console.log(response6);
       console.log("Response Data 6:", response6.data);
-
-
-
-      console.log(response3);
-      console.log("Response Data 3:", response3.data);
-
       const generatedResponse1 = response1.data.choices[0].message.content;
       const generatedResponse2 = response2.data.choices[0].message.content;
       const generatedResponse3 = response3.data.choices[0].message.content;
@@ -335,7 +332,8 @@ class RequestData extends Component {
             <div>
               <div className="article-title">
                 <h4>
-                  <b>"{this.state.articleTitle}"</b>
+                  <em>
+                    <b>{this.state.articleTitle}</b></em>
                 </h4>
               </div>
               <div className="split-screen">
@@ -343,8 +341,10 @@ class RequestData extends Component {
                   <h4>
                     <b>Original Content</b>
                   </h4><em>
-                    {this.state.articleCopy.split('\n').map((paragraph) => (
-                      <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
+                    {this.state.articleCopy.split('\n').map((paragraph, index) => (
+                      <p key={index}>
+                        {paragraph.match(/^\d+\.\s*/) ? paragraph.replace(/^\d+\.\s*/, '') : paragraph}
+                      </p>
                     ))}
                   </em>
                 </div>
@@ -373,7 +373,7 @@ class RequestData extends Component {
                     </p>
                     <ul>
                       {generatedResponse3.split('\n').map((line, index) => (
-                        <li key={index}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
+                        <li key={index} style={{ margin: '0', padding: '0' }}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
                       ))}
                     </ul>
                     <br />
