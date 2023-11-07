@@ -9,6 +9,7 @@ class RequestData extends Component {
       articleTitle: "",
       articleCopy: "",
       totalPoints: "",
+      altTitles: "",
       data: [],
       questionDisplay: true,
       responseDisplay: false,
@@ -58,13 +59,14 @@ class RequestData extends Component {
       title: this.state.articleTitle,
       copy: this.state.articleCopy,
       points: this.state.totalPoints,
+      altTitles: this.state.altTitles,
     };
 
     try {
       const response1 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
@@ -86,11 +88,11 @@ class RequestData extends Component {
       const response2 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
-              content: `What are the ${requestData.points} most salient takeaways of "${requestData.copy}"? Please output as a numbered list.`,
+              content: `What are the ${requestData.points} most salient takeaways of "${requestData.copy}"? Each takeaway must be summarized in a single sentence. Please output as a numbered list.`,
             },
           ],
         },
@@ -107,11 +109,11 @@ class RequestData extends Component {
       const response3 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
-              content: `Please provide three alternative titles for "${requestData.copy}" that reference the intended audience and articuiate why they should read it.`,
+              content: `Please provide "${requestData.altTitles}" alternative titles for "${requestData.copy}" that reference the intended audience and articuiate why they should read it. Enclose each alternative title in quotation marks. Please explain each alternative title and why it was chosen in a single sentence that follows the alternative title using a hyphen to separate them. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list`,
             },
           ],
         },
@@ -127,7 +129,7 @@ class RequestData extends Component {
       const response4 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
@@ -147,7 +149,7 @@ class RequestData extends Component {
       const response5 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
@@ -167,7 +169,7 @@ class RequestData extends Component {
       const response6 = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "user",
@@ -182,9 +184,9 @@ class RequestData extends Component {
           },
         }
       );
-
       console.log(response6);
       console.log("Response Data 6:", response6.data);
+
       const generatedResponse1 = response1.data.choices[0].message.content;
       const generatedResponse2 = response2.data.choices[0].message.content;
       const generatedResponse3 = response3.data.choices[0].message.content;
@@ -317,6 +319,30 @@ class RequestData extends Component {
                   value={this.state.totalPoints}
                   onChange={this.handleChange}
                 />
+                <br></br>
+                <label htmlFor="altTitles">
+                  Select the Number of Alternative Titles You'd Like to See:{" "}
+                </label>
+                <datalist id="altTitles">
+                  <option value="1"></option>
+                  <option value="2"></option>
+                  <option value="3"></option>
+                  <option value="4"></option>
+                  <option value="5"></option>
+                  <option value="6"></option>
+                  <option value="7"></option>
+                  <option value="8"></option>
+                  <option value="9"></option>
+                  <option value="10"></option>
+                </datalist>
+                <input
+                  list="altTitles"
+                  className="form-control"
+                  id="altTitles"
+                  name="altTitles"
+                  value={this.state.altTitles}
+                  onChange={this.handleChange}
+                />
               </form>
               <br></br>
               <button onClick={this.handleSubmit}>Submit</button>
@@ -360,19 +386,19 @@ class RequestData extends Component {
                     </p>
                     <br />
                     <p>
-                      <b>Key Takeaways</b>
-                    </p>
-                    <ul>
-                      {generatedResponse2.split('\n').map((paragraph) => (
-                        <li>{paragraph.replace(/^\d+\.\s*/g, '')}</li>
-                      ))}
-                    </ul>
-                    <br />
-                    <p>
                       <b>Alternative Titles</b>
                     </p>
                     <ul>
                       {generatedResponse3.split('\n').map((line, index) => (
+                        <li key={index} style={{ margin: '0', padding: '0' }}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
+                      ))}
+                    </ul>
+                    <br />
+                    <p>
+                      <b>Key Takeaways</b>
+                    </p>
+                    <ul>
+                      {generatedResponse2.split('\n').map((line, index) => (
                         <li key={index} style={{ margin: '0', padding: '0' }}>{line.replace(/^\s*\d+\.\s*/, '')}</li>
                       ))}
                     </ul>
@@ -385,18 +411,18 @@ class RequestData extends Component {
                     </p>
                     <br />
                     <p>
+                      <b>Social Media Post</b>
+                      <br />
+                      <br />
+                      {generatedResponse5}
+                    </p>
+                    <br />
+                    <p>
                       <b>Abstract</b>
                       <br />
                       {generatedResponse6.split('\n').map((paragraph) => (
                         <p>{paragraph.replace(/^\d+\.\s*/g, '')}</p>
                       ))}
-                    </p>
-                    <br />
-                    <p>
-                      <b>Social Media Post</b>
-                      <br />
-                      <br />
-                      {generatedResponse5}
                     </p>
                   </div>
                 </div>
