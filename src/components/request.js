@@ -339,9 +339,9 @@ class RequestData extends Component {
           </div>
           <div className="right-panel">
             <h4>
-              <b>Am I Done Analysis</b>
+              <b><em>Am I Done</em> Analysis</b>
             </h4>
-            <div>
+            <div className="button-container">
               <button className="button-19" onClick={this.titleAnalysisAPI}>Audience</button>
               <button className="button-19" onClick={this.takeawaysAPI}>Takeaways</button>
               <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
@@ -368,11 +368,12 @@ class RequestData extends Component {
               <h4>
                 <b>Promotion</b>
               </h4>
-              <button className="button-19" onClick={this.synopsisAPI}>Email</button>
-              <button className="button-19" onClick={this.socialMediaAPI}>Twitter</button>
-              <button className="button-19" onClick={this.linkedInAPI}>LinkedIn</button>
-              <button className="button-19" onClick={this.abstractAPI}>Website</button>
-
+              <div className="button-container">
+                <button className="button-19" onClick={this.synopsisAPI}>Email</button>
+                <button className="button-19" onClick={this.socialMediaAPI}>Twitter</button>
+                <button className="button-19" onClick={this.linkedInAPI}>LinkedIn</button>
+                <button className="button-19" onClick={this.abstractAPI}>Website</button>
+              </div>
               <div className="spacer"></div>
               <div className="response2">
                 {this.state.response2 && (
@@ -393,7 +394,7 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
-        <button onClick={this.handleNewRequest}>New Request</button>
+        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
       </div>
     )
   }
