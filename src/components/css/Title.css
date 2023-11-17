@@ -11,7 +11,7 @@
   color: #006599;
 }
 
-.Selectors {
-  font-size: small;
-  text-align: center;
+.introText {
+  padding-left: 40px;
+  justify-content: left;
 }

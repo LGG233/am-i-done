@@ -85,10 +85,21 @@
 }
 
 .api-response-textbox {
-    height: 250px;
+    height: 500px;
+    width: 400px;
     position: relative;
     border: 2px solid #cdcdcd;
     border-color: rgba(0, 0, 0, .14);
     background-color: AliceBlue;
     font-size: 14px;
+}
+
+.spacer {
+    padding: 15px;
+}
+
+#articleCopy {
+    height: 2000px;
+    width: 100%;
+
 }
