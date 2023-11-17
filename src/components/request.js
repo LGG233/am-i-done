@@ -14,7 +14,10 @@ class RequestData extends Component {
       requestData: [],
       questionDisplay: false,
       responseDisplay: true,
-      generatedResponse: "",
+      generatedResponse1: "",
+      generatedResponse2: "",
+      response1: false,
+      response2: false,
       headerText: "",
       error: null,
     };
@@ -46,8 +49,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse1 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse1, response1: true, response2: false });
 
       const headerText = "I've analyzed the audience that comes through in your content. If this is not your intended audience, or if it is incomplete, please revise the text to explicity mention the people it is written for.";
       this.setState({ headerText });
@@ -82,8 +85,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse1 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse1, response1: true, response2: false });
 
       const headerText = "I have read and analyzed your content and identified five key takeaways that come out of your written work. If these are not the most salient takeaways you'd like to give your audience, please consider revising your text to ensure that you are communicating the key information you want readers to retain.";
       this.setState({ headerText });
@@ -118,8 +121,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse1 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse1, response1: true, response2: false });
 
       const headerText = "I have drafted three alternative titles that you may want to consider:";
       this.setState({ headerText });
@@ -154,8 +157,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse2 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse2, response1: false, response2: true });
 
       const headerText = "To share your work via email, copy and paste this synopsis into the body of your message along with the link.";
       this.setState({ headerText });
@@ -190,8 +193,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse2 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse2, response1: false, response2: true });
 
       const headerText = "I have drafted three Twitter posts you may wish to use for promoting your content.";
       this.setState({ headerText });
@@ -226,8 +229,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse2 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse2, response1: false, response2: true });
 
       const headerText = "I have drafted a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
@@ -262,8 +265,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
+      const generatedResponse2 = response.data.choices[0].message.content;
+      this.setState({ generatedResponse2, response1: false, response2: true });
 
       const headerText = "I've drafted a 120-word abstract of your content that you can use to promote it on your website:";
       this.setState({ headerText });
@@ -344,6 +347,23 @@ class RequestData extends Component {
               <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
             </div>
             <br />
+            <div className="response1">
+              {this.state.response1 && (
+                <p>
+                  <em>{this.state.headerText}</em>
+                </p>
+              )}
+            </div>
+            <div>
+              {this.state.response1 && (
+                <textarea
+                  readOnly
+                  value={this.state.generatedResponse1}
+                  className="api-response-textbox"
+                />
+              )}
+            </div>
+            <br />
             <div>
               <h4>
                 <b>Promotion</b>
@@ -354,14 +374,21 @@ class RequestData extends Component {
               <button className="button-19" onClick={this.abstractAPI}>Website</button>
 
               <div className="spacer"></div>
-
+              <div className="response2">
+                {this.state.response2 && (
+                  <p>
+                    <em>{this.state.headerText}</em>
+                  </p>
+                )}
+              </div>
               <div>
-                <div><p><em>{this.state.headerText}</em></p></div>
-                <textarea
-                  readOnly
-                  value={this.state.generatedResponse}
-                  className="api-response-textbox"
-                />
+                {this.state.response2 && (
+                  <textarea
+                    readOnly
+                    value={this.state.generatedResponse2}
+                    className="api-response-textbox"
+                  />
+                )}
               </div>
             </div>
           </div>
