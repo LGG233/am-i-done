@@ -49,7 +49,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've analyzed the audience that comes through in your content. If this is not the intended audience, or if it is incomplete, please revise you text to explicity mention the people it is written for.";
+      const headerText = "I've analyzed the audience that comes through in your content. If this is not your intended audience, or if it is incomplete, please revise the text to explicity mention the people it is written for.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -121,7 +121,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted three alternative titles that you may want to consider for your work:";
+      const headerText = "I have drafted three alternative titles that you may want to consider:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -157,7 +157,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "To share your work via email, please copy and paste this synopsis into the body of your message along with the link to the piece.";
+      const headerText = "To share your work via email, copy and paste this synopsis into the body of your message along with the link.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -193,7 +193,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted three potential Twitter posts you can use to promote the piece.";
+      const headerText = "I have drafted three Twitter posts you may wish to use for promoting your content.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -229,7 +229,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted a short post you can use to promote your content on Linkedin.";
+      const headerText = "I have drafted a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -265,7 +265,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've drafted a 120-word abstract of your piece that you can use on your website or in other promotion:";
+      const headerText = "I've drafted a 120-word abstract of your content that you can use to promote it on your website:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -351,7 +351,7 @@ class RequestData extends Component {
               <button className="button-19" onClick={this.synopsisAPI}>Email</button>
               <button className="button-19" onClick={this.socialMediaAPI}>Twitter</button>
               <button className="button-19" onClick={this.linkedInAPI}>LinkedIn</button>
-              <button className="button-19" onClick={this.abstractAPI}>Article Abstract</button>
+              <button className="button-19" onClick={this.abstractAPI}>Website</button>
 
               <div className="spacer"></div>
 

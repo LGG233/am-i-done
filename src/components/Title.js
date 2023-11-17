@@ -11,13 +11,13 @@ function Title() {
         <h5>Your AI-Powered Marketing and Editorial Assistant</h5>
       </div>
       <div className="introText">
-        <p><em>Am I Done?</em> analyzes your work to see if it is complete:</p>
+        <p><em><b>Am I Done?</b></em> analyzes your work to see if it is complete:</p>
         <ul>
-          <li>Does it speak directly to the audience you hope to reach?</li>
+          <li>Does it speak to the audience you're targeting?</li>
           <li>Do the key takeaways align with the points you want to make?</li>
-          <li>Does the title properly position the article to resonate with your intended audience?</li>
+          <li>Does the title properly position the thought leadership?</li>
         </ul>
-        <p>In addition, <em>Am I Done?</em> drafts material that you can use to promote your work via email, on social and digital media, and on your firm website.</p>
+        <p>In addition, <em><b>Am I Done?</b></em> drafts language that you can use to promote your work via email, on social and digital media, and on your firm website.</p>
       </div >
     </div>
   );
