@@ -104,7 +104,7 @@
 
 }
 
-.button-19 {
+/* .button-19 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,7 +126,56 @@
     box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
     outline: 0;
 }
-
+ */
 .button-container {
     display: flex;
+}
+
+.button-19 {
+    background-color: transparent;
+    border: 1px solid #266DB6;
+    box-sizing: border-box;
+    color: #00132C;
+    font-family: "Avenir Next LT W01 Bold", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 16px 23px;
+    position: relative;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-19:hover,
+.button-19:active {
+    outline: 0;
+}
+
+.button-19:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.button-19:before {
+    background-color: #D5EDF6;
+    content: "";
+    height: calc(100% + 3px);
+    position: absolute;
+    right: -7px;
+    top: -9px;
+    transition: background-color 300ms ease-in;
+    width: 100%;
+    z-index: -1;
+}
+
+.button-19:hover:before {
+    background-color: #6DCFF6;
+}
+
+@media (min-width: 768px) {
+    .button-19 {
+        padding: 16px 32px;
+    }
 }
