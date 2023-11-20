@@ -14,10 +14,9 @@ class RequestData extends Component {
       requestData: [],
       questionDisplay: false,
       responseDisplay: true,
+      generatedResponse: "",
       generatedResponse1: "",
       generatedResponse2: "",
-      response1: false,
-      response2: false,
       headerText: "",
       error: null,
     };
@@ -49,10 +48,10 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse1 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse1, response1: true, response2: false });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
-      const headerText = "I've analyzed the audience that comes through in your content. If this is not your intended audience, or if it is incomplete, please revise the text to explicity mention the people it is written for.";
+      const headerText = "I've analyzed the perceived audience of your content. If this is not your intended audience or if it is incomplete, please revise the text to contain specific references to the readers you would like to target.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -85,10 +84,10 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse1 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse1, response1: true, response2: false });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
-      const headerText = "I have read and analyzed your content and identified five key takeaways that come out of your written work. If these are not the most salient takeaways you'd like to give your audience, please consider revising your text to ensure that you are communicating the key information you want readers to retain.";
+      const headerText = "I've analyzed your content and found five key takeaways. If these aren't the points you want your audience to remember, consider revising your text to convey your intended takeaways.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -121,8 +120,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse1 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse1, response1: true, response2: false });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
       const headerText = "I have drafted three alternative titles that you may want to consider:";
       this.setState({ headerText });
@@ -142,7 +141,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Draft a 25 - word synopsis of "${articleCopy}" that the author can use to present the article.`,
+              content: `Draft a 25 - word synopsis of "${articleCopy}" for presenting the article that entices people to read it.`,
             },
           ],
         },
@@ -157,10 +156,10 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse2 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse2, response1: false, response2: true });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
-      const headerText = "To share your work via email, copy and paste this synopsis into the body of your message along with the link.";
+      const headerText = "To share your work via email, copy and paste this language into the body of your message along with the link.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -193,8 +192,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse2 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse2, response1: false, response2: true });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
       const headerText = "I have drafted three Twitter posts you may wish to use for promoting your content.";
       this.setState({ headerText });
@@ -229,8 +228,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse2 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse2, response1: false, response2: true });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
       const headerText = "I have drafted a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
@@ -265,8 +264,8 @@ class RequestData extends Component {
       console.log(response);
       console.log("Response Data: ", response.data);
 
-      const generatedResponse2 = response.data.choices[0].message.content;
-      this.setState({ generatedResponse2, response1: false, response2: true });
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
 
       const headerText = "I've drafted a 120-word abstract of your content that you can use to promote it on your website:";
       this.setState({ headerText });
@@ -300,6 +299,23 @@ class RequestData extends Component {
   handleCancel = (event) => {
     window.location.replace("./components/request");
   };
+
+  copyToClipboard(generatedResponse) {
+    if (!navigator.clipboard) {
+      // Clipboard API not supported, provide fallback
+      alert("Clipboard API not supported in this browser. You can manually copy the text.");
+      return;
+    }
+
+    navigator.clipboard.writeText(generatedResponse)
+      .then(() => {
+        alert("Text copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Unable to copy text: ", err);
+        alert("Failed to copy text to clipboard. You can manually copy the text.");
+      });
+  }
 
   render() {
     return (
@@ -339,34 +355,40 @@ class RequestData extends Component {
           </div>
           <div className="right-panel">
             <h4>
-              <b><em>Am I Done</em> Analysis</b>
+              <b><em>Am I Done</em> Review</b>
             </h4>
-            <div className="button-container">
-              <button className="button-19" onClick={this.titleAnalysisAPI}>Audience</button>
-              <button className="button-19" onClick={this.takeawaysAPI}>Takeaways</button>
-              <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
-            </div>
-            <br />
-            <div className="response1">
-              {this.state.response1 && (
-                <p>
-                  <em>{this.state.headerText}</em>
-                </p>
-              )}
+            <div>
+              <p>
+                {this.state.headerText}
+              </p>
             </div>
             <div>
-              {this.state.response1 && (
-                <textarea
-                  readOnly
-                  value={this.state.generatedResponse1}
-                  className="api-response-textbox"
-                />
+              {this.state.generatedResponse && (
+                <div>
+                  <textarea
+                    readOnly
+                    value={this.state.generatedResponse}
+                    className="api-response-textbox"
+                  />
+                  <button onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
+                    Copy
+                  </button>
+                </div>
               )}
             </div>
-            <br />
             <div>
               <h4>
-                <b>Promotion</b>
+                <b>Audience and Title Analysis</b>
+              </h4>
+              <div className="button-container">
+                <button className="button-19" onClick={this.titleAnalysisAPI}>Audience</button>
+                <button className="button-19" onClick={this.takeawaysAPI}>Takeaways</button>
+                <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
+              </div>
+            </div>
+            <div>
+              <h4>
+                <b>Online Promotion</b>
               </h4>
               <div className="button-container">
                 <button className="button-19" onClick={this.synopsisAPI}>Email</button>
@@ -375,22 +397,6 @@ class RequestData extends Component {
                 <button className="button-19" onClick={this.abstractAPI}>Website</button>
               </div>
               <div className="spacer"></div>
-              <div className="response2">
-                {this.state.response2 && (
-                  <p>
-                    <em>{this.state.headerText}</em>
-                  </p>
-                )}
-              </div>
-              <div>
-                {this.state.response2 && (
-                  <textarea
-                    readOnly
-                    value={this.state.generatedResponse2}
-                    className="api-response-textbox"
-                  />
-                )}
-              </div>
             </div>
           </div>
         </div>
