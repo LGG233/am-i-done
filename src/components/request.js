@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
+import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 
 class RequestData extends Component {
   constructor(props) {
@@ -293,6 +294,7 @@ class RequestData extends Component {
       error: null,
       questionDisplay: true,
       responseDisplay: false,
+      headerText: "",
     });
   };
 
@@ -306,7 +308,6 @@ class RequestData extends Component {
       alert("Clipboard API not supported in this browser. You can manually copy the text.");
       return;
     }
-
     navigator.clipboard.writeText(generatedResponse)
       .then(() => {
         alert("Text copied to clipboard");
@@ -320,6 +321,7 @@ class RequestData extends Component {
   render() {
     return (
       <div>
+        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
         <div className="split-screen">
           <div className="left-panel">
             <h4>
@@ -400,7 +402,6 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
-        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
       </div>
     )
   }
