@@ -276,6 +276,41 @@ class RequestData extends Component {
     }
   }
 
+  classificationAPI = async () => {
+    try {
+      const { articleCopy } = this.state;
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo-1106",
+          messages: [
+            {
+              role: "user",
+              content: `What's the list of law firm industry and practice groups that ${articleCopy} should fall under?.`,
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+        }
+      );
+
+      console.log(response);
+      console.log("Response Data: ", response.data);
+
+      const generatedResponse = response.data.choices[0].message.content;
+      this.setState({ generatedResponse });
+
+      const headerText = "Based on its content and subject matter, this thought leadership piece could be linked to the following industry and practice groups:";
+      this.setState({ headerText });
+
+    } catch (error) {
+      console.error("Error calling classificationAPI:", error);
+    }
+  }
 
   handleChange = (event) => {
     let target = event.target;
@@ -372,7 +407,7 @@ class RequestData extends Component {
                     value={this.state.generatedResponse}
                     className="api-response-textbox"
                   />
-                  <button onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
+                  <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
                     Copy
                   </button>
                 </div>
@@ -386,6 +421,7 @@ class RequestData extends Component {
                 <button className="button-19" onClick={this.titleAnalysisAPI}>Audience</button>
                 <button className="button-19" onClick={this.takeawaysAPI}>Takeaways</button>
                 <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
+                <button className="button-19" onClick={this.classificationAPI}>Practices / Industries</button>
               </div>
             </div>
             <div>

@@ -27,16 +27,21 @@
     border-color: rgba(0, 0, 0, .14);
     background-color: AliceBlue;
     font-size: 14px;
+    border-radius: 10px;
 }
 
 .spacer {
     padding: 15px;
 }
 
+#articleTitle {
+    border-radius: 10px;
+}
+
 #articleCopy {
     height: 1500px;
     width: 100%;
-
+    border-radius: 10px;
 }
 
 .button-container {
@@ -44,14 +49,15 @@
 }
 
 .button-19 {
-    background-color: transparent;
+    background-color: #006599;
     border: 1px solid #266DB6;
+    border-radius: 6px;
     box-sizing: border-box;
-    color: #00132C;
+    color: #b1d1e0;
     font-family: "Avenir Next LT W01 Bold", sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 24px;
+    line-height: 6px;
     padding: 16px 23px;
     position: relative;
     text-decoration: none;
@@ -67,6 +73,7 @@
 
 .button-19:hover {
     background-color: transparent;
+    color: #006599;
     cursor: pointer;
 }
 
