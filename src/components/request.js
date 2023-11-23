@@ -24,6 +24,7 @@ class RequestData extends Component {
   };
 
   titleAnalysisAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy, articleTitle } = this.state;
       console.log("Title: ", articleTitle)
@@ -52,7 +53,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've analyzed the perceived audience of your content. If this is not your intended audience or if it is incomplete, please revise the text to contain specific references to the readers you would like to target.";
+      const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to get, consider revising to specificly mention the people who should read your work.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -61,6 +62,7 @@ class RequestData extends Component {
   }
 
   takeawaysAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -88,7 +90,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've analyzed your content and found five key takeaways. If these aren't the points you want your audience to remember, consider revising your text to convey your intended takeaways.";
+      const headerText = "I've analyzed your content and isolated the top five points. If these aren't the ones you want your audience to remember, consider revising your text to convey your intended takeaways.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -97,6 +99,7 @@ class RequestData extends Component {
   }
 
   altTitlesAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -124,7 +127,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted three alternative titles that you may want to consider:";
+      const headerText = "For your review: three alternative titles for your piece that you may want to consider:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -133,6 +136,7 @@ class RequestData extends Component {
   }
 
   synopsisAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -169,6 +173,7 @@ class RequestData extends Component {
   }
 
   socialMediaAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -196,7 +201,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted three Twitter posts you may wish to use for promoting your content.";
+      const headerText = "Here are three draft Twitter posts for your consideration.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -205,6 +210,7 @@ class RequestData extends Component {
   }
 
   linkedInAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -232,7 +238,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I have drafted a short post you can use to promote your content on Linkedin:";
+      const headerText = "Here's a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -241,6 +247,7 @@ class RequestData extends Component {
   }
 
   abstractAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -268,7 +275,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've drafted a 120-word abstract of your content that you can use to promote it on your website:";
+      const headerText = "Here's a 120-word synopsis of your work that you can use to promote it on your website:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -277,6 +284,7 @@ class RequestData extends Component {
   }
 
   classificationAPI = async () => {
+    this.clearState()
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -319,6 +327,12 @@ class RequestData extends Component {
       [name]: event.target.value,
     });
   };
+
+  clearState = (event) => {
+    let headerText = "Reviewing your content...";
+    let generatedResponse = "";
+    this.setState({ headerText, generatedResponse });
+  }
 
   handleNewRequest = () => {
     this.setState({
