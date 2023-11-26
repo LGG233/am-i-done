@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
-import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
+// import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 
 class RequestData extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
-      const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to get, consider revising to specificly mention the people who should read your work.";
+      const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to reach, consider revising to specificly mention the people who should read your work.";
       this.setState({ headerText });
 
     } catch (error) {
