@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
-// import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 
 class RequestData extends Component {
   constructor(props) {
@@ -257,7 +256,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150 - word abstract of "${articleCopy} .`,
+              content: `Please provide a 150 - word abstract of "${articleCopy} that includes some mention of who should read the piece.`,
             },
           ],
         },
@@ -432,10 +431,10 @@ class RequestData extends Component {
                 <b>Audience and Title Analysis</b>
               </h4>
               <div className="button-container">
-                <button className="button-19" onClick={this.titleAnalysisAPI}>Audience</button>
-                <button className="button-19" onClick={this.takeawaysAPI}>Takeaways</button>
-                <button className="button-19" onClick={this.altTitlesAPI}>Alternative Titles</button>
-                <button className="button-19" onClick={this.classificationAPI}>Practices / Industries</button>
+                <button className="button-19" onClick={this.titleAnalysisAPI} title="Am I Done infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
+                <button className="button-19" onClick={this.takeawaysAPI} title="Am I Done extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
+                <button className="button-19" onClick={this.altTitlesAPI} title="Am I Done drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alternative Titles</button>
+                <button className="button-19" onClick={this.classificationAPI} title="Am I Done identifies the practice and industry groups you may wish to use for classifying your content.">Practices & Industries</button>
               </div>
             </div>
             <div>
@@ -443,10 +442,10 @@ class RequestData extends Component {
                 <b>Online Promotion</b>
               </h4>
               <div className="button-container">
-                <button className="button-19" onClick={this.synopsisAPI}>Email</button>
-                <button className="button-19" onClick={this.socialMediaAPI}>Twitter</button>
-                <button className="button-19" onClick={this.linkedInAPI}>LinkedIn</button>
-                <button className="button-19" onClick={this.abstractAPI}>Website</button>
+                <button className="button-19" onClick={this.synopsisAPI} title="Am I Done drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
+                <button className="button-19" onClick={this.socialMediaAPI} title="Am I Done drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
+                <button className="button-19" onClick={this.linkedInAPI} title="Am I Done drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
+                <button className="button-19" onClick={this.abstractAPI} title="Am I Done provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
               </div>
               <div className="spacer"></div>
             </div>
@@ -457,3 +456,4 @@ class RequestData extends Component {
   }
 }
 export default RequestData;
+
