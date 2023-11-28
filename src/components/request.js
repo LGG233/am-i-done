@@ -366,6 +366,38 @@ class RequestData extends Component {
       });
   }
 
+  adjustInputHeight = (input) => {
+    if (input) {
+      input.style.height = "auto";
+      input.style.height = input.scrollHeight + "px";
+    }
+  };
+
+  adjustTextareaSize = () => {
+    if (this.generatedResponseTextarea) {
+      const generatedResponse = this.state.generatedResponse;
+      const numCharacters = generatedResponse.length
+      const numRows = Math.ceil(numCharacters / 40);
+      const maxLineLength = Math.max(
+        ...generatedResponse.split('\n').map((line) => line.length)
+      );
+      this.generatedResponseTextarea.value = generatedResponse;
+      this.generatedResponseTextarea.rows = numRows;
+      this.generatedResponseTextarea.cols = maxLineLength;
+    }
+  };
+
+  componentDidMount() {
+    this.adjustTextareaSize();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.generatedResponse !== this.state.generatedResponse) {
+      this.adjustTextareaSize();
+      console.log("componentDidUpdate called");
+    }
+  }
+
   render() {
     return (
       <div>
@@ -387,6 +419,8 @@ class RequestData extends Component {
                     placeholder="Title"
                     value={this.state.articleTitle}
                     onChange={this.handleChange}
+                    ref={(input) => { this.articleTitleInput = input; }}
+                    onInput={() => this.adjustInputHeight(this.articleTitleInput)}
                   />
                   <br />
                   <label htmlFor="articleCopy">Body: </label>
@@ -398,6 +432,8 @@ class RequestData extends Component {
                     placeholder="Content"
                     value={this.state.articleCopy}
                     onChange={this.handleChange}
+                    ref={(textarea) => { this.articleCopyTextarea = textarea; }}
+                    onInput={() => this.adjustInputHeight(this.articleCopyTextarea)}
                   />
                 </form>
               </div>
@@ -419,6 +455,7 @@ class RequestData extends Component {
                     readOnly
                     value={this.state.generatedResponse}
                     className="api-response-textbox"
+                    ref={(textarea) => { this.generatedResponseTextarea = textarea; }}
                   />
                   <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
                     Copy
