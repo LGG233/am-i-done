@@ -377,7 +377,7 @@ class RequestData extends Component {
     if (this.generatedResponseTextarea) {
       const generatedResponse = this.state.generatedResponse;
       const numCharacters = generatedResponse.length
-      const numRows = Math.ceil(numCharacters / 40);
+      const numRows = Math.ceil((numCharacters / 40) + 2);
       const maxLineLength = Math.max(
         ...generatedResponse.split('\n').map((line) => line.length)
       );
