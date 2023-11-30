@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
 
+function countWords(generatedResponse) {
+  const words = generatedResponse.trim().split(/\s+/);
+  return words.length;
+}
+
 class RequestData extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +23,10 @@ class RequestData extends Component {
       generatedResponse1: "",
       generatedResponse2: "",
       headerText: "",
+      wordCount: 0,
+      characterCount: 0,
+      wordsCounted: false,
+      showWordCount: false,
       error: null,
     };
   };
@@ -162,6 +171,7 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: true });
 
       const headerText = "To share your work via email, copy and paste this language into the body of your message along with the link.";
       this.setState({ headerText });
@@ -236,6 +246,7 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: true });
 
       const headerText = "Here's a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
@@ -273,6 +284,7 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: true });
 
       const headerText = "Here's a 120-word synopsis of your work that you can use to promote it on your website:";
       this.setState({ headerText });
@@ -331,6 +343,7 @@ class RequestData extends Component {
     let headerText = "Reviewing your content...";
     let generatedResponse = "";
     this.setState({ headerText, generatedResponse });
+    this.setState({ showWordCount: false });
   }
 
   handleNewRequest = () => {
@@ -393,9 +406,27 @@ class RequestData extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.generatedResponse !== this.state.generatedResponse) {
+      console.log("here's the number BEFORE componentDidUpdate is called" + this.state.wordCount);
       this.adjustTextareaSize();
+      this.updateWordCount();
       console.log("componentDidUpdate called");
+      console.log("here's the number AFTER componentDidUpdate is called" + this.state.wordCount);
+      console.log(this.state.wordCount, this.state.characterCount)
     }
+  }
+
+  updateWordCount = () => {
+    const wordCount = countWords(this.state.generatedResponse);
+    const characterCount = this.state.generatedResponse.length;
+    this.setState({
+      wordCount,
+      characterCount,
+    },
+      () => {
+        console.log("this is the word number when updateWordCount is called" + wordCount)
+        console.log("this is the character number when updateWordCount is called" + characterCount)
+      }
+    );
   }
 
   render() {
@@ -462,6 +493,15 @@ class RequestData extends Component {
                   </button>
                 </div>
               )}
+            </div>
+            <div className="showWordCount">
+              {this.state.showWordCount && (
+                <div>
+                  <p className="counts">Words: {this.state.wordCount}</p>
+                  <p className="counts">Characters: {this.state.characterCount}</p>
+                </div>
+              )}
+
             </div>
             <div>
               <h4>
