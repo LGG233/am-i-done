@@ -27,6 +27,8 @@ class RequestData extends Component {
       characterCount: 0,
       wordsCounted: false,
       showWordCount: false,
+      editedResponse: "",
+      isEditing: false,
       error: null,
     };
   };
@@ -400,19 +402,49 @@ class RequestData extends Component {
     }
   };
 
+  // adjustEditareaSize = () => {
+  //   if (this.state.editedResponse) {
+  //     const editedResponse = this.state.editedResponse;
+  //     const numCharacters = editedResponse.length
+  //     const numRows = Math.ceil((numCharacters / 40) + 2);
+  //     const maxLineLength = Math.max(
+  //       ...editedResponse.split('\n').map((line) => line.length)
+  //     );
+  //     this.editedResponseTextarea.value = editedResponse;
+  //     this.editedResponseTextarea.rows = numRows;
+  //     this.editedResponseTextarea.cols = maxLineLength;
+  //     console.log("adjustEditareaSize called within the adjustEditareaSize method")
+  //   }
+  // };
   componentDidMount() {
     this.adjustTextareaSize();
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // this.adjustEditareaSize();
     if (prevState.generatedResponse !== this.state.generatedResponse) {
       console.log("here's the number BEFORE componentDidUpdate is called" + this.state.wordCount);
       this.adjustTextareaSize();
+      // this.adjustEditareaSize();
       this.updateWordCount();
       console.log("componentDidUpdate called");
       console.log("here's the number AFTER componentDidUpdate is called" + this.state.wordCount);
       console.log(this.state.wordCount, this.state.characterCount)
     }
+  }
+
+  updateWordCountEditing = () => {
+    const wordCount = countWords(this.state.editedResponse);
+    const characterCount = this.state.editedResponse.length;
+    this.setState({
+      wordCount,
+      characterCount,
+    },
+      () => {
+        console.log("this is the word number when updateWordCount is called" + wordCount)
+        console.log("this is the character number when updateWordCount is called" + characterCount)
+      }
+    );
   }
 
   updateWordCount = () => {
@@ -427,6 +459,23 @@ class RequestData extends Component {
         console.log("this is the character number when updateWordCount is called" + characterCount)
       }
     );
+  }
+
+  enterEditMode = () => {
+    this.setState({
+      editedResponse: this.state.generatedResponse,
+      isEditing: true,
+    }, () => {
+      ;
+      this.updateWordCount();
+    });
+  };
+
+  exitEditMode = () => {
+    this.setState({
+      generatedResponse: this.state.editedResponse,
+      isEditing: false,
+    });
   }
 
   render() {
@@ -480,51 +529,81 @@ class RequestData extends Component {
               </p>
             </div>
             <div>
-              {this.state.generatedResponse && (
+              {this.state.isEditing ? (
                 <div>
+                  <p4>EDITING</p4>
                   <textarea
-                    readOnly
-                    value={this.state.generatedResponse}
-                    className="api-response-textbox"
-                    ref={(textarea) => { this.generatedResponseTextarea = textarea; }}
+                    value={this.state.editedResponse}
+                    onChange={(e) => {
+                      this.setState({ editedResponse: e.target.value }, () => {
+                        this.updateWordCountEditing();
+                      });
+                    }}
+                    className="api-editing-textbox"
+                    ref={(textarea) => {
+                      this.editedResponseTextarea = textarea;
+                    }}
                   />
-                  <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
+                  <button className="button-19" onClick={() => this.copyToClipboard(this.state.editedResponse)}>
                     Copy
                   </button>
-                </div>
-              )}
-            </div>
-            <div className="showWordCount">
-              {this.state.showWordCount && (
-                <div>
-                  <p className="counts">Words: {this.state.wordCount}</p>
-                  <p className="counts">Characters: {this.state.characterCount}</p>
-                </div>
-              )}
+                  <button className="button-19" onClick={this.exitEditMode}>
+                    Done Editing
+                  </button>
 
-            </div>
-            <div>
-              <h4>
-                <b>Audience and Title Analysis</b>
-              </h4>
-              <div className="button-container">
-                <button className="button-19" onClick={this.titleAnalysisAPI} title="Am I Done infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
-                <button className="button-19" onClick={this.takeawaysAPI} title="Am I Done extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
-                <button className="button-19" onClick={this.altTitlesAPI} title="Am I Done drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alternative Titles</button>
-                <button className="button-19" onClick={this.classificationAPI} title="Am I Done identifies the practice and industry groups you may wish to use for classifying your content.">Practices & Industries</button>
+                </div>
+              ) : (
+                <div>
+                  {this.state.generatedResponse && (
+                    <div>
+                      <textarea
+                        readOnly
+                        value={this.state.generatedResponse}
+                        className="api-response-textbox"
+                        ref={(textarea) => { this.generatedResponseTextarea = textarea; }}
+                      />
+                      <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
+                        Copy
+                      </button>
+                      <button className="button-19" onClick={this.enterEditMode}>
+                        Edit Response
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div className="showWordCount">
+                {this.state.showWordCount && (
+                  <div>
+                    <p className="counts">Words: {this.state.wordCount}</p>
+                    <p className="counts">Characters: {this.state.characterCount}</p>
+                  </div>
+                )}
+
               </div>
-            </div>
-            <div>
-              <h4>
-                <b>Online Promotion</b>
-              </h4>
-              <div className="button-container">
-                <button className="button-19" onClick={this.synopsisAPI} title="Am I Done drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
-                <button className="button-19" onClick={this.socialMediaAPI} title="Am I Done drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
-                <button className="button-19" onClick={this.linkedInAPI} title="Am I Done drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
-                <button className="button-19" onClick={this.abstractAPI} title="Am I Done provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
+              <div>
+                <h4>
+                  <b>Audience and Title Analysis</b>
+                </h4>
+                <div className="button-container">
+                  <button className="button-19" onClick={this.titleAnalysisAPI} title="Am I Done infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
+                  <button className="button-19" onClick={this.takeawaysAPI} title="Am I Done extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
+                  <button className="button-19" onClick={this.altTitlesAPI} title="Am I Done drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alternative Titles</button>
+                  <button className="button-19" onClick={this.classificationAPI} title="Am I Done identifies the practice and industry groups you may wish to use for classifying your content.">Practices & Industries</button>
+                </div>
               </div>
-              <div className="spacer"></div>
+              <div>
+                <h4>
+                  <b>Online Promotion</b>
+                </h4>
+                <div className="button-container">
+                  <button className="button-19" onClick={this.synopsisAPI} title="Am I Done drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
+                  <button className="button-19" onClick={this.socialMediaAPI} title="Am I Done drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
+                  <button className="button-19" onClick={this.linkedInAPI} title="Am I Done drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
+                  <button className="button-19" onClick={this.abstractAPI} title="Am I Done provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
+                </div>
+                <div className="spacer"></div>
+              </div>
             </div>
           </div>
         </div>

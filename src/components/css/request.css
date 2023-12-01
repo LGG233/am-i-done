@@ -31,6 +31,19 @@
     overflow: hidden;
 }
 
+.api-editing-textbox {
+    width: 400px;
+    height: 300px;
+    position: relative;
+    border: 2px solid #cdcdcd;
+    border-color: rgba(0, 0, 0, .14);
+    background-color: AliceBlue;
+    font-size: 14px;
+    border-radius: 10px;
+    resize: none;
+    overflow: hidden;
+}
+
 .spacer {
     padding: 15px;
 }
