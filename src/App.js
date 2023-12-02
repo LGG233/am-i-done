@@ -10,9 +10,7 @@ function App() {
   const [user, setUser] = useState({});
 
   function handleCallBackResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
     const userObject = jwtDecode(response.credential);
-    console.log(userObject);
     setUser(userObject);
     document.getElementById("signInDiv").hidden = true;
   }

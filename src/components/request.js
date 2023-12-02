@@ -20,8 +20,6 @@ class RequestData extends Component {
       questionDisplay: false,
       responseDisplay: true,
       generatedResponse: "",
-      generatedResponse1: "",
-      generatedResponse2: "",
       headerText: "",
       wordCount: 0,
       characterCount: 0,
@@ -34,10 +32,12 @@ class RequestData extends Component {
   };
 
   titleAnalysisAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy, articleTitle } = this.state;
-      console.log("Title: ", articleTitle)
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -57,9 +57,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
@@ -72,6 +69,9 @@ class RequestData extends Component {
   }
 
   takeawaysAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -94,9 +94,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
@@ -109,6 +106,9 @@ class RequestData extends Component {
   }
 
   altTitlesAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -131,9 +131,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
@@ -146,6 +143,9 @@ class RequestData extends Component {
   }
 
   synopsisAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -168,9 +168,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
@@ -184,6 +181,9 @@ class RequestData extends Component {
   }
 
   socialMediaAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -206,9 +206,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
 
@@ -221,6 +218,9 @@ class RequestData extends Component {
   }
 
   linkedInAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -243,9 +243,6 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
@@ -259,6 +256,9 @@ class RequestData extends Component {
   }
 
   abstractAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -281,14 +281,11 @@ class RequestData extends Component {
         }
       );
 
-      console.log(response);
-      console.log("Response Data: ", response.data);
-
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
 
-      const headerText = "Here's a 120-word synopsis of your work that you can use to promote it on your website:";
+      const headerText = "Here's a brief synopsis of your work that you can use to promote it on your website:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -297,6 +294,9 @@ class RequestData extends Component {
   }
 
   classificationAPI = async () => {
+    if (this.isEditingInProgress()) {
+      return;
+    }
     this.clearState()
     try {
       const { articleCopy } = this.state;
@@ -318,9 +318,6 @@ class RequestData extends Component {
           },
         }
       );
-
-      console.log(response);
-      console.log("Response Data: ", response.data);
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
@@ -402,63 +399,29 @@ class RequestData extends Component {
     }
   };
 
-  // adjustEditareaSize = () => {
-  //   if (this.state.editedResponse) {
-  //     const editedResponse = this.state.editedResponse;
-  //     const numCharacters = editedResponse.length
-  //     const numRows = Math.ceil((numCharacters / 40) + 2);
-  //     const maxLineLength = Math.max(
-  //       ...editedResponse.split('\n').map((line) => line.length)
-  //     );
-  //     this.editedResponseTextarea.value = editedResponse;
-  //     this.editedResponseTextarea.rows = numRows;
-  //     this.editedResponseTextarea.cols = maxLineLength;
-  //     console.log("adjustEditareaSize called within the adjustEditareaSize method")
-  //   }
-  // };
   componentDidMount() {
     this.adjustTextareaSize();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // this.adjustEditareaSize();
     if (prevState.generatedResponse !== this.state.generatedResponse) {
-      console.log("here's the number BEFORE componentDidUpdate is called" + this.state.wordCount);
       this.adjustTextareaSize();
-      // this.adjustEditareaSize();
       this.updateWordCount();
-      console.log("componentDidUpdate called");
-      console.log("here's the number AFTER componentDidUpdate is called" + this.state.wordCount);
-      console.log(this.state.wordCount, this.state.characterCount)
     }
   }
 
   updateWordCountEditing = () => {
-    const wordCount = countWords(this.state.editedResponse);
-    const characterCount = this.state.editedResponse.length;
-    this.setState({
-      wordCount,
-      characterCount,
-    },
-      () => {
-        console.log("this is the word number when updateWordCount is called" + wordCount)
-        console.log("this is the character number when updateWordCount is called" + characterCount)
-      }
-    );
+    const editedResponse = this.state.editedResponse;
+    const wordCount = editedResponse.split(/\s+/).filter(Boolean).length;
+    const characterCount = editedResponse.length;
+    this.setState({ wordCount, characterCount });
   }
-
   updateWordCount = () => {
-    const wordCount = countWords(this.state.generatedResponse);
-    const characterCount = this.state.generatedResponse.length;
-    this.setState({
-      wordCount,
-      characterCount,
-    },
-      () => {
-        console.log("this is the word number when updateWordCount is called" + wordCount)
-        console.log("this is the character number when updateWordCount is called" + characterCount)
-      }
-    );
+    const generatedResponse = this.state.generatedResponse;
+    const words = generatedResponse.trim().split(/\s+/);
+    const wordCount = words.length;
+    const characterCount = generatedResponse.length;
+    this.setState({ wordCount, characterCount });
   }
 
   enterEditMode = () => {
@@ -478,6 +441,13 @@ class RequestData extends Component {
     });
   }
 
+  isEditingInProgress = () => {
+    if (this.state.isEditing) {
+      alert("Please click 'Done Editing' before continuing.");
+      return true;
+    }
+    return false;
+  }
   render() {
     return (
       <div>
@@ -565,9 +535,11 @@ class RequestData extends Component {
                       <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
                         Copy
                       </button>
-                      <button className="button-19" onClick={this.enterEditMode}>
-                        Edit Response
-                      </button>
+                      <div className="editing-button">
+                        <button className="button-19" onClick={this.enterEditMode}>
+                          Edit Response
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
