@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
 
-function countWords(generatedResponse) {
-  const words = generatedResponse.trim().split(/\s+/);
-  return words.length;
-}
-
 class RequestData extends Component {
   constructor(props) {
     super(props);
