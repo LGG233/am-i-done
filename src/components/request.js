@@ -13,11 +13,9 @@ class RequestData extends Component {
     this.state = {
       articleTitle: "",
       articleCopy: "",
-      totalPoints: "",
       altTitles: "",
       data: [],
       requestData: [],
-      questionDisplay: false,
       responseDisplay: true,
       generatedResponse: "",
       headerText: "",
@@ -25,6 +23,7 @@ class RequestData extends Component {
       characterCount: 0,
       wordsCounted: false,
       showWordCount: false,
+      showEditButton: false,
       editedResponse: "",
       isEditing: false,
       error: null,
@@ -59,6 +58,8 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: false });
+      this.setState({ showEditButton: false });
 
       const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to reach, consider revising to specificly mention the people who should read your work.";
       this.setState({ headerText });
@@ -96,6 +97,8 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: false });
+      this.setState({ showEditButton: false });
 
       const headerText = "I've analyzed your content and isolated the top five points. If these aren't the ones you want your audience to remember, consider revising your text to convey your intended takeaways.";
       this.setState({ headerText });
@@ -133,6 +136,8 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: false });
+      this.setState({ showEditButton: false });
 
       const headerText = "For your review: three alternative titles for your piece that you may want to consider:";
       this.setState({ headerText });
@@ -171,6 +176,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
+      this.setState({ showEditButton: true });
 
       const headerText = "To share your work via email, copy and paste this language into the body of your message along with the link.";
       this.setState({ headerText });
@@ -208,6 +214,8 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: true });
+      this.setState({ showEditButton: true });
 
       const headerText = "Here are three draft Twitter posts for your consideration.";
       this.setState({ headerText });
@@ -246,6 +254,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
+      this.setState({ showEditButton: true });
 
       const headerText = "Here's a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
@@ -284,6 +293,7 @@ class RequestData extends Component {
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
       this.setState({ showWordCount: true });
+      this.setState({ showEditButton: true });
 
       const headerText = "Here's a brief synopsis of your work that you can use to promote it on your website:";
       this.setState({ headerText });
@@ -321,6 +331,8 @@ class RequestData extends Component {
 
       const generatedResponse = response.data.choices[0].message.content;
       this.setState({ generatedResponse });
+      this.setState({ showWordCount: false });
+      this.setState({ showEditButton: false });
 
       const headerText = "Based on its content and subject matter, this thought leadership piece could be linked to the following industry and practice groups:";
       this.setState({ headerText });
@@ -341,18 +353,21 @@ class RequestData extends Component {
   clearState = (event) => {
     let headerText = "Reviewing your content...";
     let generatedResponse = "";
-    this.setState({ headerText, generatedResponse });
-    this.setState({ showWordCount: false });
+    this.setState({
+      headerText,
+      generatedResponse,
+      showWordCount: false
+    });
   }
 
   handleNewRequest = () => {
     this.setState({
       articleTitle: "",
       articleCopy: "",
-      totalPoints: "",
       generatedResponse: "",
+      showWordCount: false,
+      showEditButton: false,
       error: null,
-      questionDisplay: true,
       responseDisplay: false,
       headerText: "",
     });
@@ -416,6 +431,7 @@ class RequestData extends Component {
     const characterCount = editedResponse.length;
     this.setState({ wordCount, characterCount });
   }
+
   updateWordCount = () => {
     const generatedResponse = this.state.generatedResponse;
     const words = generatedResponse.trim().split(/\s+/);
@@ -535,11 +551,11 @@ class RequestData extends Component {
                       <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
                         Copy
                       </button>
-                      <div className="editing-button">
+                      {this.state.showEditButton ? (
                         <button className="button-19" onClick={this.enterEditMode}>
                           Edit Response
                         </button>
-                      </div>
+                      ) : null}
                     </div>
                   )}
                 </div>
