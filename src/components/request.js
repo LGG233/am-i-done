@@ -23,7 +23,13 @@ class RequestData extends Component {
       isEditing: false,
       error: null,
     };
+
+    this.baseUrl = "https://api.openai.com/v1/chat/completions";
   };
+
+  handleError = (mnethodName, error) => {
+    console.error(`Error calling ${methodName}:`, error);
+  }
 
   titleAnalysisAPI = async () => {
     if (this.isEditingInProgress()) {
@@ -33,7 +39,7 @@ class RequestData extends Component {
     try {
       const { articleCopy, articleTitle } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -52,15 +58,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: false });
-      this.setState({ showEditButton: false });
+      this.setState({
+        generatedResponse,
+        showWordCount: false,
+        showEditButton: false,
+      });
 
       const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to reach, consider revising to specificly mention the people who should read your work.";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling titleAnalysisAPI:", error);
+      console.handleError("titleAnalysisAPI:", error);
     }
   }
 
@@ -72,7 +80,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -91,15 +99,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: false });
-      this.setState({ showEditButton: false });
+      this.setState({
+        generatedResponse,
+        showWordCount: false,
+        showEditButton: false,
+      });
 
       const headerText = "I've analyzed your content and isolated the top five points. If these aren't the ones you want your audience to remember, consider revising your text to convey your intended takeaways.";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling takeawaysAPI: ", error);
+      console.handleError("takeawaysAPI:", error);
     }
   }
 
@@ -111,7 +121,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -130,15 +140,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: false });
-      this.setState({ showEditButton: false });
+      this.setState({
+        generatedResponse,
+        showWordCount: false,
+        showEditButton: false,
+      });
 
       const headerText = "For your review: three alternative titles for your piece that you may want to consider:";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error making altTitlesAPI:", error);
+      console.handleError("altTitlesAPI:", error);
     }
   }
 
@@ -150,7 +162,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -169,15 +181,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: true });
-      this.setState({ showEditButton: true });
+      this.setState({
+        generatedResponse,
+        showWordCount: true,
+        showEditButton: true,
+      });
 
       const headerText = "To share your work via email, copy and paste this language into the body of your message along with the link.";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling synposisAPI:", error);
+      console.handleError("synposisAPI:", error);
     }
   }
 
@@ -189,7 +203,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -208,15 +222,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: true });
-      this.setState({ showEditButton: true });
+      this.setState({
+        generatedResponse,
+        showWordCount: true,
+        showEditButton: true,
+      });
 
       const headerText = "Here are three draft Twitter posts for your consideration.";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling socialMediaAPI:", error);
+      console.handleError("socialMediaAPI:", error);
     }
   }
 
@@ -228,7 +244,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -247,15 +263,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: true });
-      this.setState({ showEditButton: true });
+      this.setState({
+        generatedResponse,
+        showWordCount: true,
+        showEditButton: true,
+      });
 
       const headerText = "Here's a short post you can use to promote your content on Linkedin:";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling linkedInAPI:", error);
+      console.handleError("linkedInAPI:", error);
     }
   }
 
@@ -267,7 +285,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -286,15 +304,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: true });
-      this.setState({ showEditButton: true });
+      this.setState({
+        generatedResponse,
+        showWordCount: true,
+        showEditButton: true,
+      });
 
       const headerText = "Here's a brief synopsis of your work that you can use to promote it on your website:";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling abstractAPI:", error);
+      console.handleError("abstractAPI:", error);
     }
   }
 
@@ -306,7 +326,7 @@ class RequestData extends Component {
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
+        this.baseUrl,
         {
           model: "gpt-3.5-turbo-1106",
           messages: [
@@ -325,15 +345,17 @@ class RequestData extends Component {
       );
 
       const generatedResponse = response.data.choices[0].message.content;
-      this.setState({ generatedResponse });
-      this.setState({ showWordCount: false });
-      this.setState({ showEditButton: false });
+      this.setState({
+        generatedResponse,
+        showWordCount: false,
+        showEditButton: false,
+      });
 
       const headerText = "Based on its content and subject matter, this thought leadership piece could be linked to the following industry and practice groups:";
       this.setState({ headerText });
 
     } catch (error) {
-      console.error("Error calling classificationAPI:", error);
+      console.handleError("classificationAPI:", error);
     }
   }
 
@@ -459,6 +481,7 @@ class RequestData extends Component {
     }
     return false;
   }
+
   render() {
     return (
       <div>
