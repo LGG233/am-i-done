@@ -27,7 +27,7 @@ class RequestData extends Component {
     this.baseUrl = "https://api.openai.com/v1/chat/completions";
   };
 
-  handleError = (mnethodName, error) => {
+  handleError = (methodName, error) => {
     console.error(`Error calling ${methodName}:`, error);
   }
 
