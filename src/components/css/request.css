@@ -19,6 +19,12 @@
     text-align: center;
 }
 
+.language-button {
+    font-family: "Avenir Next LT W01 Bold", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .api-response-textbox {
     width: 400px;
     position: relative;

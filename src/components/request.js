@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./css/request.css";
+import { franc } from 'franc-min';
 
 class RequestData extends Component {
   constructor(props) {
@@ -20,6 +21,9 @@ class RequestData extends Component {
       showWordCount: false,
       showEditButton: false,
       editedResponse: "",
+      detectedLanguage: "",
+      language: "",
+      languageToUse: "",
       isEditing: false,
       error: null,
     };
@@ -36,6 +40,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy, articleTitle } = this.state;
       const response = await axios.post(
@@ -45,7 +52,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the language and framing of "${articleCopy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence, and do not include 'legal professionals' in your list of occupations. Then answer these questions: "How well does the piece position itself to reach its target audience? Is it clear in the title "${articleTitle}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? `,
+              content: `Based on the language and framing of "${articleCopy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Do not include 'legal professionals' in the list of occupations. Then answer these questions in additional paragraphs: "How well does the piece position itself to reach its target audience? Is it clear in the title "${articleTitle}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -67,6 +74,8 @@ class RequestData extends Component {
       const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to reach, consider revising to specificly mention the people who should read your work.";
       this.setState({ headerText });
 
+      console.log("The article is written in ", this.state.detectedLanguage);
+
     } catch (error) {
       console.handleError("titleAnalysisAPI:", error);
     }
@@ -77,6 +86,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -86,7 +98,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What are the five most salient takeaways of "${articleCopy}"? Each takeaway must be summarized in a single sentence. Please output as a numbered list.`,
+              content: `What are the five most salient takeaways of "${articleCopy}"? Each takeaway must be summarized in a single sentence. Please output as a numbered list. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -118,6 +130,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -127,7 +142,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide three alternative titles for "${articleCopy}" that reference the intended audience and articuiate why they should read it. Enclose each alternative title in quotation marks. Please explain each alternative title and why it was chosen in a single sentence that follows the alternative title using a hyphen to separate them. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list`,
+              content: `Please provide three alternative titles for "${articleCopy}" that reference the intended audience and articuiate why they should read it. Enclose each alternative title in quotation marks. Please explain each alternative title and why it was chosen in a single sentence that follows the alternative title using a hyphen to separate them. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -159,6 +174,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -168,7 +186,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Draft a 25 - word synopsis of "${articleCopy}" for presenting the article that entices people to read it.`,
+              content: `Draft a 25 - word synopsis of "${articleCopy}" for presenting the article that entices people to read it. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -200,6 +218,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -209,7 +230,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Provide three compelling summaries of "${articleCopy}" that can be used to promote the article on Twitter.Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters. Please provide the output in a numbered list`,
+              content: `Provide three compelling summaries of "${articleCopy}" that can be used to promote the article on Twitter.Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -241,6 +262,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -250,7 +274,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150 - word abstract of "${articleCopy} that can be used to promote the article on LinkedIn. Include two or three professional hashtags`,
+              content: `Please provide a 150 - word abstract of "${articleCopy} that can be used to promote the article on LinkedIn. Include two or three professional hashtags. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -282,6 +306,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -291,7 +318,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150 - word abstract of "${articleCopy} that includes some mention of who should read the piece.`,
+              content: `Please provide a 150 - word abstract of "${articleCopy} that includes some mention of who should read the piece. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -323,6 +350,9 @@ class RequestData extends Component {
       return;
     }
     this.clearState()
+
+    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+
     try {
       const { articleCopy } = this.state;
       const response = await axios.post(
@@ -332,7 +362,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What's the list of law firm industry and practice groups that ${articleCopy} should fall under?.`,
+              content: `What's the list of law firm industry and practice groups that ${articleCopy} should fall under?. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -365,6 +395,7 @@ class RequestData extends Component {
     this.setState({
       [name]: event.target.value,
     });
+    this.getLanguage();
   };
 
   clearState = (event) => {
@@ -396,7 +427,6 @@ class RequestData extends Component {
 
   copyToClipboard(generatedResponse) {
     if (!navigator.clipboard) {
-      // Clipboard API not supported, provide fallback
       alert("Clipboard API not supported in this browser. You can manually copy the text.");
       return;
     }
@@ -482,6 +512,21 @@ class RequestData extends Component {
     return false;
   }
 
+  getLanguage = () => {
+    const detectedLanguage = franc(this.state.articleCopy);
+    this.setState({ detectedLanguage });
+  };
+
+  handleLanguageChange = (event) => {
+    this.setState({ language: event.target.value }, () => {
+      if (this.state.language === "English") {
+        this.setState({ detectedLanguage: "English" });
+      } else {
+        this.getLanguage();
+      }
+    });
+  };
+
   render() {
     return (
       <div>
@@ -491,6 +536,30 @@ class RequestData extends Component {
             <h4>
               <b>Your Content</b>
             </h4>
+            <div>
+              Response Language:
+              <label className="language-button">
+                <input
+                  type="radio"
+                  name="language"
+                  value="English"
+                  checked={this.state.language === "English"}
+                  onChange={this.handleLanguageChange}
+                />
+                English
+              </label>
+              <label className="language-button">
+                <input
+                  type="radio"
+                  name="language"
+                  value="Original Language"
+                  checked={this.state.language === "Original Language"}
+                  onChange={this.handleLanguageChange}
+                />
+                Original Language
+              </label>
+            </div>
+            <br />
             <div className="container-fluid">
               <div className="QueryForm">
                 <form className="FormField">
