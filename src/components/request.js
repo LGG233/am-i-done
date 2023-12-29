@@ -658,21 +658,21 @@ class RequestData extends Component {
               </div>
               <div>
                 <h4>
-                  <b>For Authors</b>
+                  <b>Editorial</b>
                 </h4>
                 <div className="button-container">
                   <button className="button-19" onClick={this.titleAnalysisAPI} title="Am I Done infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
                   <button className="button-19" onClick={this.takeawaysAPI} title="Am I Done extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
                   <button className="button-19" onClick={this.altTitlesAPI} title="Am I Done drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alt Titles</button>
-                  <button className="button-19" onClick={this.classificationAPI} title="Am I Done identifies the practice and industry groups you may wish to use for classifying your content.">Services</button>
+                  {/* <button className="button-19" onClick={this.classificationAPI} title="Am I Done identifies the practice and industry groups you may wish to use for classifying your content.">Services</button> */}
                 </div>
                 <div>
-                  <p><em>Am I Done</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. In addition, we suggest alternative titles for your consideration. We also provide you with a list of practice and industry groups where you may want to promote your work.</p>
+                  <p><em>Am I Done</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>
                 </div>
               </div>
               <div>
                 <h4>
-                  <b>For Marketers</b>
+                  <b>Marketing</b>
                 </h4>
 
                 <div className="button-container">
@@ -682,7 +682,7 @@ class RequestData extends Component {
                   <button className="button-19" onClick={this.abstractAPI} title="Am I Done provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
                 </div>
                 <div>
-                  <p><em>Am I Done</em> draws on the power of AI to draft language you can use to promote the work of your authors via email, social and digital media, and on the firm's website.</p>
+                  <p><em>Am I Done</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>
                 </div>
                 <div className="spacer"></div>
               </div>
