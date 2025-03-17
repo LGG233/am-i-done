@@ -1,0 +1,126 @@
+/* LandingPage.css - Unified Modern Design for Amplify */
+
+/* Global styles */
+.landing-container {
+    font-family: 'Inter', sans-serif;
+    /* Matching the main app */
+    text-align: left;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #0d1b2a, #1b263b);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 0;
+    text-align: center;
+    /* Centering content */
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #ff6b35;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    opacity: 0.85;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: block;
+    margin: 0 auto;
+    /* Centers the button */
+    background: #ff6b35;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.cta-button:hover {
+    background: #d14a1e;
+    transform: scale(1.05);
+}
+
+/* Feature Highlights */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 50px 0;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    color: #ff6b35;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+/* Before & After Demo */
+.demo {
+    margin-top: 60px;
+}
+
+.demo h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ff6b35;
+    text-align: center;
+    /* Centers ONLY 'Before & After' heading */
+}
+
+.demo-content {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.before,
+.after {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.before h4,
+.after h4 {
+    font-size: 1.2rem;
+    color: #ff6b35;
+    margin-bottom: 10px;
+}

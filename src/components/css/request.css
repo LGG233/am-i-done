@@ -5,18 +5,36 @@
 }
 
 .left-panel {
-    flex: 4;
-    padding: 10px;
-    border-right: 1px solid #ccc;
+    max-width: 50%;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
 .right-panel {
     flex: 2;
     padding: 10px;
+    padding-left: 40px;
+}
+
+.article-body,
+.article-title {
+    width: 100%;
+    font-size: 1.0rem;
+    padding: 12px;
+    border: 1px solid #ff6b35;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    resize: vertical;
 }
 
 .article-title {
-    text-align: center;
+    height: 60px;
+}
+
+.article-body {
+    height: 400px;
 }
 
 .language-button {
@@ -68,49 +86,52 @@
     display: flex;
 }
 
-.button-19 {
-    background-color: #006599;
-    border: 1px solid #266DB6;
+.button-19,
+.signout-button {
+    background: #ff6b35;
+    border: 1px solid #d14a1e;
     border-radius: 6px;
     box-sizing: border-box;
-    color: #b1d1e0;
-    font-family: "Avenir Next LT W01 Bold", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 14px;
-    padding: 16px 23px;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 12px 24px;
     position: relative;
     text-decoration: none;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    display: block;
+    margin: 20px auto;
+    overflow: hidden;
 }
 
 .button-19:hover,
-.button-19:active {
-    outline: 0;
-}
-
-.button-19:hover {
-    background-color: transparent;
-    color: #006599;
+.signout-button:hover {
+    background: #d14a1e;
+    transform: scale(1.05);
     cursor: pointer;
+    color: white;
 }
 
-.button-19:before {
-    background-color: #D5EDF6;
+.button-19:before,
+.signout-button:before {
+    background-color: rgba(255, 255, 255, 0.2);
     content: "";
-    height: calc(100% + 3px);
-    position: absolute;
-    right: -7px;
-    top: -9px;
-    transition: background-color 300ms ease-in;
+    height: 100%;
     width: 100%;
-    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.button-19:hover:before {
-    background-color: #6DCFF6;
+.button-19:hover:before,
+.signout-button:hover:before {
+    opacity: 1;
 }
 
 @media (min-width: 768px) {

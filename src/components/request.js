@@ -48,7 +48,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -77,7 +77,7 @@ class RequestData extends Component {
       console.log("The article is written in ", this.state.detectedLanguage);
 
     } catch (error) {
-      console.handleError("titleAnalysisAPI:", error);
+      this.handleError("titleAnalysisAPI:", error);
     }
   }
 
@@ -94,7 +94,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -121,7 +121,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("takeawaysAPI:", error);
+      this.handleError("takeawaysAPI:", error);
     }
   }
 
@@ -138,7 +138,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -165,7 +165,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("altTitlesAPI:", error);
+      this.handleError("altTitlesAPI:", error);
     }
   }
 
@@ -182,7 +182,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -209,7 +209,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("synposisAPI:", error);
+      this.handleError("synposisAPI:", error);
     }
   }
 
@@ -226,7 +226,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -253,7 +253,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("socialMediaAPI:", error);
+      this.handleError("socialMediaAPI:", error);
     }
   }
 
@@ -270,7 +270,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -297,7 +297,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("linkedInAPI:", error);
+      this.handleError("linkedInAPI:", error);
     }
   }
 
@@ -314,7 +314,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -341,7 +341,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("abstractAPI:", error);
+      this.handleError("abstractAPI:", error);
     }
   }
 
@@ -358,7 +358,7 @@ class RequestData extends Component {
       const response = await axios.post(
         this.baseUrl,
         {
-          model: "gpt-3.5-turbo-1106",
+          model: "gpt-3.5-turbo-0125",
           messages: [
             {
               role: "user",
@@ -385,7 +385,7 @@ class RequestData extends Component {
       this.setState({ headerText });
 
     } catch (error) {
-      console.handleError("classificationAPI:", error);
+      this.handleError("classificationAPI:", error);
     }
   }
 
@@ -462,6 +462,7 @@ class RequestData extends Component {
   };
 
   componentDidMount() {
+    console.log("Request Data Component Mounted!");
     this.adjustTextareaSize();
   }
 
@@ -530,7 +531,6 @@ class RequestData extends Component {
   render() {
     return (
       <div>
-        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
         <div className="split-screen">
           <div className="left-panel">
             <h4>
@@ -564,9 +564,8 @@ class RequestData extends Component {
               <div className="QueryForm">
                 <form className="FormField">
                   <label htmlFor="articleTitle">Title: </label>
-                  <input
-                    type="text"
-                    className="form-control"
+                  <textarea
+                    className="article-title"
                     id="articleTitle"
                     name="articleTitle"
                     placeholder="Title"
@@ -575,6 +574,7 @@ class RequestData extends Component {
                     ref={(input) => { this.articleTitleInput = input; }}
                     onInput={() => this.adjustInputHeight(this.articleTitleInput)}
                   />
+                  <br />
                   <br />
                   <label htmlFor="articleCopy">Body: </label>
                   <textarea
@@ -671,6 +671,7 @@ class RequestData extends Component {
                 </div>
               </div>
               <div>
+                <br />
                 <h4>
                   <b>Marketing</b>
                 </h4>
@@ -689,6 +690,7 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
+        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
       </div>
     )
   }

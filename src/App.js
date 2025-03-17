@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "./App.css";
 import RequestData from "./components/request";
 import ResponseDisplayForm from "./components/response";
-import Title from "./components/Title";
+// import Title from "./components/Title";
+import LandingPage from "./pages/LandingPage"; // Import the new landing page
 
-function App() {
+function MainApp() {
   const [user, setUser] = useState({});
+  const [requestData, setRequestData] = useState({ title: "", copy: "", points: "" });
+  const [response, setResponse] = useState("");
+  const location = useLocation(); // Detects when the route changes
 
   function handleCallBackResponse(response) {
     const userObject = jwtDecode(response.credential);
@@ -15,33 +19,10 @@ function App() {
     document.getElementById("signInDiv").hidden = true;
   }
 
-  function handleSignOut(event) {
+  function handleSignOut() {
     setUser({});
     document.getElementById("signInDiv").hidden = false;
   }
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "104608056694-gfr93plhim1tharm2j4pu573289p1bkn.apps.googleusercontent.com",
-      callback: handleCallBackResponse
-    })
-
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large" }
-    );
-
-    google.accounts.id.prompt();
-  }, []);
-
-
-  const [requestData, setRequestData] = useState({
-    title: "",
-    copy: "",
-    points: "",
-  });
-
-  const [response, setResponse] = useState("");
 
   const handleRequestData = (data) => {
     setRequestData(data);
@@ -50,45 +31,89 @@ function App() {
   const handleResponse = (response) => {
     setResponse(response);
   };
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "104608056694-gfr93plhim1tharm2j4pu573289p1bkn.apps.googleusercontent.com",
+      callback: handleCallBackResponse,
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      { theme: "outline", size: "large" }
+    );
+
+    google.accounts.id.prompt();
+  }, [location.pathname]); // Re-run this when the route changes
+
   return (
     <div className="App">
       <header className="App-header">
-        <Title />
+        <h1 className="brand-title">Amplify</h1>
+        <p className="brand-tagline">Elevate your message. Expand your influence.</p>
+        {/* <Title /> */}
         <div id="signInDiv"></div>
+
         {Object.keys(user).length !== 0 ? (
           <>
-            <RequestData
-              onRequestData={handleRequestData}
-              onResponse={handleResponse}
-            />
-            <ResponseDisplayForm
-              requestData={requestData}
-              response={response}
-            />
+            <RequestData onRequestData={handleRequestData} onResponse={handleResponse} />
+            <ResponseDisplayForm requestData={requestData} response={response} />
+            <button className="button-19" onClick={handleSignOut}>
+              Sign Out
+            </button>
           </>
         ) : (
           <div className="introText">
-            <p><em><b>Am I Done?</b></em> analyzes your work to see if it is complete:</p>
+            <p>
+              <em><b>Amplify</b></em> ensures clarity, engagement, and maximum impact:
+            </p>
             <ul>
               <li>Does it speak to the audience you're targeting?</li>
               <li>Do the key takeaways align with the points you want to make?</li>
               <li>Does the title properly position the thought leadership?</li>
             </ul>
-            <p>In addition, <em><b>Am I Done?</b></em> drafts language that you can use to promote your work via email, on social and digital media, and on your firm website.</p>
+            <p>
+              In addition, <em><b>Amplify</b></em> drafts language that you can use
+              to promote your work via email, on social and digital media, and on your firm website.
+            </p>
             <p>Please sign in.</p>
-          </div >
+          </div>
         )}
 
-        {Object.keys(user).length !== 0 &&
-          <button className="button-19" onClick={(e) => handleSignOut(e)}>Sign Out</button>
-        }
-        {user &&
-          <div>
-            {/* <img src={user.picture}></img>
-            <h3>{user.name}</h3> */}
-          </div>}
+        {/* Ensure Sign-Out Button Appears When Logged In
+        {Object.keys(user).length !== 0 && (
+          <button className="button-19" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        )} */}
       </header>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/app"
+          element={
+            <>
+              {(() => {
+                try {
+                  return <MainApp />;
+                } catch (error) {
+                  console.error("Error rendering MainApp:", error);
+                  return <p>Something went wrong! Check the console for details.</p>;
+                }
+              })()}
+            </>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 export default App;

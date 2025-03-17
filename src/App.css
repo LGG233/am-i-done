@@ -1,77 +1,139 @@
+/* App.css - Modern, Professional, and Cohesive Design for Amplify */
+
+/* Global Styles */
+body,
+html {
+  font-family: 'Inter', sans-serif;
+  /* Clean, modern sans-serif font */
+  background: linear-gradient(135deg, #0d1b2a, #1b263b);
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
-  text-align: left;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #b1d1e0;
-  padding: 10px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: #006599;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-input[type="text"] {
-  width: 90%;
+/* Header */
+.App-header {
+  max-width: 900px;
   text-align: left;
-  vertical-align: top;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
+  padding: 40px 20px;
 }
 
-textarea[type="text"] {
-  width: 90%;
-  height: 200px;
-  text-align: left;
-  vertical-align: top;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
+/* Branding Title & Tagline */
+.brand-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ff6b35;
+  margin-bottom: 10px;
 }
 
-button {
-  text-align: center;
+.brand-tagline {
+  font-size: 1.3rem;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+.button-19,
+.signout-button {
+  background: #ff6b35;
+  /* Same vibrant orange as title */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.button-19:hover,
+.signout-button:hover {
+  background: #d14a1e;
+  /* Slightly darker shade for hover effect */
+  transform: scale(1.05);
+}
+
+/* Input Fields */
+.input-container {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;
+}
+
+.input-field {
+  width: 80%;
+  max-width: 600px;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: 1px solid #ff6b35;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  margin-bottom: 15px;
+  resize: vertical;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Text Area Adjustments */
+#title {
+  height: 4000px;
+}
+
+#body {
+  height: 800px;
+}
+
+/* Sign Out Button Placement Fix */
+.signout-button {
   display: block;
-  margin: 0 auto;
+  margin: 30px auto;
 }
 
-p {
-  font-size: medium;
+/* Response Display */
+.response-container {
+  margin-top: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
 }
 
-.isLoading {
-  text-align: center;
+/* Removal of Google 'G' Logo */
+#signInDiv img {
+  display: none !important;
 }
 
-ul {
-  font-size: medium;
+/* Global Button Override */
+button {
+  background: #ff6b35 !important;
+  /* Enforce the brand orange */
+  color: white !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out !important;
+}
+
+button:hover {
+  background: #d14a1e !important;
+  /* Darker hover effect */
+  transform: scale(1.05) !important;
 }
