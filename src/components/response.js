@@ -1,14 +1,18 @@
 import React, { Component } from "react";
+import "./css/response.css"; // New CSS file for better styling
 
 class ResponseDisplayForm extends Component {
   render() {
     const { response } = this.props;
+
     return (
-      <div>
+      <div className="response-container">
         {response && (
-          <div>
-            <h2>ChatGPT Response</h2>
-            <p>{JSON.stringify(response, null, 2)}</p>
+          <div className="response-box">
+            <h2 className="response-title">AI Analysis</h2>
+            <div className="response-content">
+              <pre>{JSON.stringify(response, null, 2)}</pre>
+            </div>
           </div>
         )}
       </div>

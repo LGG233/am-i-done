@@ -4,20 +4,23 @@
 body,
 html {
   font-family: 'Inter', sans-serif;
-  /* Clean, modern sans-serif font */
   background: linear-gradient(135deg, #0d1b2a, #1b263b);
   color: #ffffff;
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #0d1b2a, #1b263b);
 }
 
 .App {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: flex-start;
+  align-items: stretch;
+  width: 100vw;
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 40px 5vw;
 }
 
 /* Header */

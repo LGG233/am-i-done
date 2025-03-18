@@ -1,40 +1,52 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow-x: hidden;
+    /* Prevents weird scrolling issues */
+}
+
 .split-screen {
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    width: 100vw;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.left-panel {
-    max-width: 50%;
-    padding-right: 40px;
-    display: flex;
-    flex-direction: column;
-}
-
+.left-panel,
 .right-panel {
-    flex: 2;
-    padding: 10px;
-    padding-left: 40px;
+    flex: 1;
+    min-width: 48%;
 }
 
-.article-body,
-.article-title {
+.response-container {
     width: 100%;
-    font-size: 1.0rem;
+    max-width: 100%;
+}
+
+.article-title,
+.article-body {
+    font-size: 1.1rem;
+    width: 100%;
     padding: 12px;
+    box-sizing: border-box;
     border: 1px solid #ff6b35;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.1);
     color: white;
     resize: vertical;
+    overflow-y: auto;
 }
 
 .article-title {
-    height: 60px;
+    height: 80px;
 }
 
 .article-body {
-    height: 400px;
+    min-height: 600px !important;
 }
 
 .language-button {
@@ -44,27 +56,28 @@
 }
 
 .api-response-textbox {
-    width: 400px;
+    width: 100%;
+    min-height: 250px;
     position: relative;
     border: 2px solid #cdcdcd;
     border-color: rgba(0, 0, 0, .14);
     background-color: AliceBlue;
     font-size: 14px;
     border-radius: 10px;
-    resize: none;
+    resize: vertical;
     overflow: hidden;
 }
 
 .api-editing-textbox {
-    width: 400px;
-    height: 500px;
+    width: 100%;
+    min-height: 250px;
     position: relative;
     border: 2px solid #cdcdcd;
     border-color: rgba(0, 0, 0, .14);
     background-color: AliceBlue;
     font-size: 14px;
     border-radius: 10px;
-    resize: none;
+    resize: vertical;
     overflow: hidden;
 }
 
@@ -82,8 +95,23 @@
     border-radius: 10px;
 }
 
+.QueryForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
 .button-container {
     display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+p {
+    line-height: 1.5;
+    font-size: 1rem;
 }
 
 .button-19,
@@ -103,9 +131,13 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
-    display: block;
-    margin: 20px auto;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    margin: 10px;
+    min-width: 150px;
 }
 
 .button-19:hover,
@@ -134,8 +166,35 @@
     opacity: 1;
 }
 
-@media (min-width: 768px) {
-    .button-19 {
-        padding: 16px 32px;
+@media (max-width: 1280px) {
+    .split-screen {
+        max-width: 95%;
+        /* Use more screen space */
+        padding: 20px 2%;
+        /* Reduce side padding */
+    }
+
+    .left-panel,
+    .right-panel {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .split-screen {
+        flex-direction: column;
+        /* Stack the panels on smaller screens */
+    }
+
+    .left-panel,
+    .right-panel {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .button-19,
+    .signout-button {
+        padding: 14px 28px;
+        font-size: 1.1rem;
     }
 }
