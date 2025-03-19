@@ -533,9 +533,9 @@ class RequestData extends Component {
       <div>
         <div className="split-screen">
           <div className="left-panel">
-            <h4>
+            <h1>
               <b>Your Content</b>
-            </h4>
+            </h1>
             <div>
               Response Language:
               <label className="language-button">
@@ -593,9 +593,9 @@ class RequestData extends Component {
             </div>
           </div>
           <div className="right-panel">
-            <h4>
+            <h1>
               <b><em>Amplify</em> AI Review</b>
-            </h4>
+            </h1>
             <div>
               <p>
                 {this.state.headerText}
