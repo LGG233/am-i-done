@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { jwtDecode } from "jwt-decode";
 import "./App.css";
 import RequestData from "./components/request";
-import ResponseDisplayForm from "./components/response";
+// import ResponseDisplayForm from "./components/response";
 // import Title from "./components/Title";
 import LandingPage from "./pages/LandingPage"; // Import the new landing page
 
@@ -58,7 +58,7 @@ function MainApp() {
         {Object.keys(user).length !== 0 ? (
           <>
             <RequestData onRequestData={handleRequestData} onResponse={handleResponse} />
-            <ResponseDisplayForm requestData={requestData} response={response} />
+            {/* <ResponseDisplayForm requestData={requestData} response={response} /> */}
             <button className="button-19" onClick={handleSignOut}>
               Sign Out
             </button>
@@ -66,18 +66,17 @@ function MainApp() {
         ) : (
           <div className="introText">
             <p>
-              <em><b>Amplify</b></em> ensures clarity, engagement, and maximum impact:
+              <b>Amplify</b> ensures clarity, engagement, and maximum impact for your thought leadership:
             </p>
             <ul>
               <li>Does it speak to the audience you're targeting?</li>
-              <li>Do the key takeaways align with the points you want to make?</li>
-              <li>Does the title properly position the thought leadership?</li>
+              <li>Do your key takeaways resonate?</li>
+              <li>Does the title properly position the content?</li>
             </ul>
             <p>
-              In addition, <em><b>Amplify</b></em> drafts language that you can use
-              to promote your work via email, on social and digital media, and on your firm website.
+              <b>Amplify</b> can also help you promote your work via email, on social and digital media, and on your firm website with clear, concise language.
             </p>
-            <p>Please sign in.</p>
+            <p>Sign in to <b>Amplify</b> your thought leadership.</p>
           </div>
         )}
 

@@ -11,15 +11,20 @@ html {
     display: flex;
     justify-content: space-between;
     width: 100vw;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
+    gap: 40px;
     padding: 20px;
 }
 
-.left-panel,
 .right-panel {
     flex: 1;
-    min-width: 48%;
+    min-width: 30%;
+}
+
+.left-panel {
+    flex: 1;
+    min-width: 70%;
 }
 
 .response-container {
