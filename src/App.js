@@ -53,7 +53,7 @@ function MainApp() {
     <div className="App">
       <header className="App-header">
         <h1 className="brand-title">AmplifAI</h1>
-        <p className="brand-tagline">Elevate your message. Expand your influence.</p>
+        <p className="brand-tagline">Elevate your message. Expand your influence. Amplify your thought leadership.</p>
         {/* <Title /> */}
         <div id="signInDiv"></div>
 
