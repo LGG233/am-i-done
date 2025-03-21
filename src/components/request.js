@@ -362,7 +362,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What's the list of law firm industry and practice groups that ${articleCopy} should fall under?. The response must be provided in "${languageToUse}".`,
+              content: `What are the five most relevant practice groups and industry groups that should be associated with ${articleCopy} for marketing, website tagging, and CRM purposes? Please provide your answer in "${languageToUse}" in two separate lists: 1.	Practice Groups – e.g., Litigation, M&A, Data Privacy, and 2.	Industry Groups – e.g., Healthcare, Financial Services, Technology.`,
             },
           ],
         },
@@ -674,7 +674,7 @@ class RequestData extends Component {
                   <button className="button-19" onClick={() => { this.titleAnalysisAPI(); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
                   <button className="button-19" onClick={() => { this.takeawaysAPI(); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
                   <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="AmplifAI drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alt Titles</button>
-                  <button className="button-19" onClick={this.classificationAPI} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
+                  <button className="button-19" onClick={() => { this.classificationAPI(); this.handlePaste(); }} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
                 </div>
                 <div>
                   <p><em>AmplifAI</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>

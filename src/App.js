@@ -9,8 +9,10 @@ import LandingPage from "./pages/LandingPage"; // Import the new landing page
 
 function MainApp() {
   const [user, setUser] = useState({});
-  const [requestData, setRequestData] = useState({ title: "", copy: "", points: "" });
-  const [response, setResponse] = useState("");
+  const [setRequestData] = useState({ title: "", copy: "", points: "" });
+  // const [requestData, setRequestData] = useState({ title: "", copy: "", points: "" });
+  const [setResponse] = useState("");
+  // const [response, setResponse] = useState("");
   const location = useLocation(); // Detects when the route changes
 
   function handleCallBackResponse(response) {
