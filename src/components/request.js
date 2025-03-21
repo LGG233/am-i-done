@@ -52,7 +52,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Based on the language and framing of "${articleCopy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Do not include 'legal professionals' in the list of occupations. Then answer these questions in additional paragraphs: "How well does the piece position itself to reach its target audience? Is it clear in the title "${articleTitle}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the world's largest law firms with significant understand of both the legal profession and the ways to market legal services. Based on the language and framing of "${articleCopy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Do not include 'legal professionals' in the list of occupations. Then answer these questions in additional paragraphs: "How well does the piece position itself to reach its target audience? Is it clear in the title "${articleTitle}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -98,7 +98,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What are the five most salient takeaways of "${articleCopy}"? Each takeaway must be summarized in a single sentence. Please output as a numbered list. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. You have been asked to read "${articleCopy}" to identiffy the five most salient takeaways to ensure that the key issues laid out in the article are in fact the points that the author wants to make? Please summarize Each takeaway in a single sentence and provide them as a numbered list. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -142,7 +142,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide three alternative titles for "${articleCopy}" that reference the intended audience and articuiate why they should read it. Enclose each alternative title in quotation marks. Please explain each alternative title and why it was chosen in a single sentence that follows the alternative title using a hyphen to separate them. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. A big part of that comes from properly positioning their thought leadership with a title that communicates who should read it and why they should read it. Accordingly, please provide three potential titles for "${articleCopy}" that achieve those objectives without overt references to the intended audience. Enclose each alternative title in quotation marks. Please explain in a single sentence each alternative title and why it was proposed, separating the title from the description using spaces and two hyphens. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}". Add two line breaks at the of the title`,
             },
           ],
         },
@@ -186,7 +186,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Draft a 25 - word synopsis of "${articleCopy}" for presenting the article that entices people to read it. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 25-word synopsis of "${articleCopy}" that you include in an email that entices people to read it. It's critical to articulate in your synopsis who should read the article and why they should read it. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -230,7 +230,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Provide three compelling summaries of "${articleCopy}" that can be used to promote the article on Twitter.Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, three compelling descriptions of "${articleCopy}" to promote the article on Twitter that communicate who should read the thought leadership and why they should read it. Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -249,7 +249,7 @@ class RequestData extends Component {
         showEditButton: true,
       });
 
-      const headerText = "Here are three draft Twitter posts for your consideration.";
+      const headerText = "Here are three draft X (Twitter) posts for your consideration.";
       this.setState({ headerText });
 
     } catch (error) {
@@ -274,7 +274,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150 - word abstract of "${articleCopy} that can be used to promote the article on LinkedIn. Include two or three professional hashtags. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 150-word abstract of "${articleCopy}" that you can use to promote the article on LinkedIn. It's critical to communicate, using clear and concise language, who should read the article and why it's important for them to read it. Include two or three professional hashtags at the end of the abstract. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -318,7 +318,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `Please provide a 150 - word abstract of "${articleCopy} that includes some mention of who should read the piece. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 150-word abstract of "${articleCopy}" that you can use to promote the thought leadership on your firm's website in a way that entices people to click through and read it. It's critical to articulate in your synopsis who should read the article and why they should read it. The response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -337,7 +337,7 @@ class RequestData extends Component {
         showEditButton: true,
       });
 
-      const headerText = "Here's a brief synopsis of your work that you can use to promote it on your website:";
+      const headerText = "Here's a brief overview of your thought leadership that you can use to promote it on your website:";
       this.setState({ headerText });
 
     } catch (error) {
@@ -362,7 +362,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `What are the five most relevant practice groups and industry groups that should be associated with ${articleCopy} for marketing, website tagging, and CRM purposes? Please provide your answer in "${languageToUse}" in two separate lists: 1.	Practice Groups – e.g., Litigation, M&A, Data Privacy, and 2.	Industry Groups – e.g., Healthcare, Financial Services, Technology.`,
+              content: `You are the CMO of one of the largest law firms in the world. Using your knowledge of law firm services, what are the five most relevant practice groups and industry groups that should be associated with ${articleCopy} for marketing, website tagging, and CRM purposes? Please provide your answer in "${languageToUse}" in two separate lists: 1.	Practice Groups – e.g., Litigation, M&A, Data Privacy, and 2.	Industry Groups – e.g., Healthcare, Financial Services, Technology.`,
             },
           ],
         },
@@ -690,7 +690,7 @@ class RequestData extends Component {
                   <button className="button-19" onClick={() => { this.synopsisAPI(); this.handlePaste(); }} title="AmplifAI drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
                   <button className="button-19" onClick={() => { this.socialMediaAPI(); this.handlePaste(); }} title="AmplifAI drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
                   <button className="button-19" onClick={() => { this.linkedInAPI(); this.handlePaste(); }} title="AmplifAI drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
-                  <button className="button-19" onClick={() => { this.abstractAPI(); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
+                  <button className="button-19" onClick={() => { this.abstractAPI(); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Synopsis</button>
                 </div>
                 <div>
                   <p><em>AmplifAI</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>
