@@ -50,7 +50,7 @@ function MainApp() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="brand-title">Amplify</h1>
+        <h1 className="brand-title">AmplifAI</h1>
         <p className="brand-tagline">Elevate your message. Expand your influence.</p>
         {/* <Title /> */}
         <div id="signInDiv"></div>
@@ -66,7 +66,7 @@ function MainApp() {
         ) : (
           <div className="introText">
             <p>
-              <b>Amplify</b> ensures clarity, engagement, and maximum impact for your thought leadership:
+              <b>AmplifAI</b> ensures clarity, engagement, and maximum impact for your thought leadership:
             </p>
             <ul>
               <li>Does it speak to the audience you're targeting?</li>
@@ -74,9 +74,9 @@ function MainApp() {
               <li>Does the title properly position the content?</li>
             </ul>
             <p>
-              <b>Amplify</b> can also help you promote your work via email, on social and digital media, and on your firm website with clear, concise language.
+              <b>AmplifAI</b> can also help you promote your work via email, on social and digital media, and on your firm website with clear, concise language.
             </p>
-            <p>Sign in to <b>Amplify</b> your thought leadership.</p>
+            <p>Sign in to <b>AmplifAI</b> your thought leadership.</p>
           </div>
         )}
 

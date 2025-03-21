@@ -8,7 +8,7 @@ const LandingPage = () => {
         <div className="landing-container">
             {/* Hero Section */}
             <section className="hero">
-                <h1>refine your writing. <b>Amplify</b> your impact.</h1>
+                <h1>Refine your writing. <b>AmplifAI</b> your impact.</h1>
                 <p>Enhance clarity, engagement, and influence with AI-powered insights.</p>
                 <button className="cta-button" onClick={() => navigate("/app")}>
                     Get Started

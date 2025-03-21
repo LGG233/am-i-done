@@ -604,7 +604,7 @@ class RequestData extends Component {
           </div>
           <div className="right-panel">
             <h1>
-              <b><em>Amplify</em> AI Review</b>
+              <b><em>AmplifAI</em> Review</b>
             </h1>
             <div>
               <p>
@@ -671,13 +671,13 @@ class RequestData extends Component {
                   <b>Editorial</b>
                 </h4>
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.titleAnalysisAPI(); this.handlePaste(); }} title="Amplify infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
-                  <button className="button-19" onClick={() => { this.takeawaysAPI(); this.handlePaste(); }} title="Amplify extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
-                  <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="Amplify drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alt Titles</button>
-                  {/* <button className="button-19" onClick={this.classificationAPI} title="Amplify identifies the practice and industry groups you may wish to use for classifying your content.">Services</button> */}
+                  <button className="button-19" onClick={() => { this.titleAnalysisAPI(); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
+                  <button className="button-19" onClick={() => { this.takeawaysAPI(); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
+                  <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="AmplifAI drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alt Titles</button>
+                  <button className="button-19" onClick={this.classificationAPI} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
                 </div>
                 <div>
-                  <p><em>Amplify</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>
+                  <p><em>AmplifAI</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>
                 </div>
               </div>
               <div>
@@ -687,13 +687,13 @@ class RequestData extends Component {
                 </h4>
 
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.synopsisAPI(); this.handlePaste(); }} title="Amplify drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
-                  <button className="button-19" onClick={() => { this.socialMediaAPI(); this.handlePaste(); }} title="Amplify drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
-                  <button className="button-19" onClick={() => { this.linkedInAPI(); this.handlePaste(); }} title="Amplify drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
-                  <button className="button-19" onClick={() => { this.abstractAPI(); this.handlePaste(); }} title="Amplify provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
+                  <button className="button-19" onClick={() => { this.synopsisAPI(); this.handlePaste(); }} title="AmplifAI drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
+                  <button className="button-19" onClick={() => { this.socialMediaAPI(); this.handlePaste(); }} title="AmplifAI drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
+                  <button className="button-19" onClick={() => { this.linkedInAPI(); this.handlePaste(); }} title="AmplifAI drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
+                  <button className="button-19" onClick={() => { this.abstractAPI(); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Website</button>
                 </div>
                 <div>
-                  <p><em>Amplify</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>
+                  <p><em>AmplifAI</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>
                 </div>
                 <div className="spacer"></div>
               </div>
