@@ -700,10 +700,9 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
-        <button className="button-19" onClick={this.handleNewRequest}>New Request</button>
+        <button className="button-19" onClick={() => { this.handleNewRequest(); this.handlePaste(); }} >New Request</button>
       </div>
     )
   }
 }
 export default RequestData;
-
