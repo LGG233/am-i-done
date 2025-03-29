@@ -17,6 +17,36 @@ html {
     padding: 20px;
 }
 
+.language-dropdown {
+    margin-top: 10px;
+    background: #1b263b;
+    border: 1px solid #ff6b35;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    width: 240px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.language-option {
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.language-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.language-select-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .right-panel {
     flex: 1;
     min-width: 30%;

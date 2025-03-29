@@ -22,7 +22,8 @@ class RequestData extends Component {
       showEditButton: false,
       editedResponse: "",
       detectedLanguage: "",
-      language: "",
+      language: "English",
+      showAllLanguages: false,
       languageToUse: "",
       isEditing: false,
       error: null,
@@ -30,6 +31,8 @@ class RequestData extends Component {
 
     this.baseUrl = "https://api.openai.com/v1/chat/completions";
   };
+
+
 
   handleError = (methodName, error) => {
     console.error(`Error calling ${methodName}:`, error);
@@ -393,9 +396,21 @@ class RequestData extends Component {
     setTimeout(() => {
       window.scrollTo({
         top: 0,
-        behavior: "smooth", // Makes the scroll animation smooth
+        behavior: "smooth",
       });
-    }, 100); // Small delay to ensure paste event completes
+    }, 100);
+  };
+
+  handleArticlePaste = (event) => {
+    const pastedText = event.clipboardData.getData('text');
+
+    this.setState(
+      { articleCopy: pastedText, detectedLanguage: franc(pastedText) },
+      () => {
+        this.adjustInputHeight(this.articleCopyTextarea);
+        this.handlePaste(); // Optional scroll-to-top if needed
+      }
+    );
   };
 
   handleChange = (event) => {
@@ -458,15 +473,20 @@ class RequestData extends Component {
 
   adjustTextareaSize = () => {
     if (this.generatedResponseTextarea) {
-      const generatedResponse = this.state.generatedResponse;
-      const numCharacters = generatedResponse.length
-      const numRows = Math.ceil((numCharacters / 40) + 2);
-      const maxLineLength = Math.max(
-        ...generatedResponse.split('\n').map((line) => line.length)
-      );
-      this.generatedResponseTextarea.value = generatedResponse;
-      this.generatedResponseTextarea.rows = numRows;
-      this.generatedResponseTextarea.cols = maxLineLength;
+      const textarea = this.generatedResponseTextarea;
+
+      // Reset height to auto to recalculate correctly
+      textarea.style.height = "auto";
+
+      // Set height based on scrollHeight plus buffer (e.g., 20px)
+      textarea.style.height = `${textarea.scrollHeight + 20}px`;
+    }
+  };
+
+  adjustEditingTextareaSize = () => {
+    if (this.editedResponseTextarea) {
+      this.editedResponseTextarea.style.height = "auto";
+      this.editedResponseTextarea.style.height = this.editedResponseTextarea.scrollHeight + 16 + "px"; // add 16px buffer
     }
   };
 
@@ -502,8 +522,8 @@ class RequestData extends Component {
       editedResponse: this.state.generatedResponse,
       isEditing: true,
     }, () => {
-      ;
       this.updateWordCount();
+      this.adjustEditingTextareaSize(); // <-- add this
     });
   };
 
@@ -528,16 +548,72 @@ class RequestData extends Component {
   };
 
   handleLanguageChange = (event) => {
-    this.setState({ language: event.target.value }, () => {
-      if (this.state.language === "English") {
+    const selectedLanguage = event.target.value;
+
+    this.setState({ language: selectedLanguage }, () => {
+      if (selectedLanguage === "English") {
         this.setState({ detectedLanguage: "English" });
-      } else {
-        this.getLanguage();
+      } else if (selectedLanguage === "Original Language") {
+        const { articleCopy } = this.state;
+
+        if (articleCopy.trim() !== "") {
+          const detected = franc(articleCopy);
+          const finalLang = detected === 'und' ? 'unknown' : detected;
+          this.setState({ detectedLanguage: finalLang });
+        } else {
+          this.setState({ detectedLanguage: "unknown" });
+        }
       }
     });
   };
 
+  toggleLanguageOptions = () => {
+    this.setState((prevState) => ({
+      showAllLanguages: !prevState.showAllLanguages,
+    }));
+  };
+
+  handleFullLanguageSelection = (code) => {
+    this.setState({
+      language: "Other",
+      detectedLanguage: code,
+      showAllLanguages: false
+    });
+  };
+
   render() {
+    const languageAutonyms = {
+      eng: "English",
+      fra: "Français",
+      spa: "Español",
+      deu: "Deutsch",
+      zho: "中文",
+      cmn: "中文",      // cmn = Mandarin Chinese
+      jpn: "日本語",
+      kor: "한국어",
+      por: "Português",
+      rus: "Русский",
+      ara: "العربية",
+      ita: "Italiano",
+      nld: "Nederlands",
+      swe: "Svenska",
+      tur: "Türkçe",
+      heb: "עברית",
+      pol: "Polski",
+      dan: "Dansk",
+      fin: "Suomi",
+      hun: "Magyar",
+      ron: "Română",
+      ell: "Ελληνικά",
+      nor: "Norsk",
+      tha: "ไทย",
+      hin: "हिन्दी"
+    };
+
+    const autonym = this.state.detectedLanguage
+      ? `Original (${languageAutonyms[this.state.detectedLanguage] || "Language"})`
+      : "Original";
+
     return (
       <div>
         <div className="split-screen">
@@ -545,8 +621,9 @@ class RequestData extends Component {
             <h1>
               <b>Your Content</b>
             </h1>
-            <div>
-              Response Language:
+            <div className="language-select-buttons">
+              <p><strong>Response Language:</strong></p>
+
               <label className="language-button">
                 <input
                   type="radio"
@@ -557,18 +634,47 @@ class RequestData extends Component {
                 />
                 English
               </label>
+
               <label className="language-button">
                 <input
                   type="radio"
                   name="language"
                   value="Original Language"
                   checked={this.state.language === "Original Language"}
-                  onChange={this.handleLanguageChange}
+                  onChange={(e) => {
+                    this.setState({ language: "Original Language" });
+                  }}
                 />
-                Original Language
+                {autonym}
               </label>
-            </div>
-            <br />
+
+              <label className="language-button" style={{ cursor: "pointer" }}>
+                <input
+                  type="radio"
+                  name="language"
+                  value="Other"
+                  onClick={this.toggleLanguageOptions}
+                  checked={this.state.language !== "English" && this.state.language !== "Original Language"}
+                  readOnly
+                />
+                {this.state.showAllLanguages
+                  ? "Hide ▲"
+                  : `Other (${languageAutonyms[this.state.language] || "▼"})`}
+              </label>
+              {this.state.showAllLanguages && (
+                <div className="language-dropdown">
+                  {Object.entries(languageAutonyms).map(([code, label]) => (
+                    <div
+                      key={code}
+                      className="language-option"
+                      onClick={() => this.handleFullLanguageSelection(code)}
+                    >
+                      {label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>            <br />
             <div className="container-fluid">
               <div className="QueryForm">
                 <form className="FormField">
@@ -596,7 +702,7 @@ class RequestData extends Component {
                     onChange={this.handleChange}
                     ref={(textarea) => { this.articleCopyTextarea = textarea; }}
                     onInput={() => this.adjustInputHeight(this.articleCopyTextarea)}
-                    onPaste={this.handlePaste}
+                    onPaste={(e) => this.handleArticlePaste(e)}
                   />
                 </form>
               </div>
@@ -620,6 +726,7 @@ class RequestData extends Component {
                     onChange={(e) => {
                       this.setState({ editedResponse: e.target.value }, () => {
                         this.updateWordCountEditing();
+                        this.adjustEditingTextareaSize();
                       });
                     }}
                     className="api-editing-textbox"
@@ -673,7 +780,7 @@ class RequestData extends Component {
                 <div className="button-container">
                   <button className="button-19" onClick={() => { this.titleAnalysisAPI(); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
                   <button className="button-19" onClick={() => { this.takeawaysAPI(); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
-                  <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="AmplifAI drafts three alternative titles you may want to consider for your piece, and explains its choice for each.">Alt Titles</button>
+                  <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="AmplifAI proposes three titles - or alternative titles, if you provide one - that you may want to consider for your piece, and explains its choice for each.">Titles</button>
                   <button className="button-19" onClick={() => { this.classificationAPI(); this.handlePaste(); }} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
                 </div>
                 <div>
