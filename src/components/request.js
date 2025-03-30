@@ -3,6 +3,34 @@ import axios from "axios";
 import "./css/request.css";
 import { franc } from 'franc-min';
 
+const languageNamesForPrompt = {
+  eng: "English",
+  fra: "French",
+  spa: "Spanish",
+  deu: "German",
+  zho: "Chinese",
+  cmn: "Chinese (Simplified)",
+  jpn: "Japanese",
+  kor: "Korean",
+  por: "Portuguese",
+  rus: "Russian",
+  ara: "Arabic",
+  ita: "Italian",
+  nld: "Dutch",
+  swe: "Swedish",
+  tur: "Turkish",
+  heb: "Hebrew",
+  pol: "Polish",
+  dan: "Danish",
+  fin: "Finnish",
+  hun: "Hungarian",
+  ron: "Romanian",
+  ell: "Greek",
+  nor: "Norwegian",
+  tha: "Thai",
+  hin: "Hindi"
+};
+
 class RequestData extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +72,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy, articleTitle } = this.state;
@@ -90,7 +118,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -134,7 +162,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -145,7 +173,7 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. A big part of that comes from properly positioning their thought leadership with a title that communicates who should read it and why they should read it. Accordingly, please provide three potential titles for "${articleCopy}" that achieve those objectives without overt references to the intended audience. Enclose each alternative title in quotation marks. Please explain in a single sentence each alternative title and why it was proposed, separating the title from the description using spaces and two hyphens. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}". Add two line breaks at the of the title`,
+              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. A big part of that comes from properly positioning their thought leadership with a title that communicates who should read it and why they should read it. Accordingly, please provide three potential titles for "${articleCopy}" that achieve those objectives without overt references to the intended audience. Enclose each alternative title in quotation marks. Please explain in a single sentence each alternative title and why it was proposed, separating the title from the description using spaces and two hyphens. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".. Add two line breaks at the of the title`,
             },
           ],
         },
@@ -178,7 +206,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -222,7 +250,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -266,7 +294,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -310,7 +338,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -354,7 +382,7 @@ class RequestData extends Component {
     }
     this.clearState()
 
-    const languageToUse = this.state.language === "English" ? "English" : this.state.detectedLanguage;
+    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
 
     try {
       const { articleCopy } = this.state;
@@ -403,7 +431,7 @@ class RequestData extends Component {
 
   handleArticlePaste = (event) => {
     const pastedText = event.clipboardData.getData('text');
-
+    console.log("Detected language from pasted article:", franc(pastedText));
     this.setState(
       { articleCopy: pastedText, detectedLanguage: franc(pastedText) },
       () => {
@@ -474,11 +502,7 @@ class RequestData extends Component {
   adjustTextareaSize = () => {
     if (this.generatedResponseTextarea) {
       const textarea = this.generatedResponseTextarea;
-
-      // Reset height to auto to recalculate correctly
       textarea.style.height = "auto";
-
-      // Set height based on scrollHeight plus buffer (e.g., 20px)
       textarea.style.height = `${textarea.scrollHeight + 20}px`;
     }
   };
@@ -549,22 +573,27 @@ class RequestData extends Component {
 
   handleLanguageChange = (event) => {
     const selectedLanguage = event.target.value;
+    console.log("Language selected:", selectedLanguage);
 
-    this.setState({ language: selectedLanguage }, () => {
-      if (selectedLanguage === "English") {
-        this.setState({ detectedLanguage: "English" });
-      } else if (selectedLanguage === "Original Language") {
-        const { articleCopy } = this.state;
+    if (selectedLanguage === "English") {
+      this.setState({
+        language: selectedLanguage,
+        languageToUse: "eng" // ISO code
+      }, () => {
+        console.log("Set languageToUse to:", this.state.languageToUse);
+      });
+    } else if (selectedLanguage === "Original Language") {
+      const { articleCopy } = this.state;
+      const detected = franc(articleCopy);
+      const finalLang = detected === 'und' ? 'unknown' : detected;
 
-        if (articleCopy.trim() !== "") {
-          const detected = franc(articleCopy);
-          const finalLang = detected === 'und' ? 'unknown' : detected;
-          this.setState({ detectedLanguage: finalLang });
-        } else {
-          this.setState({ detectedLanguage: "unknown" });
-        }
-      }
-    });
+      this.setState({
+        language: selectedLanguage,
+        languageToUse: finalLang
+      }, () => {
+        console.log("Set languageToUse to:", this.state.languageToUse);
+      });
+    }
   };
 
   toggleLanguageOptions = () => {
@@ -574,10 +603,13 @@ class RequestData extends Component {
   };
 
   handleFullLanguageSelection = (code) => {
+    console.log("Language selected from 'Other':", code);
     this.setState({
       language: "Other",
-      detectedLanguage: code,
+      languageToUse: code,
       showAllLanguages: false
+    }, () => {
+      console.log("Set languageToUse to:", this.state.languageToUse);
     });
   };
 
@@ -641,9 +673,7 @@ class RequestData extends Component {
                   name="language"
                   value="Original Language"
                   checked={this.state.language === "Original Language"}
-                  onChange={(e) => {
-                    this.setState({ language: "Original Language" });
-                  }}
+                  onChange={this.handleLanguageChange}
                 />
                 {autonym}
               </label>
