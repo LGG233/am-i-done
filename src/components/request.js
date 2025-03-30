@@ -83,7 +83,18 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the world's largest law firms with significant understand of both the legal profession and the ways to market legal services. Based on the language and framing of "${articleCopy}", what are the occupations of the intended audience of the piece as it is written? Provide an answer to that question in a single sentence. Do not include 'legal professionals' in the list of occupations. Then answer these questions in additional paragraphs: "How well does the piece position itself to reach its target audience? Is it clear in the title "${articleTitle}", the introduction, and the framing that the article is for that audience? If the piece relates to a specific geographical region, do the article and title make that geography evident? How could the article and title do a better job to frame the content for the target audience? Does the title clearly convey who should read the article? Does it communicate why those people should read it? How? The response must be provided in "${languageToUse}".`,
+              content: `You are the Chief Marketing Officer (CMO) of one of the world's largest law firms. You have deep experience in both the legal profession and marketing legal services to corporate and institutional clients. 
+
+              Based on the language and framing of the following article:
+              "${articleCopy}"
+              
+              1. In a single sentence, list the likely occupations of the intended audience. Do not include generic terms like "legal professionals."
+              
+              2. Then evaluate how well the piece positions itself to reach that audience. Consider the clarity of the introduction, the focus of the content, and any regional relevance.
+              
+              3. Assess whether the title "${articleTitle}" clearly identifies the audience and conveys why they should read the piece. If a title is not provided, or if the title fails to effectively position the article, propose three strong alternative titles. For each proposed title, briefly explain why it works.
+              
+              Respond in "${languageToUse}".`
             },
           ],
         },
@@ -129,7 +140,20 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. You have been asked to read "${articleCopy}" to identiffy the five most salient takeaways to ensure that the key issues laid out in the article are in fact the points that the author wants to make? Please summarize Each takeaway in a single sentence and provide them as a numbered list. The response must be provided in "${languageToUse}".`,
+              content: `You are the CMO of one of the top law firms in the country. You are reviewing a draft of legal thought leadership intended for a professional audience.
+
+              Please perform the following tasks:
+              
+              1. Read the text below carefully:
+              "${articleCopy}"
+              
+              2. Identify the five most salient takeaways — the key points or conclusions the article communicates to its intended audience.
+              
+              3. Summarize each takeaway clearly and concisely in a single sentence.
+              
+              4. Provide the takeaways in a numbered list.
+              
+              The response must be provided in "${languageToUse}".`
             },
           ],
         },
@@ -173,7 +197,29 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and most of all directly relevant to clients. A big part of that comes from properly positioning their thought leadership with a title that communicates who should read it and why they should read it. Accordingly, please provide three potential titles for "${articleCopy}" that achieve those objectives without overt references to the intended audience. Enclose each alternative title in quotation marks. Please explain in a single sentence each alternative title and why it was proposed, separating the title from the description using spaces and two hyphens. Do not include line breaks between alternative titles in the output string. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".. Add two line breaks at the of the title`,
+              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and directly relevant to clients.
+
+              Please perform the following tasks:
+              
+              1. Read the text below:
+              "${articleCopy}"
+              
+              2. Based on the content and intended audience, propose **three potential titles** for the piece. The titles should:
+                 - Communicate who should read it
+                 - Convey why it matters
+                 - Avoid overt references to the intended audience
+              
+              3. Format each title as follows:
+                 - Enclose the title in quotation marks
+                 - Add a single sentence explaining why it was proposed
+                 - Separate the title from the explanation using two hyphens, like this: --
+                 - Do **not** include line breaks between titles
+              
+              4. Provide the output as a **numbered list**.
+              
+              5. If no title is provided with the article, assume the author is seeking new title suggestions and proceed accordingly.
+              
+              The response must be provided in "${languageToUse}".`
             },
           ],
         },
@@ -217,7 +263,20 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 25-word synopsis of "${articleCopy}" that you include in an email that entices people to read it. It's critical to articulate in your synopsis who should read the article and why they should read it. The response must be provided in "${languageToUse}".`,
+              content: `You are the Chief Marketing Officer of a leading law firm. Your role is to review legal thought leadership before publication on the firm’s website.
+
+              Write a 150-word abstract for the article below. Your goal is to entice the right audience to click through and read the full piece.
+              
+              Follow these instructions carefully:
+              1. Use clear, compelling, and professional language suitable for a website.
+              2. Clearly indicate who the article is for and why that audience should care.
+              3. Do not include first-person language or phrases like “As the CMO...” — this is not a personal message.
+              4. Write in the third person.
+              5. Do not summarize every detail. Focus on what will make the right reader want to click.
+              
+              Here is the article: "${articleCopy}"
+              
+              Your response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -261,7 +320,17 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, three compelling descriptions of "${articleCopy}" to promote the article on Twitter that communicate who should read the thought leadership and why they should read it. Include at least three appropriate hashtags.The entire post, including spaces and hashtags, should be no more than 120 characters. Please provide the output in a numbered list. The response must be provided in "${languageToUse}".`,
+              content: `You are the Chief Marketing Officer of a top-tier law firm, preparing social media copy to promote a new piece of legal thought leadership.
+
+              Your task is to write **three Twitter/X posts** that meet the following criteria:
+              1. Each post must clearly communicate **who should read the article** and **why it matters** to that audience.
+              2. Use clear, concise, and compelling language — **no more than 120 characters** total (including spaces and hashtags).
+              3. Include at least **three relevant professional hashtags** in each post.
+              4. Return your response as a **numbered list** (1, 2, 3).
+              
+              Here is the article: "${articleCopy}"
+              
+              Your response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -305,7 +374,21 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 150-word abstract of "${articleCopy}" that you can use to promote the article on LinkedIn. It's critical to communicate, using clear and concise language, who should read the article and why it's important for them to read it. Include two or three professional hashtags at the end of the abstract. The response must be provided in "${languageToUse}".`,
+              content: `You are the Chief Marketing Officer of a leading law firm, preparing a LinkedIn post to promote the thought leadership article below.
+
+              Follow these instructions carefully:
+              
+              1. Write a clear and compelling abstract of the article, no longer than 150 words.
+              2. The tone should be professional, informative, and engaging.
+              3. Make it obvious:
+                 - Who the article is for (intended audience)
+                 - Why they should care (value or insight the piece offers)
+              4. End with 2–3 relevant professional hashtags.
+              5. Do not write in the first person. This is a firm-branded post, not a personal one.
+              
+              Here is the article: "${articleCopy}"
+              
+              Your response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -349,7 +432,20 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to write, in clear and compelling language, a 150-word abstract of "${articleCopy}" that you can use to promote the thought leadership on your firm's website in a way that entices people to click through and read it. It's critical to articulate in your synopsis who should read the article and why they should read it. The response must be provided in "${languageToUse}".`,
+              content: `You are the Chief Marketing Officer of a leading law firm, reviewing legal thought leadership for publication on the firm’s website.
+
+              Follow these instructions carefully:
+              
+              1. Write a 150-word abstract summarizing the article below.
+              2. Use clear and compelling language to encourage the right audience to read more.
+              3. Make sure the abstract answers:
+                 - Who should read this article?
+                 - Why is it important for them to do so?
+              4. Write in the voice of the firm — not in the first person. Do not include language like “As the CMO…”
+              
+              Here is the article: "${articleCopy}"
+              
+              Your response must be provided in "${languageToUse}".`,
             },
           ],
         },
@@ -393,7 +489,19 @@ class RequestData extends Component {
           messages: [
             {
               role: "user",
-              content: `You are the CMO of one of the largest law firms in the world. Using your knowledge of law firm services, what are the five most relevant practice groups and industry groups that should be associated with ${articleCopy} for marketing, website tagging, and CRM purposes? Please provide your answer in "${languageToUse}" in two separate lists: 1.	Practice Groups – e.g., Litigation, M&A, Data Privacy, and 2.	Industry Groups – e.g., Healthcare, Financial Services, Technology.`,
+              content: `You are the Chief Marketing Officer of one of the world’s largest law firms. You are reviewing the following article to determine how it should be categorized for marketing, website tagging, and CRM purposes.
+
+              Follow these instructions:
+              
+              1. Read the article and identify the five most relevant law firm **practice groups**.
+              2. Identify the five most relevant **industry groups**.
+              3. Provide your response in two clearly labeled lists:
+                 - Practice Groups — e.g., Litigation, Mergers & Acquisitions, Data Privacy
+                 - Industry Groups — e.g., Healthcare, Financial Services, Technology
+              
+              Here is the article: "${articleCopy}"
+              
+              Your response must be provided in "${languageToUse}".`,
             },
           ],
         },
