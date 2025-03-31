@@ -1,35 +1,16 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "./css/request.css";
 import { franc } from 'franc-min';
-
-const languageNamesForPrompt = {
-  eng: "English",
-  fra: "French",
-  spa: "Spanish",
-  deu: "German",
-  zho: "Chinese",
-  cmn: "Chinese (Simplified)",
-  jpn: "Japanese",
-  kor: "Korean",
-  por: "Portuguese",
-  rus: "Russian",
-  ara: "Arabic",
-  ita: "Italian",
-  nld: "Dutch",
-  swe: "Swedish",
-  tur: "Turkish",
-  heb: "Hebrew",
-  pol: "Polish",
-  dan: "Danish",
-  fin: "Finnish",
-  hun: "Hungarian",
-  ron: "Romanian",
-  ell: "Greek",
-  nor: "Norwegian",
-  tha: "Thai",
-  hin: "Hindi"
-};
+import {
+  analyzeAudienceApi,
+  keyTakeawaysApi,
+  altTitlesApi,
+  emailSynopsisApi,
+  socialMediaPostApi,
+  linkedInPostApi,
+  websiteAbstractApi,
+  taggingSuggestionsApi
+} from "../api/apiHelpers";
 
 class RequestData extends Component {
   constructor(props) {
@@ -60,472 +41,40 @@ class RequestData extends Component {
     this.baseUrl = "https://api.openai.com/v1/chat/completions";
   };
 
+  runApiCall = async (apiFunction, includeTitle = false, headerText = "") => {
+    if (this.isEditingInProgress()) return;
 
+    this.clearState();
+
+    this.setState({
+      headerText: "Analyzing your content...",
+      generatedResponse: "",
+      showWordCount: false,
+      showEditButton: false
+    });
+
+    const articleCopy = this.state.articleCopy;
+    const articleTitle = this.state.articleTitle;
+    const language = this.state.languageToUse;
+
+    try {
+      const response = includeTitle
+        ? await apiFunction(articleCopy, articleTitle, language)
+        : await apiFunction(articleCopy, language);
+
+      this.setState({
+        generatedResponse: response,
+        showWordCount: true,
+        showEditButton: true,
+        headerText,
+      });
+    } catch (error) {
+      this.handleError(apiFunction.name, error);
+    }
+  }
 
   handleError = (methodName, error) => {
     console.error(`Error calling ${methodName}:`, error);
-  }
-
-  titleAnalysisAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy, articleTitle } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer (CMO) of one of the world's largest law firms. You have deep experience in both the legal profession and marketing legal services to corporate and institutional clients. 
-
-              Based on the language and framing of the following article:
-              "${articleCopy}"
-              
-              1. In a single sentence, list the likely occupations of the intended audience. Do not include generic terms like "legal professionals."
-              
-              2. Then evaluate how well the piece positions itself to reach that audience. Consider the clarity of the introduction, the focus of the content, and any regional relevance.
-              
-              3. Assess whether the title "${articleTitle}" clearly identifies the audience and conveys why they should read the piece. If a title is not provided, or if the title fails to effectively position the article, propose three strong alternative titles. For each proposed title, briefly explain why it works.
-              
-              Respond in "${languageToUse}".`
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: false,
-        showEditButton: false,
-      });
-
-      const headerText = "I've analyzed what appears to be the target audience for your work. If this is not your intended audience or if there are other readers you'd like to reach, consider revising to specificly mention the people who should read your work.";
-      this.setState({ headerText });
-
-      console.log("The article is written in ", this.state.detectedLanguage);
-
-    } catch (error) {
-      this.handleError("titleAnalysisAPI:", error);
-    }
-  }
-
-  takeawaysAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You are reviewing a draft of legal thought leadership intended for a professional audience.
-
-              Please perform the following tasks:
-              
-              1. Read the text below carefully:
-              "${articleCopy}"
-              
-              2. Identify the five most salient takeaways — the key points or conclusions the article communicates to its intended audience.
-              
-              3. Summarize each takeaway clearly and concisely in a single sentence.
-              
-              4. Provide the takeaways in a numbered list.
-              
-              The response must be provided in "${languageToUse}".`
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: false,
-        showEditButton: false,
-      });
-
-      const headerText = "I've analyzed your content and isolated the top five points. If these aren't the ones you want your audience to remember, consider revising your text to convey your intended takeaways.";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("takeawaysAPI:", error);
-    }
-  }
-
-  altTitlesAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and directly relevant to clients.
-
-              Please perform the following tasks:
-              
-              1. Read the text below:
-              "${articleCopy}"
-              
-              2. Based on the content and intended audience, propose **three potential titles** for the piece. The titles should:
-                 - Communicate who should read it
-                 - Convey why it matters
-                 - Avoid overt references to the intended audience
-              
-              3. Format each title as follows:
-                 - Enclose the title in quotation marks
-                 - Add a single sentence explaining why it was proposed
-                 - Separate the title from the explanation using two hyphens, like this: --
-                 - Do **not** include line breaks between titles
-              
-              4. Provide the output as a **numbered list**.
-              
-              5. If no title is provided with the article, assume the author is seeking new title suggestions and proceed accordingly.
-              
-              The response must be provided in "${languageToUse}".`
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: false,
-        showEditButton: false,
-      });
-
-      const headerText = "For your review: three alternative titles for your piece that you may want to consider:";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("altTitlesAPI:", error);
-    }
-  }
-
-  synopsisAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer of a leading law firm. Your role is to review legal thought leadership before publication on the firm’s website.
-
-              Write a 150-word abstract for the article below. Your goal is to entice the right audience to click through and read the full piece.
-              
-              Follow these instructions carefully:
-              1. Use clear, compelling, and professional language suitable for a website.
-              2. Clearly indicate who the article is for and why that audience should care.
-              3. Do not include first-person language or phrases like “As the CMO...” — this is not a personal message.
-              4. Write in the third person.
-              5. Do not summarize every detail. Focus on what will make the right reader want to click.
-              
-              Here is the article: "${articleCopy}"
-              
-              Your response must be provided in "${languageToUse}".`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: true,
-        showEditButton: true,
-      });
-
-      const headerText = "To share your work via email, copy and paste this language into the body of your message along with the link.";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("synposisAPI:", error);
-    }
-  }
-
-  socialMediaAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer of a top-tier law firm, preparing social media copy to promote a new piece of legal thought leadership.
-
-              Your task is to write **three Twitter/X posts** that meet the following criteria:
-              1. Each post must clearly communicate **who should read the article** and **why it matters** to that audience.
-              2. Use clear, concise, and compelling language — **no more than 120 characters** total (including spaces and hashtags).
-              3. Include at least **three relevant professional hashtags** in each post.
-              4. Return your response as a **numbered list** (1, 2, 3).
-              
-              Here is the article: "${articleCopy}"
-              
-              Your response must be provided in "${languageToUse}".`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: true,
-        showEditButton: true,
-      });
-
-      const headerText = "Here are three draft X (Twitter) posts for your consideration.";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("socialMediaAPI:", error);
-    }
-  }
-
-  linkedInAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer of a leading law firm, preparing a LinkedIn post to promote the thought leadership article below.
-
-              Follow these instructions carefully:
-              
-              1. Write a clear and compelling abstract of the article, no longer than 150 words.
-              2. The tone should be professional, informative, and engaging.
-              3. Make it obvious:
-                 - Who the article is for (intended audience)
-                 - Why they should care (value or insight the piece offers)
-              4. End with 2–3 relevant professional hashtags.
-              5. Do not write in the first person. This is a firm-branded post, not a personal one.
-              
-              Here is the article: "${articleCopy}"
-              
-              Your response must be provided in "${languageToUse}".`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: true,
-        showEditButton: true,
-      });
-
-      const headerText = "Here's a short post you can use to promote your content on Linkedin:";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("linkedInAPI:", error);
-    }
-  }
-
-  abstractAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer of a leading law firm, reviewing legal thought leadership for publication on the firm’s website.
-
-              Follow these instructions carefully:
-              
-              1. Write a 150-word abstract summarizing the article below.
-              2. Use clear and compelling language to encourage the right audience to read more.
-              3. Make sure the abstract answers:
-                 - Who should read this article?
-                 - Why is it important for them to do so?
-              4. Write in the voice of the firm — not in the first person. Do not include language like “As the CMO…”
-              
-              Here is the article: "${articleCopy}"
-              
-              Your response must be provided in "${languageToUse}".`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: true,
-        showEditButton: true,
-      });
-
-      const headerText = "Here's a brief overview of your thought leadership that you can use to promote it on your website:";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("abstractAPI:", error);
-    }
-  }
-
-  classificationAPI = async () => {
-    if (this.isEditingInProgress()) {
-      return;
-    }
-    this.clearState()
-
-    const languageToUse = languageNamesForPrompt[this.state.languageToUse] || "English";
-
-    try {
-      const { articleCopy } = this.state;
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: "gpt-3.5-turbo-0125",
-          messages: [
-            {
-              role: "user",
-              content: `You are the Chief Marketing Officer of one of the world’s largest law firms. You are reviewing the following article to determine how it should be categorized for marketing, website tagging, and CRM purposes.
-
-              Follow these instructions:
-              
-              1. Read the article and identify the five most relevant law firm **practice groups**.
-              2. Identify the five most relevant **industry groups**.
-              3. Provide your response in two clearly labeled lists:
-                 - Practice Groups — e.g., Litigation, Mergers & Acquisitions, Data Privacy
-                 - Industry Groups — e.g., Healthcare, Financial Services, Technology
-              
-              Here is the article: "${articleCopy}"
-              
-              Your response must be provided in "${languageToUse}".`,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          },
-        }
-      );
-
-      const generatedResponse = response.data.choices[0].message.content;
-      this.setState({
-        generatedResponse,
-        showWordCount: false,
-        showEditButton: false,
-      });
-
-      const headerText = "Based on its content and subject matter, this thought leadership piece could be linked to the following industry and practice groups:";
-      this.setState({ headerText });
-
-    } catch (error) {
-      this.handleError("classificationAPI:", error);
-    }
   }
 
   handlePaste = () => {
@@ -916,10 +465,10 @@ class RequestData extends Component {
                   <b>Editorial</b>
                 </h4>
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.titleAnalysisAPI(); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece and its title speak to that particular audience.">Audience</button>
-                  <button className="button-19" onClick={() => { this.takeawaysAPI(); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
-                  <button className="button-19" onClick={() => { this.altTitlesAPI(); this.handlePaste(); }} title="AmplifAI proposes three titles - or alternative titles, if you provide one - that you may want to consider for your piece, and explains its choice for each.">Titles</button>
-                  <button className="button-19" onClick={() => { this.classificationAPI(); this.handlePaste(); }} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(analyzeAudienceApi, true, "Here's a review of your content and how well it speaks to its intended audience:"); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece (and its title) speak to that particular audience.">Audience</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(keyTakeawaysApi, false, "Here are the top five takeaways from your article as currently written:"); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(altTitlesApi, true, "Here are three title suggestions (or alternatives) for your article, with reasoning:"); this.handlePaste(); }} title="AmplifAI proposes three titles - or alternative titles, if you provide one - that you may want to consider for your piece, and explains its choice for each.">Titles</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(taggingSuggestionsApi, false, "Here are the practice and industry groups that best match your article:"); this.handlePaste(); }} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
                 </div>
                 <div>
                   <p><em>AmplifAI</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>
@@ -932,10 +481,10 @@ class RequestData extends Component {
                 </h4>
 
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.synopsisAPI(); this.handlePaste(); }} title="AmplifAI drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
-                  <button className="button-19" onClick={() => { this.socialMediaAPI(); this.handlePaste(); }} title="AmplifAI drafts three short posts that you can use for promoting your work on X (formerly Twitter).">Twitter</button>
-                  <button className="button-19" onClick={() => { this.linkedInAPI(); this.handlePaste(); }} title="AmplifAI drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
-                  <button className="button-19" onClick={() => { this.abstractAPI(); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece and who should read it when posting to your firm website.">Synopsis</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(emailSynopsisApi, false, "Here's a short summary of your article that you can use in a marketing email:"); this.handlePaste(); }} title="AmplifAI drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(socialMediaPostApi, false, "Here are three short posts you can use to promote your article on X (formerly Twitter) or other social media platforms:"); this.handlePaste(); }} title="AmplifAI drafts three short posts that you can use for promoting your work on X (formerly Twitter) or other social media platforms.">Social Media</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(linkedInPostApi, false, "Here's a short post you can use to promote your article on LinkedIn:"); this.handlePaste(); }} title="AmplifAI drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
+                  <button className="button-19" onClick={() => { this.runApiCall(websiteAbstractApi, false, "Here's a brief overview of your thought leadership that you can use to promote it on your website:"); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece - and who should read it - when posting to your firm website.">Website</button>
                 </div>
                 <div>
                   <p><em>AmplifAI</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>
