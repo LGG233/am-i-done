@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./css/request.css";
+import LanguageSelectorHeader from './LanguageSelectorHeader';
 import { franc } from 'franc-min';
 import {
   analyzeAudienceApi,
@@ -11,6 +12,7 @@ import {
   websiteAbstractApi,
   taggingSuggestionsApi
 } from "../api/apiHelpers";
+
 
 class RequestData extends Component {
   constructor(props) {
@@ -235,7 +237,7 @@ class RequestData extends Component {
     if (selectedLanguage === "English") {
       this.setState({
         language: selectedLanguage,
-        languageToUse: "eng" // ISO code
+        languageToUse: "eng"
       }, () => {
         console.log("Set languageToUse to:", this.state.languageToUse);
       });
@@ -271,97 +273,21 @@ class RequestData extends Component {
   };
 
   render() {
-    const languageAutonyms = {
-      eng: "English",
-      fra: "Français",
-      spa: "Español",
-      deu: "Deutsch",
-      zho: "中文",
-      cmn: "中文",      // cmn = Mandarin Chinese
-      jpn: "日本語",
-      kor: "한국어",
-      por: "Português",
-      rus: "Русский",
-      ara: "العربية",
-      ita: "Italiano",
-      nld: "Nederlands",
-      swe: "Svenska",
-      tur: "Türkçe",
-      heb: "עברית",
-      pol: "Polski",
-      dan: "Dansk",
-      fin: "Suomi",
-      hun: "Magyar",
-      ron: "Română",
-      ell: "Ελληνικά",
-      nor: "Norsk",
-      tha: "ไทย",
-      hin: "हिन्दी"
-    };
-
-    const autonym = this.state.detectedLanguage
-      ? `Original (${languageAutonyms[this.state.detectedLanguage] || "Language"})`
-      : "Original";
-
     return (
       <div>
         <div className="split-screen">
           <div className="left-panel">
-            <h1>
-              <b>Your Content</b>
-            </h1>
-            <div className="language-select-buttons">
-              <p><strong>Response Language:</strong></p>
-
-              <label className="language-button">
-                <input
-                  type="radio"
-                  name="language"
-                  value="English"
-                  checked={this.state.language === "English"}
-                  onChange={this.handleLanguageChange}
-                />
-                English
-              </label>
-
-              <label className="language-button">
-                <input
-                  type="radio"
-                  name="language"
-                  value="Original Language"
-                  checked={this.state.language === "Original Language"}
-                  onChange={this.handleLanguageChange}
-                />
-                {autonym}
-              </label>
-
-              <label className="language-button" style={{ cursor: "pointer" }}>
-                <input
-                  type="radio"
-                  name="language"
-                  value="Other"
-                  onClick={this.toggleLanguageOptions}
-                  checked={this.state.language !== "English" && this.state.language !== "Original Language"}
-                  readOnly
-                />
-                {this.state.showAllLanguages
-                  ? "Hide ▲"
-                  : `Other (${languageAutonyms[this.state.language] || "▼"})`}
-              </label>
-              {this.state.showAllLanguages && (
-                <div className="language-dropdown">
-                  {Object.entries(languageAutonyms).map(([code, label]) => (
-                    <div
-                      key={code}
-                      className="language-option"
-                      onClick={() => this.handleFullLanguageSelection(code)}
-                    >
-                      {label}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>            <br />
+            <br />
+            <LanguageSelectorHeader
+              language={this.state.language}
+              detectedLanguage={this.state.detectedLanguage}
+              showAllLanguages={this.state.showAllLanguages}
+              onLanguageChange={this.handleLanguageChange}
+              onToggleLanguageOptions={this.toggleLanguageOptions}
+              onSelectFullLanguage={this.handleFullLanguageSelection}
+              onNewRequest={this.handleNewRequest}
+              onSignOut={this.handleCancel}
+            />
             <div className="container-fluid">
               <div className="QueryForm">
                 <form className="FormField">
@@ -396,6 +322,11 @@ class RequestData extends Component {
             </div>
           </div>
           <div className="right-panel">
+            <div className="new-request-wrapper">
+              <button className="button-19 new-request-button" onClick={this.handleNewRequest}>
+                New Request
+              </button>
+            </div>
             <h1>
               <b><em>AmplifAI</em> Review</b>
             </h1>
@@ -494,7 +425,6 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
-        <button className="button-19" onClick={() => { this.handleNewRequest(); this.handlePaste(); }} >New Request</button>
       </div>
     )
   }

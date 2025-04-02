@@ -3,27 +3,23 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { jwtDecode } from "jwt-decode";
 import "./App.css";
 import RequestData from "./components/request";
-// import ResponseDisplayForm from "./components/response";
-// import Title from "./components/Title";
-import LandingPage from "./pages/LandingPage"; // Import the new landing page
+import Header from "./components/header";
+import LandingPage from "./pages/LandingPage";
+import HowItWorks from "./pages/HowItWorks";
+import About from "./pages/About";
+import { RequestProvider } from "./context/RequestContext";
 
 function MainApp() {
   const [user, setUser] = useState({});
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
-  // const [requestData, setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
-  // const [response, setResponse] = useState("");
-  const location = useLocation(); // Detects when the route changes
+  const location = useLocation();
+
 
   function handleCallBackResponse(response) {
     const userObject = jwtDecode(response.credential);
     setUser(userObject);
     document.getElementById("signInDiv").hidden = true;
-  }
-
-  function handleSignOut() {
-    setUser({});
-    document.getElementById("signInDiv").hidden = false;
   }
 
   const handleRequestData = (data) => {
@@ -47,23 +43,18 @@ function MainApp() {
     );
 
     google.accounts.id.prompt();
-  }, [location.pathname]); // Re-run this when the route changes
+  }, [location.pathname]);
 
   return (
     <div className="App">
       <header className="App-header">
         <h1 className="brand-title">AmplifAI</h1>
         <p className="brand-tagline">Elevate your message. Expand your influence. Amplify your thought leadership.</p>
-        {/* <Title /> */}
         <div id="signInDiv"></div>
 
         {Object.keys(user).length !== 0 ? (
           <>
             <RequestData onRequestData={handleRequestData} onResponse={handleResponse} />
-            {/* <ResponseDisplayForm requestData={requestData} response={response} /> */}
-            <button className="button-19" onClick={handleSignOut}>
-              Sign Out
-            </button>
           </>
         ) : (
           <div className="introText">
@@ -81,13 +72,6 @@ function MainApp() {
             <p>Sign in to <b>AmplifAI</b> your thought leadership.</p>
           </div>
         )}
-
-        {/* Ensure Sign-Out Button Appears When Logged In
-        {Object.keys(user).length !== 0 && (
-          <button className="button-19" onClick={handleSignOut}>
-            Sign Out
-          </button>
-        )} */}
       </header>
     </div>
   );
@@ -95,26 +79,18 @@ function MainApp() {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/app"
-          element={
-            <>
-              {(() => {
-                try {
-                  return <MainApp />;
-                } catch (error) {
-                  console.error("Error rendering MainApp:", error);
-                  return <p>Something went wrong! Check the console for details.</p>;
-                }
-              })()}
-            </>
-          }
-        />
-      </Routes>
-    </Router>
+    <RequestProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/app" element={<MainApp />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/about" element={<About />} />
+
+        </Routes>
+      </Router>
+    </RequestProvider>
   );
 }
 export default App;

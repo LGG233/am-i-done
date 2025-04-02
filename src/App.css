@@ -122,9 +122,8 @@ html {
 }
 
 /* Global Button Override */
-button {
+/* button {
   background: #ff6b35 !important;
-  /* Enforce the brand orange */
   color: white !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
@@ -133,10 +132,75 @@ button {
   border-radius: 6px !important;
   cursor: pointer !important;
   transition: background 0.3s ease-in-out, transform 0.2s ease-in-out !important;
-}
+} */
 
 button:hover {
   background: #d14a1e !important;
   /* Darker hover effect */
   transform: scale(1.05) !important;
+}
+
+/* Header Styling for AmplifAI */
+.amplifai-header {
+  width: 100%;
+  background: linear-gradient(135deg, #0d1b2a, #1b263b);
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amplifai-logo a {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ff6b35;
+  text-decoration: none;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  all: unset;
+  /* This removes ALL default styles: padding, borders, background, etc. */
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 1.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  display: inline-block;
+  line-height: 1.5;
+}
+
+.nav-link:hover {
+  color: #ff6b35;
+}
+
+.nav-link:hover {
+  color: #ff6b35;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-button:hover {
+  color: #ff6b35;
 }

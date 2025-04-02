@@ -233,3 +233,9 @@ p {
         font-size: 1.1rem;
     }
 }
+
+.new-request-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
