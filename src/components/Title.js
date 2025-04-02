@@ -1,6 +1,5 @@
 import React from "react";
-import "./css/Title.css";
-import squareg from "./SquareG.jpg"
+import "../css/Title.css";
 
 function Title() {
   return (

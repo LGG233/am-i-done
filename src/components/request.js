@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./css/request.css";
+import "../css/request.css";
 import LanguageSelectorHeader from './LanguageSelectorHeader';
 import { franc } from 'franc-min';
 import {
