@@ -90,7 +90,6 @@ class RequestData extends Component {
 
   handleArticlePaste = (event) => {
     const pastedText = event.clipboardData.getData('text');
-    console.log("Detected language from pasted article:", franc(pastedText));
     this.setState(
       { articleCopy: pastedText, detectedLanguage: franc(pastedText) },
       () => {
@@ -174,7 +173,6 @@ class RequestData extends Component {
   };
 
   componentDidMount() {
-    console.log("Request Data Component Mounted!");
     this.adjustTextareaSize();
   }
 
@@ -232,14 +230,12 @@ class RequestData extends Component {
 
   handleLanguageChange = (event) => {
     const selectedLanguage = event.target.value;
-    console.log("Language selected:", selectedLanguage);
 
     if (selectedLanguage === "English") {
       this.setState({
         language: selectedLanguage,
         languageToUse: "eng"
       }, () => {
-        console.log("Set languageToUse to:", this.state.languageToUse);
       });
     } else if (selectedLanguage === "Original Language") {
       const { articleCopy } = this.state;
@@ -250,7 +246,6 @@ class RequestData extends Component {
         language: selectedLanguage,
         languageToUse: finalLang
       }, () => {
-        console.log("Set languageToUse to:", this.state.languageToUse);
       });
     }
   };
@@ -262,13 +257,11 @@ class RequestData extends Component {
   };
 
   handleFullLanguageSelection = (code) => {
-    console.log("Language selected from 'Other':", code);
     this.setState({
       language: "Other",
       languageToUse: code,
       showAllLanguages: false
     }, () => {
-      console.log("Set languageToUse to:", this.state.languageToUse);
     });
   };
 

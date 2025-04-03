@@ -7,7 +7,6 @@ import Header from "./components/header";
 import LandingPage from "./pages/LandingPage";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
-import { RequestProvider } from "./context/RequestContext";
 
 function MainApp() {
   const [user, setUser] = useState({});
@@ -79,18 +78,16 @@ function MainApp() {
 
 function App() {
   return (
-    <RequestProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/app" element={<MainApp />} />
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/about" element={<About />} />
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/app" element={<MainApp />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/about" element={<About />} />
 
-        </Routes>
-      </Router>
-    </RequestProvider>
+      </Routes>
+    </Router>
   );
 }
 export default App;
