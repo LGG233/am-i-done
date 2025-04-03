@@ -14,12 +14,18 @@ function MainApp() {
   const [setResponse] = useState("");
   const location = useLocation();
 
-
   function handleCallBackResponse(response) {
     const userObject = jwtDecode(response.credential);
     setUser(userObject);
+    localStorage.setItem("user", JSON.stringify(userObject)); // 🔐 Persist login
     document.getElementById("signInDiv").hidden = true;
   }
+
+  // function handleCallBackResponse(response) {
+  //   const userObject = jwtDecode(response.credential);
+  //   setUser(userObject);
+  //   document.getElementById("signInDiv").hidden = true;
+  // }
 
   const handleRequestData = (data) => {
     setRequestData(data);
@@ -30,6 +36,12 @@ function MainApp() {
   };
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      document.getElementById("signInDiv").hidden = true;
+    }
+
     /* global google */
     google.accounts.id.initialize({
       client_id: "104608056694-gfr93plhim1tharm2j4pu573289p1bkn.apps.googleusercontent.com",
