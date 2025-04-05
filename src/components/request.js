@@ -12,7 +12,8 @@ import {
   websiteAbstractApi,
   taggingSuggestionsApi
 } from "../api/apiHelpers";
-
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 class RequestData extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class RequestData extends Component {
     if (this.isEditingInProgress()) return;
 
     this.clearState();
-
+    toast.info("Working on your request...", { autoClose: 2500 });
     this.setState({
       headerText: "Analyzing your content...",
       generatedResponse: "",
@@ -137,16 +138,17 @@ class RequestData extends Component {
 
   copyToClipboard(generatedResponse) {
     if (!navigator.clipboard) {
-      alert("Clipboard API not supported in this browser. You can manually copy the text.");
+      toast.error("Clipboard not supported. Please copy manually.");
       return;
     }
+
     navigator.clipboard.writeText(generatedResponse)
       .then(() => {
-        alert("Text copied to clipboard");
+        toast.success("Copied to clipboard!");
       })
       .catch((err) => {
-        console.error("Unable to copy text: ", err);
-        alert("Failed to copy text to clipboard. You can manually copy the text.");
+        console.error("Clipboard error:", err);
+        toast.error("Failed to copy. Try again.");
       });
   }
 
@@ -264,6 +266,7 @@ class RequestData extends Component {
     }, () => {
     });
   };
+
 
   render() {
     return (

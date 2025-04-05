@@ -7,6 +7,8 @@ import Header from "./components/header";
 import LandingPage from "./pages/LandingPage";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function MainApp() {
   const [user, setUser] = useState({});
@@ -17,15 +19,9 @@ function MainApp() {
   function handleCallBackResponse(response) {
     const userObject = jwtDecode(response.credential);
     setUser(userObject);
-    localStorage.setItem("user", JSON.stringify(userObject)); // 🔐 Persist login
+    localStorage.setItem("user", JSON.stringify(userObject));
     document.getElementById("signInDiv").hidden = true;
   }
-
-  // function handleCallBackResponse(response) {
-  //   const userObject = jwtDecode(response.credential);
-  //   setUser(userObject);
-  //   document.getElementById("signInDiv").hidden = true;
-  // }
 
   const handleRequestData = (data) => {
     setRequestData(data);
@@ -91,6 +87,15 @@ function MainApp() {
 function App() {
   return (
     <Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
       <Header />
       <Routes>
         <Route path="/app" element={<MainApp />} />
