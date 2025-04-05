@@ -1,6 +1,3 @@
-/* App.css - Modern, Professional, and Cohesive Design for AmplifAI */
-
-/* Global Styles */
 body,
 html {
   font-family: 'Inter', sans-serif;
@@ -23,14 +20,12 @@ html {
   padding: 40px 5vw;
 }
 
-/* Header */
 .App-header {
   max-width: 900px;
   text-align: left;
   padding: 40px 20px;
 }
 
-/* Branding Title & Tagline */
 .brand-title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -45,11 +40,9 @@ html {
   margin-bottom: 30px;
 }
 
-/* Buttons */
 .button-19,
 .signout-button {
   background: #ff6b35;
-  /* Same vibrant orange as title */
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -63,11 +56,9 @@ html {
 .button-19:hover,
 .signout-button:hover {
   background: #d14a1e;
-  /* Slightly darker shade for hover effect */
   transform: scale(1.05);
 }
 
-/* Input Fields */
 .input-container {
   width: 100%;
   max-width: 900px;
@@ -91,7 +82,6 @@ html {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Text Area Adjustments */
 #title {
   height: 4000px;
 }
@@ -100,13 +90,11 @@ html {
   height: 800px;
 }
 
-/* Sign Out Button Placement Fix */
 .signout-button {
   display: block;
   margin: 30px auto;
 }
 
-/* Response Display */
 .response-container {
   margin-top: 40px;
   background: rgba(255, 255, 255, 0.1);
@@ -116,51 +104,36 @@ html {
   max-width: 900px;
 }
 
-/* Removal of Google 'G' Logo */
 #signInDiv img {
   display: none !important;
 }
 
-/* Global Button Override */
-/* button {
-  background: #ff6b35 !important;
-  color: white !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  padding: 12px 24px !important;
-  border: none !important;
-  border-radius: 6px !important;
-  cursor: pointer !important;
-  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out !important;
-} */
-
 button:hover {
   background: #d14a1e !important;
-  /* Darker hover effect */
   transform: scale(1.05) !important;
 }
 
-/* Header Styling for AmplifAI */
 .amplifai-header {
   width: 100%;
-  background: linear-gradient(135deg, #0d1b2a, #1b263b);
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #0e1a2b;
+  /* Or your current background */
 }
 
 .header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.amplifai-logo {
+  display: flex;
   align-items: center;
 }
 
-.amplifai-logo a {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #ff6b35;
-  text-decoration: none;
+.amplifai-logo img {
+  height: 36px;
+  width: auto;
 }
 
 .nav-menu {
@@ -170,7 +143,6 @@ button:hover {
 
 .nav-link {
   all: unset;
-  /* This removes ALL default styles: padding, borders, background, etc. */
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
   font-size: 1rem;
@@ -203,4 +175,16 @@ button:hover {
 
 .nav-button:hover {
   color: #ff6b35;
+}
+
+.amplifai-logo {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  display: block;
 }

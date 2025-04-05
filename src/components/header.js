@@ -1,17 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/NewLogo.jpg"; // adjust path if needed
 
-const handleSignOut = () => {
-    localStorage.clear();
-    window.location.href = "/";
-};
+export default function Header({ setUser }) {
+    function handleSignOut() {
+        setUser({});
+        localStorage.removeItem("user");
+        document.getElementById("signInDiv").hidden = false;
+    }
 
-const Header = ({ onNewRequest, onSignOut }) => {
     return (
         <header className="amplifai-header">
             <div className="header-inner">
                 <div className="amplifai-logo">
-                    <Link to="/">AmplifAI</Link>
+                    <Link to="/">
+                        <img src={logo} alt="AmplifAI logo" className="logo-image" />
+                    </Link>
                 </div>
                 <nav className="nav-menu">
                     <Link to="/" className="nav-link">Home</Link>
@@ -23,5 +27,4 @@ const Header = ({ onNewRequest, onSignOut }) => {
             </div>
         </header>
     );
-};
-export default Header;
+}
