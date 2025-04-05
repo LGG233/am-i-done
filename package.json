@@ -1,6 +1,10 @@
 {
   "name": "am-i-done",
   "version": "0.1.0",
+  "engines": {
+    "node": "22.x",
+    "npm": "10.x"
+  },
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
