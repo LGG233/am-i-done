@@ -1,32 +1,28 @@
 import React from "react";
+import "../css/App.css"; // uses shared styling
 
-const About = () => {
+export default function About() {
     return (
-        <div className="page-container">
+        <div className="about-page">
             <h1>About AmplifAI</h1>
             <p>
-                <strong>AmplifAI is your marketing assistant for legal thought leadership.</strong>
+                AmplifAI is an AI-powered assistant built to support lawyers and legal marketers in creating, refining, and promoting thought leadership content. Whether you're writing an article, preparing a client update, or sharing an insight on LinkedIn, AmplifAI helps you get the most out of your message.
             </p>
+
+            <h2>Why AmplifAI?</h2>
             <p>
-                Created specifically for lawyers and legal marketers, AmplifAI turns published articles, blog posts,
-                or client alerts into usable promotional content for email, social media, and firm websites.
+                Legal professionals are expected to consistently produce high-quality, relevant content — but that's no small task. AmplifAI lightens the load by offering smart editorial suggestions, audience targeting insights, and ready-to-use marketing assets, all customized to your original content.
             </p>
+
+            <h2>What It Does</h2>
             <p>
-                It doesn’t replace your voice — it supports it.
+                From aligning your message with your audience to generating copy for emails, social media, and your firm website, AmplifAI gives you tools to elevate your work — without starting from scratch. It’s fast, flexible, and built specifically with professional services in mind.
             </p>
+
+            <h2>Our Vision</h2>
             <p>
-                With just a few clicks, AmplifAI helps you:
-            </p>
-            <ul>
-                <li>Highlight your key messages</li>
-                <li>Customize content for different channels</li>
-                <li>Stay consistent with your firm’s tone and style</li>
-            </ul>
-            <p>
-                You focus on the ideas. AmplifAI takes care of the packaging.
+                Thought leadership is more than content — it’s influence. AmplifAI exists to help you grow that influence by making the process of content creation more strategic, consistent, and effective.
             </p>
         </div>
     );
-};
-
-export default About;
+}

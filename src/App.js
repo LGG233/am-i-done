@@ -8,6 +8,7 @@ import RequestData from "./components/request";
 import Header from "./components/header";
 import LandingPage from "./pages/LandingPage";
 import HowItWorks from "./pages/HowItWorks";
+import TryItNow from "./pages/TryItNow";
 import About from "./pages/About";
 import { jwtDecode } from "jwt-decode";
 import { useLocation } from "react-router-dom";
@@ -95,6 +96,7 @@ function App() {
         <Route path="/app" element={<MainApp user={user} setUser={setUser} />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/try" element={<TryItNow />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </Router>

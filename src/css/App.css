@@ -195,3 +195,32 @@ button:hover {
   margin-top: 0.5rem;
   /* Optional spacing tweak */
 }
+
+.how-it-works-page,
+.about-page,
+.try-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: left;
+}
+
+.feature-section {
+  margin-bottom: 2rem;
+}
+
+.feature-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.feature-description {
+  margin-left: 1rem;
+  line-height: 1.6;
+}
+
+.feature-list {
+  margin-left: 2rem;
+  padding-left: 1rem;
+}
