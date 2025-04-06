@@ -188,3 +188,10 @@ button:hover {
   width: auto;
   display: block;
 }
+
+.brand-subtitle {
+  font-weight: 500;
+  /* Try 400 if you want it even lighter */
+  margin-top: 0.5rem;
+  /* Optional spacing tweak */
+}

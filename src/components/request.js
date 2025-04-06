@@ -285,9 +285,15 @@ class RequestData extends Component {
               onSignOut={this.handleCancel}
             />
             <div className="container-fluid">
+
               <div className="QueryForm">
                 <form className="FormField">
-                  <label htmlFor="articleTitle">Title: </label>
+                  <p className="form-instruction">
+                    Paste your article title and body below, then choose a tool to enhance your content.
+                  </p>
+                  <label htmlFor="articleTitle">Title:
+                    <span className="tooltip-icon" aria-label="Enter the title of your article."> ⓘ </span>
+                  </label>
                   <textarea
                     className="article-title"
                     id="articleTitle"
@@ -300,7 +306,9 @@ class RequestData extends Component {
                   />
                   <br />
                   <br />
-                  <label htmlFor="articleCopy">Body: </label>
+                  <label htmlFor="articleCopy">Body:
+                    <span className="tooltip-icon" aria-label="Paste the full body of your article here, including all text you want AmplifAI to analyze and enhance. Avoid footnotes, citations, or formatting artifacts if possible."> ⓘ </span>
+                  </label>
                   <textarea
                     type="text"
                     className="article-body"

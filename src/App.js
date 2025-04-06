@@ -51,7 +51,10 @@ function MainApp({ user, setUser }) {
     <div className="App">
       <header className="App-header">
         <h1 className="brand-title">AmplifAI</h1>
-        <p className="brand-tagline">Elevate your message. Expand your influence. Amplify your thought leadership.</p>
+        <h2 className="brand-subtitle">Your AI Marketing Assistant for Thought Leadership</h2>
+        <p className="brand-tagline">
+          Elevate your message. Expand your influence. Amplify your thought leadership.
+        </p>
         <div id="signInDiv"></div>
 
         {Object.keys(user).length !== 0 ? (
