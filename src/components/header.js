@@ -2,13 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/NewLogo.jpg"; // adjust path if needed
 
-export default function Header({ setUser }) {
+console.log("Header component loaded");
+
+export default function Header({ user, setUser }) {
+    console.log("Header received user:", user); // 👀 Check this in browser console
     function handleSignOut() {
         setUser({});
         localStorage.removeItem("user");
         document.getElementById("signInDiv").hidden = false;
     }
-
+    console.log("Header received user:", user);
     return (
         <header className="amplifai-header">
             <div className="header-inner">
@@ -17,6 +20,9 @@ export default function Header({ setUser }) {
                         <img src={logo} alt="AmplifAI logo" className="logo-image" />
                     </Link>
                 </div>
+                {user && user.name && (
+                    <div className="nav-username">Welcome, {user.name.split(" ")[0]}!</div>
+                )}
                 <nav className="nav-menu">
                     <Link to="/" className="nav-link">Home</Link>
                     <Link to="/how-it-works" className="nav-link">How It Works</Link>
