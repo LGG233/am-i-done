@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/LandingPage.css";
+import FeatureCarousel from "../components/FeatureCarousel";
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -15,39 +16,29 @@ const LandingPage = () => {
                 </button>
             </section>
 
-            {/* Feature Highlights */}
-            <section className="features">
-                <div className="feature-card">
-                    <h3>AI-Powered Analysis</h3>
-                    <p>Receive actionable feedback to improve clarity and impact.</p>
-                </div>
-                <div className="feature-card">
-                    <h3>Clarity Checker</h3>
-                    <p>Ensure your message is concise, structured, and audience-ready.</p>
-                </div>
-                <div className="feature-card">
-                    <h3>Title Refinement</h3>
-                    <p>Optimize your titles for engagement and effectiveness.</p>
-                </div>
-            </section>
-
-            {/* Preview/Demo Section */}
+            {/* Before/After Comparison */}
             <section className="demo">
-                <h2>Before & After</h2>
+                <h2>Sharpen Your Message</h2>
                 <div className="demo-content">
                     <div className="before">
-                        <h4>Before:</h4>
-                        <p>"This article explores various leadership techniques..."</p>
+                        <h4>Your First Draft:</h4>
+                        <p>
+                            “This article outlines key considerations for businesses navigating new data privacy regulations. It explores potential compliance risks and offers insights into emerging best practices. As privacy laws continue to evolve, organizations should stay informed and adaptable.”
+                        </p>
                     </div>
                     <div className="after">
-                        <h4>After:</h4>
-                        <p>"Master the art of leadership with proven techniques that drive results."</p>
+                        <h4>AmplifAI Insight:</h4>
+                        <p>
+                            This content is broadly written and lacks a clear target audience — it could apply to anyone. Based on the tone and subject matter, the intended reader seems to be in-house legal counsel. To improve, make the audience explicit and frame the piece as strategic guidance tailored to GCs dealing with the business impact of shifting privacy laws. Use more direct language that highlights urgency, practical outcomes, and your authority on the issue.
+                        </p>
                     </div>
                 </div>
             </section>
+            <div className="carousel-wrapper">
+                <FeatureCarousel />
+            </div>
         </div>
     );
 };
 
 export default LandingPage;
-
