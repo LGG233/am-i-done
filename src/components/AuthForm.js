@@ -4,6 +4,7 @@ import { auth } from "../services/firebase";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    sendEmailVerification,
 } from "firebase/auth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,11 +28,21 @@ export default function AuthForm({ user }) {
 
         try {
             if (isLogin) {
-                await signInWithEmailAndPassword(auth, email, password);
-                navigate("/app"); // 👈 Redirect after login
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                if (!user.emailVerified) {
+                    setError("Please verify your email before logging in.");
+                    await auth.signOut(); // prevent access until verified
+                    return;
+                }
+
+                navigate("/app"); // 👈 Redirect only if verified
             } else {
-                await createUserWithEmailAndPassword(auth, email, password);
-                navigate("/app"); // 👈 Redirect after signup
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await sendEmailVerification(userCredential.user);
+                setError("Verification email sent. Please check your inbox.");
+                // Do NOT navigate until verified
             }
         } catch (err) {
             setError(err.message);
@@ -41,6 +52,11 @@ export default function AuthForm({ user }) {
     return (
         <div className="auth-form">
             <h2>{isLogin ? "Sign In" : "Sign Up"}</h2>
+
+            <p className="auth-info">
+                Welcome to AmplifAI. If you're part of our beta testing group, log in or create an account below to get started.
+            </p>
+
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"

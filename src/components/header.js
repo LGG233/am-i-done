@@ -1,15 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/NewLogo.jpg"; // adjust path if needed
+import { signOut } from "firebase/auth";
+import { auth } from "../services/firebase";
+
 
 console.log("Header component loaded");
 
 export default function Header({ user, setUser }) {
     console.log("Header received user:", user); // 👀 Check this in browser console
     function handleSignOut() {
-        setUser({});
-        localStorage.removeItem("user");
-        document.getElementById("signInDiv").hidden = false;
+        signOut(auth)
+            .then(() => {
+                console.log("Signed out");
+            })
+            .catch((error) => {
+                console.error("Sign out error:", error);
+            });
     }
     console.log("Header received user:", user);
     return (
