@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./css/App.css";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./services/firebase"; // ✅ adjust if needed
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,41 +12,23 @@ import LandingPage from "./pages/LandingPage";
 import HowItWorks from "./pages/HowItWorks";
 import TryItNow from "./pages/TryItNow";
 import About from "./pages/About";
-import { jwtDecode } from "jwt-decode";
-import { useLocation } from "react-router-dom";
+import AuthForm from "./components/AuthForm"; // adjust path if needed
+import { Navigate } from "react-router-dom";
+
+// If we ever need to trigger logic based on the current route, useLocation() is the tool.
+// Common uses: route-based UI changes, redirects, logging, conditional headers/footers, etc.
+// import { useLocation } from "react-router-dom";
 
 function MainApp({ user, setUser }) {
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
-  const location = useLocation();
 
-  React.useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      document.getElementById("signInDiv").hidden = true;
-    }
+  // const location = useLocation(); // 👈 Not used now, but helpful later for route-aware logic.
 
-    const handleCallBackResponse = (response) => {
-      const userObject = jwtDecode(response.credential);
-      setUser(userObject);
-      localStorage.setItem("user", JSON.stringify(userObject));
-      document.getElementById("signInDiv").hidden = true;
-    };
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
 
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "104608056694-gfr93plhim1tharm2j4pu573289p1bkn.apps.googleusercontent.com",
-      callback: handleCallBackResponse,
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large" }
-    );
-
-    google.accounts.id.prompt();
-  }, [location.pathname, setUser]);
   const handleRequestData = (data) => setRequestData(data);
   const handleResponse = (response) => setResponse(response);
 
@@ -56,9 +40,8 @@ function MainApp({ user, setUser }) {
         <p className="brand-tagline">
           Elevate your message. Expand your influence. Amplify your thought leadership.
         </p>
-        <div id="signInDiv"></div>
 
-        {Object.keys(user).length !== 0 ? (
+        {user && Object.keys(user).length !== 0 ? (
           <RequestData onRequestData={handleRequestData} onResponse={handleResponse} />
         ) : (
           <div className="introText">
@@ -80,6 +63,13 @@ function MainApp({ user, setUser }) {
 function App() {
   const [user, setUser] = useState({}); // ✅ Moved to top-level App()
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser || null);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Router>
       <ToastContainer
@@ -98,6 +88,8 @@ function App() {
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/try" element={<TryItNow />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<AuthForm />} />
+        <Route path="/login" element={<AuthForm user={user} />} />
       </Routes>
     </Router>
   );
