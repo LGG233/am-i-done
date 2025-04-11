@@ -39,3 +39,25 @@
     color: #ff4d4f;
     margin-bottom: 1rem;
 }
+
+.success {
+    color: #4caf50;
+    margin-bottom: 1rem;
+}
+
+.show-password-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #ffa65c;
+    gap: 0.5rem;
+}
+
+.show-password-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}

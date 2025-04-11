@@ -15,6 +15,22 @@ export default function AuthForm({ user }) {
     const [isLogin, setIsLogin] = useState(true); // toggle between login & signup
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [success, setSuccess] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showResend, setShowResend] = useState(false);
+
+    const resendVerification = async () => {
+        try {
+            const user = auth.currentUser;
+            if (user && !user.emailVerified) {
+                await sendEmailVerification(user);
+                setSuccess("Verification email resent. Please check your inbox.");
+                setShowResend(false);
+            }
+        } catch (err) {
+            setError("Failed to resend verification email.");
+        }
+    };
 
     useEffect(() => {
         if (user) {
@@ -25,24 +41,21 @@ export default function AuthForm({ user }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
         try {
             if (isLogin) {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                if (!user.emailVerified) {
-                    setError("Please verify your email before logging in.");
-                    await auth.signOut(); // prevent access until verified
-                    return;
+                if (userCredential.user.emailVerified) {
+                    navigate("/app");
+                } else {
+                    setError("Please verify your email address before accessing the app.");
+                    setShowResend(true);
                 }
-
-                navigate("/app"); // 👈 Redirect only if verified
             } else {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await sendEmailVerification(userCredential.user);
-                setError("Verification email sent. Please check your inbox.");
-                // Do NOT navigate until verified
+                setSuccess("Verification email sent. Please check your inbox.");
             }
         } catch (err) {
             setError(err.message);
@@ -67,17 +80,39 @@ export default function AuthForm({ user }) {
                 />
 
                 <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
 
+                <div className="show-password-toggle">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={showPassword}
+                            onChange={() => setShowPassword(!showPassword)}
+                        />
+                        Show Password
+                    </label>
+                </div>
+
                 {error && <p className="error">{error}</p>}
+
+                {success && <p className="success">{success}</p>}
 
                 <button type="submit">{isLogin ? "Log In" : "Create Account"}</button>
             </form>
+
+            {showResend && (
+                <p>
+                    Didn’t get the email?{" "}
+                    <button onClick={resendVerification} className="toggle-btn">
+                        Resend Verification
+                    </button>
+                </p>
+            )}
 
             <p>
                 {isLogin ? "Need an account?" : "Already have an account?"}{" "}
