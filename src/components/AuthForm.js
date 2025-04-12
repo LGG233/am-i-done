@@ -1,36 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AuthForm.css";
 import { auth } from "../services/firebase";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     sendEmailVerification,
+    updateProfile,
 } from "firebase/auth";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthForm({ user }) {
     const [email, setEmail] = useState("");
+    const [name, setName] = useState(""); // ✅ NEW
     const [password, setPassword] = useState("");
-    const [isLogin, setIsLogin] = useState(true); // toggle between login & signup
+    const [isLogin, setIsLogin] = useState(true);
     const [error, setError] = useState("");
-    const navigate = useNavigate();
     const [success, setSuccess] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showResend, setShowResend] = useState(false);
 
-    const resendVerification = async () => {
-        try {
-            const user = auth.currentUser;
-            if (user && !user.emailVerified) {
-                await sendEmailVerification(user);
-                setSuccess("Verification email resent. Please check your inbox.");
-                setShowResend(false);
-            }
-        } catch (err) {
-            setError("Failed to resend verification email.");
-        }
-    };
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
@@ -54,11 +43,22 @@ export default function AuthForm({ user }) {
                 }
             } else {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name }); // ✅ Set name
                 await sendEmailVerification(userCredential.user);
                 setSuccess("Verification email sent. Please check your inbox.");
+                setShowResend(true);
             }
         } catch (err) {
             setError(err.message);
+        }
+    };
+
+    const resendVerification = async () => {
+        try {
+            await sendEmailVerification(auth.currentUser);
+            setSuccess("Verification email resent. Please check your inbox.");
+        } catch (err) {
+            setError("Failed to resend verification email.");
         }
     };
 
@@ -79,6 +79,16 @@ export default function AuthForm({ user }) {
                     required
                 />
 
+                {!isLogin && (
+                    <input
+                        type="text"
+                        placeholder="Full Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                )}
+
                 <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
@@ -88,18 +98,16 @@ export default function AuthForm({ user }) {
                 />
 
                 <div className="show-password-toggle">
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={showPassword}
-                            onChange={() => setShowPassword(!showPassword)}
-                        />
-                        Show Password
-                    </label>
+                    <input
+                        type="checkbox"
+                        id="showPassword"
+                        checked={showPassword}
+                        onChange={() => setShowPassword(!showPassword)}
+                    />
+                    <label htmlFor="showPassword">Show Password</label>
                 </div>
 
                 {error && <p className="error">{error}</p>}
-
                 {success && <p className="success">{success}</p>}
 
                 <button type="submit">{isLogin ? "Log In" : "Create Account"}</button>

@@ -7,7 +7,6 @@ html {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #0d1b2a, #1b263b);
 }
 
 .App {
@@ -116,65 +115,13 @@ button:hover {
 .amplifai-header {
   width: 100%;
   background-color: #0e1a2b;
-  /* Or your current background */
 }
 
 .header-inner {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
-}
-
-.amplifai-logo {
-  display: flex;
   align-items: center;
-}
-
-.amplifai-logo img {
-  height: 36px;
-  width: auto;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-link {
-  all: unset;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
-  font-size: 1rem;
-  margin-left: 1.5rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-  display: inline-block;
-  line-height: 1.5;
-}
-
-.nav-link:hover {
-  color: #ff6b35;
-}
-
-.nav-link:hover {
-  color: #ff6b35;
-}
-
-.nav-button {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: color 0.2s ease-in-out;
-}
-
-.nav-button:hover {
-  color: #ff6b35;
+  padding: 0 1rem;
 }
 
 .amplifai-logo {
@@ -183,17 +130,54 @@ button:hover {
   padding-left: 1rem;
 }
 
+.amplifai-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
 .logo-image {
   height: 40px;
   width: auto;
   display: block;
 }
 
+.nav-menu {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link,
+.nav-button,
+.nav-username {
+  display: flex;
+  align-items: center;
+  margin-left: 1.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ff6b35;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover,
+.nav-button:hover {
+  color: rgba(255, 255, 255, 0.85);
+  background-color: transparent;
+}
+
+.nav-username {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
 .brand-subtitle {
   font-weight: 500;
-  /* Try 400 if you want it even lighter */
   margin-top: 0.5rem;
-  /* Optional spacing tweak */
 }
 
 .how-it-works-page,

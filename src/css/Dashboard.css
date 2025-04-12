@@ -1,0 +1,21 @@
+.dashboard-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.dashboard-container h1 {
+    color: #ff6b35;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

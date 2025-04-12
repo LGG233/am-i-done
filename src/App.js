@@ -14,6 +14,7 @@ import TryItNow from "./pages/TryItNow";
 import About from "./pages/About";
 import AuthForm from "./components/AuthForm"; // adjust path if needed
 import { Navigate } from "react-router-dom";
+import Dashboard from "./pages/Dashboard"; // ⬅️ adjust path if needed
 
 // If we ever need to trigger logic based on the current route, useLocation() is the tool.
 // Common uses: route-based UI changes, redirects, logging, conditional headers/footers, etc.
@@ -90,6 +91,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<AuthForm />} />
         <Route path="/login" element={<AuthForm user={user} />} />
+        <Route path="/dashboard" element={<Dashboard user={user} />} />
       </Routes>
     </Router>
   );

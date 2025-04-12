@@ -1,6 +1,10 @@
-// Import the functions you need from the SDKs you need
+// services/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {
+    getAuth,
+    setPersistence,
+    browserLocalPersistence,
+} from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,6 +22,17 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Export the auth module for use in your app
-export const auth = getAuth(app);
+// Create auth but don't export it yet
+const auth = getAuth(app);
+
+// Set persistence BEFORE any auth method is used
+setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("✅ Firebase auth persistence set to browserLocalPersistence");
+    })
+    .catch((error) => {
+        console.error("🔥 Error setting persistence:", error);
+    });
+
+export { auth }; // ✅ only export after persistence setup starts
 export default app;
