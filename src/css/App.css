@@ -148,8 +148,7 @@ button:hover {
 }
 
 .nav-link,
-.nav-button,
-.nav-username {
+.nav-button {
   display: flex;
   align-items: center;
   margin-left: 1.5rem;
@@ -162,6 +161,17 @@ button:hover {
   cursor: pointer;
   text-decoration: none;
   transition: color 0.2s ease-in-out;
+}
+
+.nav-username {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ff6b35;
+  margin-left: 1.5rem;
+  padding: 0;
+  line-height: 1.5;
 }
 
 .nav-link:hover,
@@ -207,4 +217,15 @@ button:hover {
 .feature-list {
   margin-left: 2rem;
   padding-left: 1rem;
+}
+
+input[readonly] {
+  background-color: #2a2f3a;
+  /* same as form background or darker shade */
+  color: #fff;
+  /* match your standard text color */
+  opacity: 1;
+  /* remove default gray-out */
+  font-weight: 500;
+  cursor: default;
 }

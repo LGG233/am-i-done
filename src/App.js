@@ -92,6 +92,7 @@ function App() {
         <Route path="/login" element={<AuthForm />} />
         <Route path="/login" element={<AuthForm user={user} />} />
         <Route path="/dashboard" element={<Dashboard user={user} />} />
+
       </Routes>
     </Router>
   );

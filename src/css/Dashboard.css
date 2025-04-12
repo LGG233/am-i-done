@@ -1,21 +1,53 @@
-.dashboard-container {
-    max-width: 800px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    color: #ffffff;
+.dashboard-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 20px;
     text-align: left;
 }
 
-.dashboard-container h1 {
-    color: #ff6b35;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+input[readonly] {
+    background-color: #2a2f3a;
+    /* same as form background or darker shade */
+    color: #fff;
+    /* match your standard text color */
+    opacity: 1;
+    /* remove default gray-out */
+    font-weight: 500;
+    cursor: default;
 }
 
-.dashboard-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #ffa65c;
+}
+
+.profile-form input,
+.profile-form textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.profile-save-btn {
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    width: fit-content;
 }
