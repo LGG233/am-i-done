@@ -54,3 +54,13 @@
 .profile-form button:hover {
     background: #d14a1e;
 }
+
+.success-message {
+    color: #4caf50;
+    margin: 0.5rem 0;
+}
+
+.error-message {
+    color: #ff4d4f;
+    margin: 0.5rem 0;
+}

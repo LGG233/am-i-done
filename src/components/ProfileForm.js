@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { auth, db } from "../services/firebase"; // ✅ Fixes the 'auth is not defined' error
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 import "../css/ProfileForm.css";
-import { db } from "../services/firebase";
-import { doc, setDoc } from "firebase/firestore";
 
 export default function ProfileForm({ user }) {
     const [profile, setProfile] = useState({
@@ -15,6 +16,24 @@ export default function ProfileForm({ user }) {
         tonePreferences: "",
     });
 
+    useEffect(() => {
+        const loadUserProfile = async () => {
+            if (!auth.currentUser) return;
+
+            const userDocRef = doc(db, "userProfiles", auth.currentUser.uid);
+            try {
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    setProfile(docSnap.data());
+                }
+            } catch (err) {
+                console.error("Error loading profile:", err);
+            }
+        };
+
+        loadUserProfile();
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile((prev) => ({ ...prev, [name]: value }));
@@ -23,11 +42,18 @@ export default function ProfileForm({ user }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const userDoc = doc(db, "users", user.uid); // 👈 Collection: 'users', Doc ID: uid
-            await setDoc(userDoc, profile, { merge: true }); // 👈 Merge avoids overwriting name/email
-            console.log("✅ Profile saved to Firestore:", profile);
+            const user = auth.currentUser;
+            if (!user) {
+                toast.error("No user found.");
+                return;
+            }
+
+            const userDocRef = doc(db, "userProfiles", user.uid);
+            await setDoc(userDocRef, profile);
+            toast.success("Profile saved successfully!");
         } catch (err) {
-            console.error("🔥 Error saving profile:", err);
+            console.error("Error saving profile:", err);
+            toast.error("Something went wrong. Please try again.");
         }
     };
 
@@ -82,7 +108,6 @@ export default function ProfileForm({ user }) {
                     placeholder="e.g., Professional but conversational, concise, practical"
                 />
             </label>
-
             <button type="submit">Save Profile</button>
         </form>
     );
