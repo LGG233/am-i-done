@@ -17,12 +17,14 @@ export default function ProfileForm({ user }) {
         targetAudience: "",
         writingGoals: "",
         tonePreferences: "",
+        yearsOfExperience: "",
+        jurisdiction: "",
+        notableWork: "",
     });
     const [originalProfile, setOriginalProfile] = useState(null);
 
     useEffect(() => {
         if (!user || !user.uid) return;
-
         const loadUserProfile = async () => {
             const userDocRef = doc(db, "userProfiles", user.uid);
             try {
@@ -30,13 +32,12 @@ export default function ProfileForm({ user }) {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     setProfile((prev) => ({ ...prev, ...data }));
-                    setOriginalProfile(data); // Save for canceling
+                    setOriginalProfile(data);
                 }
             } catch (err) {
                 console.error("Error loading profile:", err);
             }
         };
-
         loadUserProfile();
     }, [user]);
 
@@ -48,7 +49,11 @@ export default function ProfileForm({ user }) {
             setIsEditing(false);
             setOriginalProfile(profile);
             toast.success("✅ Profile saved successfully!", { autoClose: 2000 });
-            console.log("✅ Profile saved to Firestore.");
+
+            // Delay redirect to give time for toast to show
+            setTimeout(() => {
+                window.location.href = "/app";
+            }, 1500);
         } catch (err) {
             console.error("Error saving profile:", err);
             toast.error("❌ Error saving profile.");
@@ -60,132 +65,95 @@ export default function ProfileForm({ user }) {
         setIsEditing(false);
     };
 
-    if (!user) return <div>Loading...</div>;
+    const renderField = (label, key, isTextarea = false) => (
+        <div className="profile-field">
+            <h4 className="profile-label">My {label}</h4>
+            {isEditing ? (
+                isTextarea ? (
+                    <textarea
+                        value={profile[key]}
+                        onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
+                    />
+                ) : (
+                    <input
+                        type="text"
+                        value={profile[key]}
+                        onChange={(e) => setProfile({ ...profile, [key]: e.target.value })}
+                    />
+                )
+            ) : (
+                <p className="profile-value">{profile[key]}</p>
+            )}
+        </div>
+    );
 
     return (
-        <form className="profile-form" onSubmit={handleSubmit}>
-            <h2>User Profile</h2>
-
-            <label>
-                Full Name:
-                <input
-                    type="text"
-                    value={profile.fullName}
-                    onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Email:
-                <input
-                    type="email"
-                    value={profile.email}
-                    onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Job Title:
-                <input
-                    type="text"
-                    value={profile.jobTitle}
-                    onChange={(e) => setProfile({ ...profile, jobTitle: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Firm:
-                <input
-                    type="text"
-                    value={profile.firm}
-                    onChange={(e) => setProfile({ ...profile, firm: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            {isEditing ? (
-                <label>
-                    I am a:
-                    <div style={{ display: "flex", gap: "2rem", marginTop: "0.5rem" }}>
-                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                            <input
-                                type="radio"
-                                value="lawyer"
-                                checked={profile.userType === "lawyer"}
-                                onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
-                            />
-                            Lawyer
-                        </label>
-                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                            <input
-                                type="radio"
-                                value="non-lawyer"
-                                checked={profile.userType === "non-lawyer"}
-                                onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
-                            />
-                            Legal Marketer / Other
-                        </label>
-                    </div>
-                </label>
-            ) : (
-                <p><strong>I am a:</strong> {profile.userType === "lawyer" ? "Lawyer" : "Legal Marketer / Other"}</p>
-            )}
-            <label>
-                Practice Focus:
-                <textarea
-                    value={profile.practiceFocus}
-                    onChange={(e) => setProfile({ ...profile, practiceFocus: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Industry Focus:
-                <textarea
-                    value={profile.industryFocus}
-                    onChange={(e) => setProfile({ ...profile, industryFocus: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Target Audience:
-                <textarea
-                    value={profile.targetAudience}
-                    onChange={(e) => setProfile({ ...profile, targetAudience: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Writing Goals:
-                <textarea
-                    value={profile.writingGoals}
-                    onChange={(e) => setProfile({ ...profile, writingGoals: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            <label>
-                Tone Preferences:
-                <textarea
-                    value={profile.tonePreferences}
-                    onChange={(e) => setProfile({ ...profile, tonePreferences: e.target.value })}
-                    disabled={!isEditing}
-                />
-            </label>
-
-            {isEditing ? (
-                <div className="button-group">
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
+        <form className="profile-grid" onSubmit={handleSubmit}>
+            <div className="left-column">
+                <div className="identity-block">
+                    <h2 className="identity-name">{profile.fullName}</h2>
+                    <p className="identity-line">{profile.email}</p>
+                    <p className="identity-line">{profile.jobTitle}</p>
+                    <p className="identity-line">{profile.firm}</p>
                 </div>
-            ) : (
-                <button type="button" onClick={() => setIsEditing(true)}>Edit</button>
-            )}
+                {!isEditing && (
+                    <button
+                        className="edit-button"
+                        type="button"
+                        onClick={() => setIsEditing(true)}
+                    >
+                        Edit
+                    </button>
+                )}
+            </div>
+
+            <div className="right-column">
+                {renderField("Years of Experience", "yearsOfExperience")}
+                {renderField("Jurisdiction", "jurisdiction")}
+                {renderField("Practice Focus", "practiceFocus", true)}
+                {renderField("Industry Focus", "industryFocus", true)}
+                {renderField("Target Audience", "targetAudience", true)}
+                {renderField("Writing Goals", "writingGoals", true)}
+                {renderField("Tone Preferences", "tonePreferences", true)}
+                {renderField("Notable Work", "notableWork", true)}
+
+                <div className="profile-field">
+                    <h4 className="profile-label">My Role</h4>
+                    {isEditing ? (
+                        <div className="role-radio-group">
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="lawyer"
+                                    checked={profile.userType === "lawyer"}
+                                    onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                                />
+                                Lawyer
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    value="non-lawyer"
+                                    checked={profile.userType === "non-lawyer"}
+                                    onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                                />
+                                Legal Marketer / Other
+                            </label>
+                        </div>
+                    ) : (
+                        <p className="profile-value">
+                            {profile.userType === "lawyer" ? "Lawyer" : "Legal Marketer / Other"}
+                        </p>
+                    )}
+                </div>
+
+                {isEditing && (
+                    <div className="button-group">
+                        <button type="submit">Save</button>
+                        <button type="button" onClick={handleCancel}>Cancel</button>
+                    </div>
+                )}
+            </div>
         </form>
     );
 }

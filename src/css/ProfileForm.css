@@ -24,7 +24,7 @@
     font-size: 1rem;
     border-radius: 6px;
     border: 1px solid #ccc;
-    margin-top: 5px;
+    margin-top: 4px;
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
     resize: vertical;
@@ -81,4 +81,41 @@
 .profile-field {
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+
+.profile-field h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #ffa65c;
+    margin-left: 2px;
+}
+
+.profile-value {
+    padding-left: 0.5rem;
+    margin-top: 0;
+    font-size: 0.95rem;
+    color: #ffffffde;
+}
+
+.role-radio-group label {
+    margin-right: 2rem;
+    font-weight: normal;
+    color: #fff;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: start;
 }
