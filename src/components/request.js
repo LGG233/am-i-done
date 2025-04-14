@@ -2,16 +2,23 @@ import React, { Component } from "react";
 import "../css/request.css";
 import LanguageSelectorHeader from './LanguageSelectorHeader';
 import { franc } from 'franc-min';
+// Editorial Prompts
 import {
-  analyzeAudienceApi,
-  keyTakeawaysApi,
-  altTitlesApi,
-  emailSynopsisApi,
-  socialMediaPostApi,
-  linkedInPostApi,
-  websiteAbstractApi,
-  taggingSuggestionsApi
-} from "../api/apiHelpers";
+  analyzeAudiencePrompt,
+  keyTakeawaysPrompt,
+  altTitlesPrompt,
+  websiteAbstractPrompt,
+} from "../promptBuilders/editorial";
+
+// Marketing Prompts
+import {
+  emailSynopsisPrompt,
+  socialMediaPrompt,
+  linkedInPrompt,
+  taggingSuggestionsPrompt,
+} from "../promptBuilders/marketing";
+import { sendToOpenAI } from "../utils/openaiClient"; // 👈 at top of file
+
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -40,41 +47,62 @@ class RequestData extends Component {
       isEditing: false,
       error: null,
     };
-
-    this.baseUrl = "https://api.openai.com/v1/chat/completions";
   };
 
-  runApiCall = async (apiFunction, includeTitle = false, headerText = "") => {
+  runPromptRequest = async (promptFunction, includeTitle = false, headerText = "") => {
     if (this.isEditingInProgress()) return;
+
+    const {
+      useUserContext,
+      userContext,
+      hasUsedContext,
+      setHasUsedContext,
+    } = this.props;
 
     this.clearState();
     toast.info("Working on your request...", { autoClose: 2500 });
+
     this.setState({
-      headerText: "Analyzing your content...",
+      headerText: headerText || "Analyzing your content...",
       generatedResponse: "",
-      showWordCount: false,
-      showEditButton: false
     });
 
-    const articleCopy = this.state.articleCopy;
-    const articleTitle = this.state.articleTitle;
-    const language = this.state.languageToUse;
-
     try {
-      const response = includeTitle
-        ? await apiFunction(articleCopy, articleTitle, language)
-        : await apiFunction(articleCopy, language);
+      const {
+        articleCopy,
+        articleTitle,
+        languageToUse
+      } = this.state;
+
+      const language = languageToUse || "English";
+
+      // Step 1: Create the string content via prompt function
+      const prompt = await promptFunction(articleCopy, articleTitle, language);
+
+      // Step 2: Build messages array with optional system context
+      const messages = [];
+
+      if (useUserContext && !hasUsedContext && userContext) {
+        messages.push({ role: "system", content: userContext });
+        setHasUsedContext(true);
+      }
+
+      messages.push({ role: "user", content: prompt });
+
+      // Step 3: Send to OpenAI
+      const response = await sendToOpenAI(messages);
 
       this.setState({
         generatedResponse: response,
-        showWordCount: true,
-        showEditButton: true,
-        headerText,
+        responseDisplay: true,
       });
+
     } catch (error) {
-      this.handleError(apiFunction.name, error);
+      console.error("API call failed:", error);
+      toast.error("Something went wrong. Please try again.");
+      this.setState({ error });
     }
-  }
+  };
 
   handleError = (methodName, error) => {
     console.error(`Error calling ${methodName}:`, error);
@@ -400,10 +428,66 @@ class RequestData extends Component {
                   <b>Editorial</b>
                 </h4>
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.runApiCall(analyzeAudienceApi, true, "Here's a review of your content and how well it speaks to its intended audience:"); this.handlePaste(); }} title="AmplifAI infers the target audience for your content, and then reviews how well the piece (and its title) speak to that particular audience.">Audience</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(keyTakeawaysApi, false, "Here are the top five takeaways from your article as currently written:"); this.handlePaste(); }} title="AmplifAI extracts the top five takeaways of your piece as it is written. You can compare them to the takeaways you'd like to leave with readers to ensure you're sending the right message.">Takeaways</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(altTitlesApi, true, "Here are three title suggestions (or alternatives) for your article, with reasoning:"); this.handlePaste(); }} title="AmplifAI proposes three titles - or alternative titles, if you provide one - that you may want to consider for your piece, and explains its choice for each.">Titles</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(taggingSuggestionsApi, false, "Here are the practice and industry groups that best match your article:"); this.handlePaste(); }} title="AmplifAI identifies practice and industry groups you may wish to use for classifying your content.">Services</button>
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        analyzeAudiencePrompt,
+                        false,
+                        "Analyzing your audience...",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI analyzes your article's clarity, positioning, and the intended audience."
+                  >
+                    Audience
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        keyTakeawaysPrompt,
+                        false,
+                        "Here are the top five takeaways from your article:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI extracts the top five takeaways of your piece as it is written."
+                  >
+                    Takeaways
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        altTitlesPrompt,
+                        true,
+                        "Here are some alternative title suggestions:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI proposes more audience-focused or specific titles."
+                  >
+                    Titles
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        taggingSuggestionsPrompt,
+                        false,
+                        "Here are suggested practice and industry group tags for this article:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI suggests law firm tags based on content: practice groups and industries."
+                  >
+                    Practices
+                  </button>
+
                 </div>
                 <div>
                   <p><em>AmplifAI</em> reviews your work to confirm it communicates the right takeaways to the audience you're targeting. We also can suggest alternative titles for your consideration. </p>
@@ -416,10 +500,66 @@ class RequestData extends Component {
                 </h4>
 
                 <div className="button-container">
-                  <button className="button-19" onClick={() => { this.runApiCall(emailSynopsisApi, false, "Here's a short summary of your article that you can use in a marketing email:"); this.handlePaste(); }} title="AmplifAI drafts a short synopsis of your thought leadership that you can use in an email blast to clients and potential clients.">Email</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(socialMediaPostApi, false, "Here are three short posts you can use to promote your article on X (formerly Twitter) or other social media platforms:"); this.handlePaste(); }} title="AmplifAI drafts three short posts that you can use for promoting your work on X (formerly Twitter) or other social media platforms.">Social Media</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(linkedInPostApi, false, "Here's a short post you can use to promote your article on LinkedIn:"); this.handlePaste(); }} title="AmplifAI drafts a longer post that can be used to promote the piece on LinkedIn.">LinkedIn</button>
-                  <button className="button-19" onClick={() => { this.runApiCall(websiteAbstractApi, false, "Here's a brief overview of your thought leadership that you can use to promote it on your website:"); this.handlePaste(); }} title="AmplifAI provides a short abstract of your thought leadership that you can use to describe the piece - and who should read it - when posting to your firm website.">Website</button>
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        emailSynopsisPrompt,
+                        false,
+                        "Here’s a 150-word promotional email for this article:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI writes a client-friendly email promoting your article."
+                  >
+                    Email
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        socialMediaPrompt,
+                        false,
+                        "Here are three Twitter/X posts for promoting your article:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI writes three concise social posts with hashtags."
+                  >
+                    Social Media
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        linkedInPrompt,
+                        false,
+                        "Here’s a LinkedIn post you could publish with the article:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI creates a thoughtful LinkedIn post for professional engagement."
+                  >
+                    LinkedIn
+                  </button>
+
+                  <button
+                    className="button-19"
+                    onClick={() => {
+                      this.runPromptRequest(
+                        websiteAbstractPrompt,
+                        false,
+                        "Here’s a 150-word abstract you could use on your website:",
+                      );
+                      this.handlePaste();
+                    }}
+                    title="AmplifAI generates a short, objective abstract for your website."
+                  >
+                    Website
+                  </button>
+
                 </div>
                 <div>
                   <p><em>AmplifAI</em> draws on the power of AI to draft language you can use to promote your work via email, social and digital media, and on your website.</p>

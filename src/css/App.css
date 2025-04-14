@@ -1,3 +1,4 @@
+/* GLOBAL BASE */
 body,
 html {
   font-family: 'Inter', sans-serif;
@@ -9,6 +10,7 @@ html {
   overflow-x: hidden;
 }
 
+/* APP LAYOUT */
 .App {
   display: flex;
   flex-direction: column;
@@ -32,6 +34,11 @@ html {
   margin-bottom: 10px;
 }
 
+.brand-subtitle {
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
 .brand-tagline {
   font-size: 1.3rem;
   font-weight: 400;
@@ -39,6 +46,65 @@ html {
   margin-bottom: 30px;
 }
 
+/* HEADER STYLING */
+.amplifai-header {
+  width: 100%;
+  background-color: #0e1a2b;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.amplifai-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-image {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1.25rem;
+}
+
+.nav-link,
+.nav-button {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ff6b35;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover,
+.nav-button:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-username {
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* BUTTONS */
 .button-19,
 .signout-button {
   background: #ff6b35;
@@ -58,6 +124,12 @@ html {
   transform: scale(1.05);
 }
 
+.signout-button {
+  display: block;
+  margin: 30px auto;
+}
+
+/* FORM + TEXTAREA */
 .input-container {
   width: 100%;
   max-width: 900px;
@@ -81,19 +153,15 @@ html {
   color: rgba(255, 255, 255, 0.7);
 }
 
-#title {
-  height: 4000px;
+input[readonly] {
+  background-color: #2a2f3a;
+  color: #fff;
+  opacity: 1;
+  font-weight: 500;
+  cursor: default;
 }
 
-#body {
-  height: 800px;
-}
-
-.signout-button {
-  display: block;
-  margin: 30px auto;
-}
-
+/* RESPONSE BLOCK */
 .response-container {
   margin-top: 40px;
   background: rgba(255, 255, 255, 0.1);
@@ -103,6 +171,7 @@ html {
   max-width: 900px;
 }
 
+/* OVERRIDES */
 #signInDiv img {
   display: none !important;
 }
@@ -112,93 +181,18 @@ button:hover {
   transform: scale(1.05) !important;
 }
 
-.amplifai-header {
-  width: 100%;
-  background-color: #0e1a2b;
-}
-
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-.amplifai-logo {
-  display: flex;
-  align-items: center;
-  padding-left: 1rem;
-}
-
-.amplifai-logo img {
-  height: 36px;
-  width: auto;
-  display: block;
-}
-
-.logo-image {
-  height: 40px;
-  width: auto;
-  display: block;
-}
-
-.nav-menu {
-  display: flex;
-  align-items: center;
-}
-
-.nav-link,
-.nav-button {
-  display: flex;
-  align-items: center;
-  margin-left: 1.5rem;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #ff6b35;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-.nav-username {
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #ff6b35;
-  margin-left: 1.5rem;
-  padding: 0;
-  line-height: 1.5;
-}
-
-.nav-link:hover,
-.nav-button:hover {
-  color: rgba(255, 255, 255, 0.85);
-  background-color: transparent;
-}
-
-.nav-username {
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.brand-subtitle {
-  font-weight: 500;
-  margin-top: 0.5rem;
-}
-
+/* PAGE CONTENT CONTAINERS */
 .how-it-works-page,
 .about-page,
-.try-page {
+.try-page,
+.dashboard-page {
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
   text-align: left;
 }
 
+/* FEATURE SECTION */
 .feature-section {
   margin-bottom: 2rem;
 }
@@ -217,22 +211,4 @@ button:hover {
 .feature-list {
   margin-left: 2rem;
   padding-left: 1rem;
-}
-
-input[readonly] {
-  background-color: #2a2f3a;
-  /* same as form background or darker shade */
-  color: #fff;
-  /* match your standard text color */
-  opacity: 1;
-  /* remove default gray-out */
-  font-weight: 500;
-  cursor: default;
-}
-
-.dashboard-page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  text-align: left;
 }

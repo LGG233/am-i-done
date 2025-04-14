@@ -1,189 +1,191 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 import "../css/ProfileForm.css";
 
 export default function ProfileForm({ user }) {
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState({
-        fullName: user.displayName || "",
-        email: user.email || "",
+        fullName: user?.displayName || "",
+        email: user?.email || "",
         jobTitle: "",
         firm: "",
-        focusAreas: "",
+        userType: "lawyer",
+        practiceFocus: "",
+        industryFocus: "",
         targetAudience: "",
         writingGoals: "",
         tonePreferences: "",
     });
     const [originalProfile, setOriginalProfile] = useState(null);
 
-    // Load profile data on mount
     useEffect(() => {
-        const loadUserProfile = async () => {
-            if (!auth.currentUser) return;
+        if (!user || !user.uid) return;
 
-            const userDocRef = doc(db, "userProfiles", auth.currentUser.uid);
+        const loadUserProfile = async () => {
+            const userDocRef = doc(db, "userProfiles", user.uid);
             try {
                 const docSnap = await getDoc(userDocRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    setProfile(data);
-                    setOriginalProfile(data); // <-- Save a snapshot
+                    setProfile((prev) => ({ ...prev, ...data }));
+                    setOriginalProfile(data); // Save for canceling
                 }
             } catch (err) {
                 console.error("Error loading profile:", err);
             }
         };
-        loadUserProfile();
-    }, []);
 
-    // Save profile to Firestore
+        loadUserProfile();
+    }, [user]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userDocRef = doc(db, "userProfiles", auth.currentUser.uid);
         try {
             await setDoc(userDocRef, profile);
-            setOriginalProfile(profile); // ✅ update the snapshot
-            setIsEditing(false);         // ✅ exit edit mode
+            setIsEditing(false);
+            setOriginalProfile(profile);
+            toast.success("✅ Profile saved successfully!", { autoClose: 2000 });
+            console.log("✅ Profile saved to Firestore.");
         } catch (err) {
             console.error("Error saving profile:", err);
+            toast.error("❌ Error saving profile.");
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProfile((prev) => ({ ...prev, [name]: value }));
+    const handleCancel = () => {
+        setProfile(originalProfile);
+        setIsEditing(false);
     };
 
-    if (!isEditing) {
-        return (
-            <div className="profile-container">
-                <h2 className="section-heading">Contact Info</h2>
-                <div className="profile-section-content">
-                    <div>{profile.fullName}</div>
-                    <div>{profile.email}</div>
-                    <div>{profile.jobTitle}</div>
-                    <div>{profile.firm}</div>
-                </div>
-
-                <h2 className="section-heading">Content Strategy</h2>
-                <div className="profile-section-content">
-                    <div className="profile-field">
-                        <strong>Focus Areas:  </strong>{profile.focusAreas}<br />
-                    </div>
-                    <div className="profile-field">
-                        <strong>Target Audience:  </strong>{profile.targetAudience}<br />
-                    </div>
-                    <div className="profile-field">
-                        <strong>Writing Goals:  </strong>{profile.writingGoals}<br />
-                    </div>
-                    <div className="profile-field">
-                        <strong>Tone Preferences:  </strong>{profile.tonePreferences}<br />
-                    </div>
-                </div>
-                <br />
-                <button className="edit-button" onClick={() => setIsEditing(true)}>
-                    Edit Profile
-                </button>
-            </div>
-        );
-    }
+    if (!user) return <div>Loading...</div>;
 
     return (
         <form className="profile-form" onSubmit={handleSubmit}>
+            <h2>User Profile</h2>
+
             <label>
-                Full Name
+                Full Name:
                 <input
                     type="text"
-                    name="fullName"
                     value={profile.fullName}
-                    onChange={handleChange}
-                    readOnly
+                    onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Email Address
+                Email:
                 <input
                     type="email"
-                    name="email"
                     value={profile.email}
-                    onChange={handleChange}
-                    readOnly
+                    onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Job Title
+                Job Title:
                 <input
                     type="text"
-                    name="jobTitle"
                     value={profile.jobTitle}
-                    onChange={handleChange}
+                    onChange={(e) => setProfile({ ...profile, jobTitle: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Firm / Organization
+                Firm:
                 <input
                     type="text"
-                    name="firm"
                     value={profile.firm}
-                    onChange={handleChange}
+                    onChange={(e) => setProfile({ ...profile, firm: e.target.value })}
+                    disabled={!isEditing}
+                />
+            </label>
+
+            {isEditing ? (
+                <label>
+                    I am a:
+                    <div style={{ display: "flex", gap: "2rem", marginTop: "0.5rem" }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <input
+                                type="radio"
+                                value="lawyer"
+                                checked={profile.userType === "lawyer"}
+                                onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                            />
+                            Lawyer
+                        </label>
+                        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <input
+                                type="radio"
+                                value="non-lawyer"
+                                checked={profile.userType === "non-lawyer"}
+                                onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                            />
+                            Legal Marketer / Other
+                        </label>
+                    </div>
+                </label>
+            ) : (
+                <p><strong>I am a:</strong> {profile.userType === "lawyer" ? "Lawyer" : "Legal Marketer / Other"}</p>
+            )}
+            <label>
+                Practice Focus:
+                <textarea
+                    value={profile.practiceFocus}
+                    onChange={(e) => setProfile({ ...profile, practiceFocus: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Focus Areas (e.g., M&A, Data Privacy, Litigation)
-                <input
-                    type="text"
-                    name="focusAreas"
-                    value={profile.focusAreas}
-                    onChange={handleChange}
+                Industry Focus:
+                <textarea
+                    value={profile.industryFocus}
+                    onChange={(e) => setProfile({ ...profile, industryFocus: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Target Audience
-                <input
-                    type="text"
-                    name="targetAudience"
+                Target Audience:
+                <textarea
                     value={profile.targetAudience}
-                    onChange={handleChange}
+                    onChange={(e) => setProfile({ ...profile, targetAudience: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Writing Goals
+                Writing Goals:
                 <textarea
-                    name="writingGoals"
                     value={profile.writingGoals}
-                    onChange={handleChange}
-                    placeholder="e.g., Build reputation, attract clients, support speaking invitations"
+                    onChange={(e) => setProfile({ ...profile, writingGoals: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
             <label>
-                Tone & Style Preferences
+                Tone Preferences:
                 <textarea
-                    name="tonePreferences"
                     value={profile.tonePreferences}
-                    onChange={handleChange}
-                    placeholder="e.g., Professional but conversational, concise, practical"
+                    onChange={(e) => setProfile({ ...profile, tonePreferences: e.target.value })}
+                    disabled={!isEditing}
                 />
             </label>
 
-            <button type="submit">Save Profile</button>
-            <button
-                type="button"
-                className="cancel-button"
-                onClick={() => {
-                    setProfile(originalProfile); // Revert to last saved version
-                    setIsEditing(false); // Exit edit mode
-                }}
-            >
-                Cancel
-            </button>
+            {isEditing ? (
+                <div className="button-group">
+                    <button type="submit">Save</button>
+                    <button type="button" onClick={handleCancel}>Cancel</button>
+                </div>
+            ) : (
+                <button type="button" onClick={() => setIsEditing(true)}>Edit</button>
+            )}
         </form>
     );
 }
