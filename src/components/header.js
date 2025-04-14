@@ -30,7 +30,8 @@ export default function Header({ user, setUser, fullName }) {
                             ? `, ${(fullName || user.displayName).split(" ")[0]}!`
                             : "!"}
                     </div>
-                    <Link to="/" className="nav-link">Home</Link>
+                    <Link to="/app" className="nav-link">Home</Link>
+                    <Link to="/" className="nav-link">Why AmplifAI?</Link>
                     <Link to="/how-it-works" className="nav-link">How It Works</Link>
                     <Link to="/try" className="nav-link">Try It Now</Link>
                     <Link to="/about" className="nav-link">About</Link>

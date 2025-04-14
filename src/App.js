@@ -18,55 +18,22 @@ import AuthForm from "./components/AuthForm";
 import Dashboard from "./pages/Dashboard";
 import { buildUserContext } from "./utils/userContextBuilder";
 
-function MainApp({ user, setUser }) {
+function MainApp({
+  user,
+  setUser,
+  userContext,
+  hasUsedContext,
+  setHasUsedContext,
+  useUserContext,
+  fullName
+}) {
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
 
-  const [profile, setProfile] = useState({});
-  const [userContext, setUserContext] = useState("");
-
-  useEffect(() => {
-    const storedContext = localStorage.getItem("userContext");
-    if (storedContext) {
-      setUserContext(storedContext);
-    }
-  }, []); const [hasUsedContext, setHasUsedContext] = useState(false);
-
-  const [useUserContext] = useState(true); // can toggle later
-
-  // 1. Fetch user profile from Firestore
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (user && user.uid) {
-        try {
-          const userDocRef = doc(db, "userProfiles", user.uid);
-          const docSnap = await getDoc(userDocRef);
-          if (docSnap.exists()) {
-            setProfile(docSnap.data());
-          }
-        } catch (err) {
-          console.error("Error fetching profile:", err);
-        }
-      }
-    };
-    fetchProfile();
-  }, [user]);
-
-  // 2. Build the userContext string
-  useEffect(() => {
-    if (profile && Object.keys(profile).length > 0) {
-      const context = buildUserContext(profile);
-      setUserContext(context);
-      localStorage.setItem("userContext", context);
-    }
-  }, [profile]);
-
-  // Redirect if not logged in
   if (!user) return <Navigate to="/login" />;
 
   return (
     <div className="App">
-      <Header user={user} setUser={setUser} fullName={profile.fullName} />
       <header className="App-header">
         <h1 className="brand-title">AmplifAI</h1>
         <h2 className="brand-subtitle">Your AI Marketing Assistant for Thought Leadership</h2>
@@ -102,13 +69,43 @@ function MainApp({ user, setUser }) {
 
 function App() {
   const [user, setUser] = useState({});
+  const [profile, setProfile] = useState({});
+  const [userContext, setUserContext] = useState("");
+  const [hasUsedContext, setHasUsedContext] = useState(false);
+  const [useUserContext] = useState(true);
 
+  // Auth state change
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser || null);
     });
     return () => unsubscribe();
   }, []);
+
+  // Fetch user profile and build context
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user && user.uid) {
+        try {
+          const userDocRef = doc(db, "userProfiles", user.uid);
+          const docSnap = await getDoc(userDocRef);
+          if (docSnap.exists()) {
+            const profileData = docSnap.data();
+            setProfile(profileData);
+
+            const context = buildUserContext(profileData);
+            setUserContext(context);
+            localStorage.setItem("userContext", context);
+          }
+        } catch (err) {
+          console.error("Error fetching profile:", err);
+        }
+      }
+    };
+    fetchProfile();
+  }, [user]);
+
+  if (!user) return <Navigate to="/login" />;
 
   return (
     <Router>
@@ -121,8 +118,23 @@ function App() {
         pauseOnHover
         draggable
       />
+      <Header user={user} setUser={setUser} fullName={profile.fullName} />
+
       <Routes>
-        <Route path="/app" element={<MainApp user={user} setUser={setUser} />} />
+        <Route
+          path="/app"
+          element={
+            <MainApp
+              user={user}
+              setUser={setUser}
+              userContext={userContext}
+              hasUsedContext={hasUsedContext}
+              setHasUsedContext={setHasUsedContext}
+              useUserContext={useUserContext}
+              fullName={profile.fullName}
+            />
+          }
+        />
         <Route path="/" element={<LandingPage />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/try" element={<TryItNow />} />
