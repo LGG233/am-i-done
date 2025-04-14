@@ -37,7 +37,7 @@ export default function Header({ user, setUser, fullName }) {
                     <Link to="/about" className="nav-link">About</Link>
                     {user && (
                         <>
-                            <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                            <Link to="/dashboard" className="nav-link">Profile</Link>
                             <button className="nav-button" onClick={handleSignOut}>Sign Out</button>
                         </>
                     )}
