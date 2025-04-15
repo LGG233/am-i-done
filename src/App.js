@@ -6,9 +6,6 @@ import { auth, db } from "./services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
-// Pages & Components
 import RequestData from "./components/request";
 import Header from "./components/header";
 import LandingPage from "./pages/LandingPage";
@@ -21,12 +18,10 @@ import { buildUserContext } from "./utils/userContextBuilder";
 
 function MainApp({
   user,
-  setUser,
   userContext,
   hasUsedContext,
   setHasUsedContext,
   useUserContext,
-  fullName
 }) {
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
@@ -126,12 +121,10 @@ function App() {
             user ? (
               <MainApp
                 user={user}
-                setUser={setUser}
                 userContext={userContext}
                 hasUsedContext={hasUsedContext}
                 setHasUsedContext={setHasUsedContext}
                 useUserContext={useUserContext}
-                fullName={profile.fullName}
               />
             ) : (
               <Navigate to="/login" replace />
