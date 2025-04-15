@@ -1,20 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/NewLogo.jpg"; // adjust path if needed
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
 
 export default function Header({ user, setUser, fullName }) {
     console.log("Header received user:", user); // 👀 Check this in browser console
+    const navigate = useNavigate();
+
     function handleSignOut() {
         signOut(auth)
             .then(() => {
                 console.log("Signed out");
+                navigate("/login");
             })
             .catch((error) => {
                 console.error("Sign out error:", error);
             });
     }
+
     return (
         <header className="amplifai-header">
             <div className="header-inner">
