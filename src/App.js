@@ -35,7 +35,7 @@ function MainApp({
     <div className="App">
       <header className="App-header">
         <h1 className="brand-title">AmplifAI</h1>
-        <h2 className="brand-subtitle">Your AI Marketing Assistant for Thought Leadership</h2>
+        <h2 className="brand-subtitle">Your AI Content Marketing Assistant</h2>
         <p className="brand-tagline">
           Elevate your message. Expand your influence. Amplify your thought leadership.
         </p>

@@ -29,11 +29,18 @@ export default function Header({ user, setUser, fullName }) {
                 </div>
 
                 <nav className="nav-menu">
-                    {user && user.displayName && (
+                    {user && (
                         <div className="nav-username">
-                            {`Welcome, ${(fullName || user.displayName).split(" ")[0]}!`}
+                            {`Welcome, ${user.displayName
+                                ? user.displayName.split(" ")[0]
+                                : fullName
+                                    ? fullName.split(" ")[0]
+                                    : user.email?.split("@")[0]
+                                }!`}
                         </div>
-                    )}                    <Link to="/" className="nav-link">Why AmplifAI?</Link>
+                    )}
+                    <Link to="/app" className="nav-link">Home</Link>
+                    <Link to="/" className="nav-link">Why AmplifAI?</Link>
                     <Link to="/how-it-works" className="nav-link">How It Works</Link>
                     <Link to="/try" className="nav-link">Try It Now</Link>
                     <Link to="/about" className="nav-link">About</Link>
