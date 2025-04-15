@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 // Pages & Components
 import RequestData from "./components/request";
 import Header from "./components/header";
@@ -30,8 +31,6 @@ function MainApp({
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
 
-  if (!user) return <Navigate to="/login" />;
-
   return (
     <div className="App">
       <header className="App-header">
@@ -41,7 +40,7 @@ function MainApp({
           Elevate your message. Expand your influence. Amplify your thought leadership.
         </p>
 
-        {user && Object.keys(user).length !== 0 ? (
+        {user ? (
           <RequestData
             onRequestData={(data) => setRequestData(data)}
             onResponse={(response) => setResponse(response)}
@@ -68,7 +67,7 @@ function MainApp({
 }
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [profile, setProfile] = useState({});
   const [userContext, setUserContext] = useState("");
   const [hasUsedContext, setHasUsedContext] = useState(false);
@@ -105,7 +104,7 @@ function App() {
     fetchProfile();
   }, [user]);
 
-  if (!user) return <Navigate to="/login" />;
+  // if (!user) return <Navigate to="/login" />;
 
   return (
     <Router>
@@ -124,15 +123,19 @@ function App() {
         <Route
           path="/app"
           element={
-            <MainApp
-              user={user}
-              setUser={setUser}
-              userContext={userContext}
-              hasUsedContext={hasUsedContext}
-              setHasUsedContext={setHasUsedContext}
-              useUserContext={useUserContext}
-              fullName={profile.fullName}
-            />
+            user ? (
+              <MainApp
+                user={user}
+                setUser={setUser}
+                userContext={userContext}
+                hasUsedContext={hasUsedContext}
+                setHasUsedContext={setHasUsedContext}
+                useUserContext={useUserContext}
+                fullName={profile.fullName}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
         <Route path="/" element={<LandingPage />} />
