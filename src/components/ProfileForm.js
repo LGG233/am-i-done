@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "../css/ProfileForm.css";
 
 export default function ProfileForm({ user }) {
@@ -41,6 +42,8 @@ export default function ProfileForm({ user }) {
         loadUserProfile();
     }, [user]);
 
+    const navigate = useNavigate(); // ⬅️ inside the component function
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userDocRef = doc(db, "userProfiles", auth.currentUser.uid);
@@ -49,11 +52,8 @@ export default function ProfileForm({ user }) {
             setIsEditing(false);
             setOriginalProfile(profile);
             toast.success("✅ Profile saved successfully!", { autoClose: 2000 });
-
-            // Delay redirect to give time for toast to show
-            setTimeout(() => {
-                window.location.href = "/app";
-            }, 1500);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            navigate("/app");
         } catch (err) {
             console.error("Error saving profile:", err);
             toast.error("❌ Error saving profile.");
@@ -108,6 +108,9 @@ export default function ProfileForm({ user }) {
             </div>
 
             <div className="right-column">
+                {renderField("Full Name", "fullName")}
+                {renderField("Job Title", "jobTitle")}
+                {renderField("Firm", "firm")}
                 {renderField("Years of Experience", "yearsOfExperience")}
                 {renderField("Jurisdiction", "jurisdiction")}
                 {renderField("Practice Focus", "practiceFocus", true)}
