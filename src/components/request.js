@@ -451,7 +451,7 @@ class RequestData extends Component {
                     }}
                     title="AmplifAI analyzes your article's clarity, positioning, and the intended audience."
                   >
-                    Audience
+                    Audience Check
                   </button>
 
                   <button
@@ -481,7 +481,7 @@ class RequestData extends Component {
                     }}
                     title="AmplifAI proposes more audience-focused or specific titles."
                   >
-                    Titles
+                    Title Review
                   </button>
 
                   <button
@@ -496,7 +496,7 @@ class RequestData extends Component {
                     }}
                     title="AmplifAI suggests law firm tags based on content: practice groups and industries."
                   >
-                    Practices
+                    Practice Review
                   </button>
 
                 </div>
