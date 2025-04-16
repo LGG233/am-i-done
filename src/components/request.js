@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import "../css/request.css";
 import LanguageSelectorHeader from './LanguageSelectorHeader';
 import { franc } from 'franc-min';
-// Editorial Prompts
 import {
   analyzeAudiencePrompt,
   keyTakeawaysPrompt,
   altTitlesPrompt,
   websiteAbstractPrompt,
 } from "../promptBuilders/editorial";
-
-// Marketing Prompts
 import {
   emailSynopsisPrompt,
   socialMediaPrompt,
@@ -18,7 +15,6 @@ import {
   taggingSuggestionsPrompt,
 } from "../promptBuilders/marketing";
 import { sendToOpenAI } from "../utils/openaiClient"; // 👈 at top of file
-
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -75,11 +71,7 @@ class RequestData extends Component {
       } = this.state;
 
       const language = languageToUse || "English";
-
-      // Step 1: Create the string content via prompt function
       const prompt = await promptFunction(articleCopy, articleTitle, language);
-
-      // Step 2: Build messages array with optional system context
       const messages = [];
 
       if (useUserContext && !hasUsedContext && userContext) {
@@ -88,8 +80,6 @@ class RequestData extends Component {
       }
 
       messages.push({ role: "user", content: prompt });
-
-      // Step 3: Send to OpenAI
       const response = await sendToOpenAI(messages);
 
       this.setState({
@@ -315,6 +305,27 @@ class RequestData extends Component {
             <div className="container-fluid">
 
               <div className="QueryForm">
+                <div className="context-toggle mb-4">
+                  <label className="form-label">
+                    <input
+                      type="checkbox"
+                      checked={this.state.useContextForRequest}
+                      onChange={() =>
+                        this.setState((prevState) => ({
+                          useContextForRequest: !prevState.useContextForRequest,
+                        }))
+                      }
+                      className="context-checkbox"
+                    />
+                    Use my profile to personalize responses
+                    <span className="tooltip-container">
+                      <span className="info-icon">i</span>
+                      <span className="tooltip-text">
+                        Check this box to let AmplifAI personalize suggestions based on your saved profile details, including tone, target audience, and writing style.
+                      </span>
+                    </span>
+                  </label>
+                </div>
                 <form className="FormField">
                   <p className="form-instruction">
                     Paste your article title and body below, then choose a tool to enhance your content.
@@ -569,7 +580,7 @@ class RequestData extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 }

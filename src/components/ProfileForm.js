@@ -97,13 +97,22 @@ export default function ProfileForm({ user }) {
                     <p className="identity-line">{profile.firm}</p>
                 </div>
                 {!isEditing && (
-                    <button
-                        className="edit-button"
-                        type="button"
-                        onClick={() => setIsEditing(true)}
-                    >
-                        Edit
-                    </button>
+                    <div className="button-row">
+                        <button
+                            className="edit-button"
+                            type="button"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            className="edit-button"
+                            type="button"
+                            onClick={() => navigate("/app")}
+                        >
+                            Close
+                        </button>
+                    </div>
                 )}
             </div>
 
