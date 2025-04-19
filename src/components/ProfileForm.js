@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from "../services/firebase";
+import { db } from "../services/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import EditProfileModal from "./EditProfileModal";
 import "../css/ProfileForm.css";
 
 export default function ProfileForm({ user }) {
     const [isEditing, setIsEditing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [profile, setProfile] = useState({
         fullName: user?.displayName || "",
         email: user?.email || "",
@@ -22,7 +24,16 @@ export default function ProfileForm({ user }) {
         jurisdiction: "",
         notableWork: "",
     });
+
+    const requiredFields = [
+        "practiceFocus",
+        "targetAudience",
+        "tonePreferences",
+        "yearsOfExperience",
+    ];
+
     const [originalProfile, setOriginalProfile] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!user || !user.uid) return;
@@ -42,21 +53,17 @@ export default function ProfileForm({ user }) {
         loadUserProfile();
     }, [user]);
 
-    const navigate = useNavigate(); // ⬅️ inside the component function
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const userDocRef = doc(db, "userProfiles", auth.currentUser.uid);
+    const saveProfile = async () => {
+        if (!user || !user.uid) return;
+        const userDocRef = doc(db, "userProfiles", user.uid);
         try {
-            await setDoc(userDocRef, profile);
+            await setDoc(userDocRef, profile, { merge: true });
             setIsEditing(false);
             setOriginalProfile(profile);
-            toast.success("✅ Profile saved successfully!", { autoClose: 2000 });
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            navigate("/app");
+            toast.success("Profile saved successfully");
         } catch (err) {
             console.error("Error saving profile:", err);
-            toast.error("❌ Error saving profile.");
+            toast.error("Error saving profile");
         }
     };
 
@@ -88,7 +95,7 @@ export default function ProfileForm({ user }) {
     );
 
     return (
-        <form className="profile-grid" onSubmit={handleSubmit}>
+        <form className="profile-grid">
             <div className="left-column">
                 <div className="identity-block">
                     <h2 className="identity-name">{profile.fullName}</h2>
@@ -97,11 +104,11 @@ export default function ProfileForm({ user }) {
                     <p className="identity-line">{profile.firm}</p>
                 </div>
                 {!isEditing && (
-                    <div className="button-row">
+                    <>
                         <button
                             className="edit-button"
                             type="button"
-                            onClick={() => setIsEditing(true)}
+                            onClick={() => setShowModal(true)}
                         >
                             Edit
                         </button>
@@ -112,14 +119,11 @@ export default function ProfileForm({ user }) {
                         >
                             Close
                         </button>
-                    </div>
+                    </>
                 )}
             </div>
 
             <div className="right-column">
-                {renderField("Full Name", "fullName")}
-                {renderField("Job Title", "jobTitle")}
-                {renderField("Firm", "firm")}
                 {renderField("Years of Experience", "yearsOfExperience")}
                 {renderField("Jurisdiction", "jurisdiction")}
                 {renderField("Practice Focus", "practiceFocus", true)}
@@ -138,7 +142,9 @@ export default function ProfileForm({ user }) {
                                     type="radio"
                                     value="lawyer"
                                     checked={profile.userType === "lawyer"}
-                                    onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                                    onChange={(e) =>
+                                        setProfile({ ...profile, userType: e.target.value })
+                                    }
                                 />
                                 Lawyer
                             </label>
@@ -147,25 +153,46 @@ export default function ProfileForm({ user }) {
                                     type="radio"
                                     value="non-lawyer"
                                     checked={profile.userType === "non-lawyer"}
-                                    onChange={(e) => setProfile({ ...profile, userType: e.target.value })}
+                                    onChange={(e) =>
+                                        setProfile({ ...profile, userType: e.target.value })
+                                    }
                                 />
                                 Legal Marketer / Other
                             </label>
                         </div>
                     ) : (
                         <p className="profile-value">
-                            {profile.userType === "lawyer" ? "Lawyer" : "Legal Marketer / Other"}
+                            {profile.userType === "lawyer"
+                                ? "Lawyer"
+                                : "Legal Marketer / Other"}
                         </p>
                     )}
                 </div>
 
                 {isEditing && (
                     <div className="button-group">
-                        <button type="submit">Save</button>
-                        <button type="button" onClick={handleCancel}>Cancel</button>
+                        <button type="button" onClick={saveProfile}>
+                            Save
+                        </button>
+                        <button type="button" onClick={handleCancel}>
+                            Cancel
+                        </button>
                     </div>
                 )}
             </div>
+
+            <EditProfileModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                profile={profile}
+                setProfile={setProfile}
+                onSave={() => {
+                    saveProfile();
+                    setShowModal(false);
+                    toast.success("Profile updated successfully");
+                }}
+                requiredFields={requiredFields}
+            />
         </form>
     );
 }

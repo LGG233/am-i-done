@@ -6,6 +6,8 @@ import { auth, db } from "./services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+// Pages & Components
 import RequestData from "./components/request";
 import Header from "./components/header";
 import LandingPage from "./pages/LandingPage";
@@ -16,12 +18,14 @@ import AuthForm from "./components/AuthForm";
 import Dashboard from "./pages/Dashboard";
 import { buildUserContext } from "./utils/userContextBuilder";
 
-function MainApp({
+function AmplifAIRequest({
   user,
   userContext,
   hasUsedContext,
   setHasUsedContext,
   useUserContext,
+  languageToUse,
+  setLanguageToUse,
 }) {
   const [setRequestData] = useState({ title: "", copy: "", points: "" });
   const [setResponse] = useState("");
@@ -43,6 +47,8 @@ function MainApp({
             hasUsedContext={hasUsedContext}
             setHasUsedContext={setHasUsedContext}
             useUserContext={useUserContext}
+            languageToUse={languageToUse}
+            setLanguageToUse={setLanguageToUse}
           />
         ) : (
           <div className="introText">
@@ -67,6 +73,7 @@ function App() {
   const [userContext, setUserContext] = useState("");
   const [hasUsedContext, setHasUsedContext] = useState(false);
   const [useUserContext] = useState(true);
+  const [languageToUse, setLanguageToUse] = useState("Original"); // ✅ Default to "Original"
 
   // Auth state change
   useEffect(() => {
@@ -99,8 +106,6 @@ function App() {
     fetchProfile();
   }, [user]);
 
-  // if (!user) return <Navigate to="/login" />;
-
   return (
     <Router>
       <ToastContainer
@@ -119,12 +124,14 @@ function App() {
           path="/app"
           element={
             user ? (
-              <MainApp
+              <AmplifAIRequest
                 user={user}
                 userContext={userContext}
                 hasUsedContext={hasUsedContext}
                 setHasUsedContext={setHasUsedContext}
                 useUserContext={useUserContext}
+                languageToUse={languageToUse}
+                setLanguageToUse={setLanguageToUse}
               />
             ) : (
               <Navigate to="/login" replace />

@@ -1,5 +1,4 @@
-/* ProfileForm.css */
-
+/* === Layout Containers === */
 .profile-form {
     display: flex;
     flex-direction: column;
@@ -10,6 +9,22 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: start;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* === Field Styling === */
 .profile-form label {
     display: flex;
     flex-direction: column;
@@ -36,6 +51,65 @@
     font-weight: 500;
 }
 
+/* === Section Display === */
+.section-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff6b35;
+    margin-top: 2rem;
+}
+
+.profile-section-content {
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.profile-field {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+}
+
+.profile-field h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #ffa65c;
+}
+
+.profile-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    color: #ff6b35;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2a2b38;
+    color: #eee;
+}
+
+.profile-value {
+    padding-left: 0.5rem;
+    margin-top: 0;
+    font-size: 0.95rem;
+    color: #ffffffde;
+}
+
+.role-radio-group label {
+    margin-right: 2rem;
+    font-weight: normal;
+    color: #fff;
+}
+
+/* === Buttons === */
 .profile-form button {
     align-self: flex-start;
     background: #ff6b35;
@@ -53,6 +127,91 @@
     background: #d14a1e;
 }
 
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.button-group button {
+    background-color: #ff6b35;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.button-group button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+/* === Modal Styles === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.profile-modal {
+    background: #1a1e24;
+    color: #ffffff;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    margin: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 1rem 1.5rem 0.5rem;
+    background-color: #2a2b38;
+    border-bottom: 1px solid #333;
+}
+
+.modal-body {
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #333;
+    background-color: #2a2b38;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #ff6b35;
+}
+
+.modal-subtext {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    color: #bbb;
+}
+
+/* === Messages === */
 .success-message {
     color: #4caf50;
     margin: 0.5rem 0;
@@ -61,61 +220,4 @@
 .error-message {
     color: #ff4d4f;
     margin: 0.5rem 0;
-}
-
-.section-heading {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #ff6b35;
-    margin-top: 2rem;
-}
-
-.profile-section-content {
-    padding-left: 1rem;
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.profile-field {
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.5;
-    margin-bottom: 1.25rem;
-}
-
-.profile-field h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: #ffa65c;
-    margin-left: 2px;
-}
-
-.profile-value {
-    padding-left: 0.5rem;
-    margin-top: 0;
-    font-size: 0.95rem;
-    color: #ffffffde;
-}
-
-.role-radio-group label {
-    margin-right: 2rem;
-    font-weight: normal;
-    color: #fff;
-}
-
-.profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 2rem;
-    padding: 2rem;
-    align-items: start;
 }
