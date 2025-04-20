@@ -21,14 +21,13 @@ import { buildUserContext } from "./utils/userContextBuilder";
 function AmplifAIRequest({
   user,
   userContext,
-  hasUsedContext,
-  setHasUsedContext,
   useUserContext,
+  setUseUserContext,
   languageToUse,
   setLanguageToUse,
 }) {
-  const [setRequestData] = useState({ title: "", copy: "", points: "" });
-  const [setResponse] = useState("");
+  const [, setRequestData] = useState({ title: "", copy: "", points: "" });
+  const [response, setResponse] = useState("");
 
   return (
     <div className="App">
@@ -44,9 +43,8 @@ function AmplifAIRequest({
             onRequestData={(data) => setRequestData(data)}
             onResponse={(response) => setResponse(response)}
             userContext={userContext}
-            hasUsedContext={hasUsedContext}
-            setHasUsedContext={setHasUsedContext}
             useUserContext={useUserContext}
+            setUseUserContext={setUseUserContext}
             languageToUse={languageToUse}
             setLanguageToUse={setLanguageToUse}
           />
@@ -71,8 +69,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState({});
   const [userContext, setUserContext] = useState("");
-  const [hasUsedContext, setHasUsedContext] = useState(false);
-  const [useUserContext] = useState(true);
+  const [useUserContext, setUseUserContext] = useState(true);
   const [languageToUse, setLanguageToUse] = useState("Original"); // ✅ Default to "Original"
 
   // Auth state change
@@ -127,9 +124,8 @@ function App() {
               <AmplifAIRequest
                 user={user}
                 userContext={userContext}
-                hasUsedContext={hasUsedContext}
-                setHasUsedContext={setHasUsedContext}
                 useUserContext={useUserContext}
+                setUseUserContext={setUseUserContext}
                 languageToUse={languageToUse}
                 setLanguageToUse={setLanguageToUse}
               />

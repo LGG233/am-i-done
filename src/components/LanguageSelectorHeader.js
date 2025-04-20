@@ -35,11 +35,6 @@ const LanguageSelectorHeader = ({ language, detectedLanguage, showAllLanguages, 
 
     return (
         <div className="header-controls">
-            {/* <div className="session-buttons">
-                <button className="button-19" onClick={onNewRequest}>New Request</button>
-                <button className="button-19" onClick={onSignOut}>Sign Out</button>
-            </div> */}
-
             <div className="language-select">
                 <strong>Response Language:</strong>
                 <label>
@@ -64,14 +59,13 @@ const LanguageSelectorHeader = ({ language, detectedLanguage, showAllLanguages, 
                     {autonym}
                 </label>
 
-                <label>
+                <label onClick={onToggleLanguages} style={{ cursor: "pointer" }}>
                     <input
                         type="radio"
                         name="language"
                         value="Other"
                         checked={language !== "English" && language !== "Original Language"}
-                        onClick={onToggleLanguages}
-                        readOnly
+                        onChange={onLanguageChange}
                     />
                     {showAllLanguages ? "Hide ▲" : `Other (${languageAutonyms[language] || "▼"})`}
                 </label>
