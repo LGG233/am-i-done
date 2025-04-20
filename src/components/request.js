@@ -108,17 +108,6 @@ class RequestData extends Component {
     }, 100);
   };
 
-  // handleArticlePaste = (event) => {
-  //   const pastedText = event.clipboardData.getData('text');
-  //   this.setState(
-  //     { articleCopy: pastedText, detectedLanguage: franc(pastedText) },
-  //     () => {
-  //       this.adjustInputHeight(this.articleCopyTextarea);
-  //       this.handlePaste();
-  //     }
-  //   );
-  // };
-
   handleArticlePaste = (event) => {
     const pastedText = event.clipboardData.getData('text');
     const langCode = franc(pastedText);
@@ -128,9 +117,9 @@ class RequestData extends Component {
       {
         articleCopy: pastedText,
         detectedLanguage: finalLang,
-        language: "Original Language", // Switch selector
-        languageToUse: finalLang,      // Use detected lang
-        showAllLanguages: false        // Optional cleanup
+        language: "Original Language",
+        languageToUse: finalLang,
+        showAllLanguages: false
       },
       () => {
         this.adjustInputHeight(this.articleCopyTextarea);
@@ -227,6 +216,7 @@ class RequestData extends Component {
 
   handleInputChange = (e) => {
     const { name, value } = e.target;
+    this.handlePaste();
     this.setState({ [name]: value });
 
     if (name === "articleCopy") {
@@ -517,7 +507,7 @@ class RequestData extends Component {
                   }}
                   title="AmplifAI analyzes your article's clarity, positioning, and the intended audience."
                 >
-                  Audience
+                  Audience Check
                 </button>
 
                 <button
@@ -532,7 +522,7 @@ class RequestData extends Component {
                   }}
                   title="AmplifAI extracts the top five takeaways of your piece as it is written."
                 >
-                  Takeaways
+                  AI Takeaways
                 </button>
 
                 <button
@@ -547,7 +537,7 @@ class RequestData extends Component {
                   }}
                   title="AmplifAI proposes more audience-focused or specific titles."
                 >
-                  Titles
+                  Alternate Titles
                 </button>
 
                 <button
@@ -562,7 +552,7 @@ class RequestData extends Component {
                   }}
                   title="AmplifAI suggests law firm tags based on content: practice groups and industries."
                 >
-                  Practices
+                  Practice Focus
                 </button>
 
               </div>
