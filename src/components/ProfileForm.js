@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import EditProfileModal from "./EditProfileModal";
 import "../css/ProfileForm.css";
+import { buildUserContext } from "../utils/userContextBuilder";
 
 export default function ProfileForm({ user }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -61,6 +62,11 @@ export default function ProfileForm({ user }) {
             setIsEditing(false);
             setOriginalProfile(profile);
             toast.success("Profile saved successfully");
+
+            // 👇 Trigger context rebuild
+            const context = buildUserContext(profile);
+            localStorage.removeItem("userContext"); // Optional, just to be safe
+            window.dispatchEvent(new CustomEvent("userContextUpdated", { detail: context }));
         } catch (err) {
             console.error("Error saving profile:", err);
             toast.error("Error saving profile");
@@ -186,10 +192,15 @@ export default function ProfileForm({ user }) {
                 onClose={() => setShowModal(false)}
                 profile={profile}
                 setProfile={setProfile}
-                onSave={() => {
-                    saveProfile();
+                onSave={async () => {
+                    await saveProfile();
                     setShowModal(false);
                     toast.success("Profile updated successfully");
+
+                    // 👇 Trigger rebuild of userContext after saving
+                    if (typeof window.rebuildUserContext === "function") {
+                        window.rebuildUserContext();
+                    }
                 }}
                 requiredFields={requiredFields}
             />

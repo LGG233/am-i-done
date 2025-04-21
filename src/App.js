@@ -27,7 +27,7 @@ function AmplifAIRequest({
   setLanguageToUse,
 }) {
   const [, setRequestData] = useState({ title: "", copy: "", points: "" });
-  const [response, setResponse] = useState("");
+  const [, setResponse] = useState("");
 
   return (
     <div className="App">
@@ -93,7 +93,6 @@ function App() {
 
             const context = buildUserContext(profileData);
             setUserContext(context);
-            localStorage.setItem("userContext", context);
           }
         } catch (err) {
           console.error("Error fetching profile:", err);
