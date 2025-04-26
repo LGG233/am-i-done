@@ -17,6 +17,7 @@ import {
 import { sendToOpenAI } from "../utils/openaiClient";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import ReactMarkdown from "react-markdown";
 
 class RequestData extends Component {
   constructor(props) {
@@ -462,29 +463,28 @@ class RequestData extends Component {
                 <button className="button-19" onClick={this.exitEditMode}>
                   Done Editing
                 </button>
-
               </div>
             ) : (
               <div>
-                {generatedResponse && (
-                  <div>
-                    <textarea
-                      readOnly
-                      value={this.state.generatedResponse}
-                      className="api-response-textbox"
-                      ref={(textarea) => { this.generatedResponseTextarea = textarea; }}
+
+                {!isEditing && generatedResponse && (
+                  <div className="api-response-box">
+                    <ReactMarkdown
+                      children={generatedResponse}
+                      components={{
+                        p: ({ children }) => <p style={{ marginBottom: "1em" }}>{children}</p>,
+                      }}
                     />
-                    <button className="button-19" onClick={() => this.copyToClipboard(this.state.generatedResponse)}>
+                    <button className="button-19" onClick={() => this.copyToClipboard(generatedResponse)}>
                       Copy
                     </button>
-                    {this.state.showEditButton ? (
+                    {this.state.showEditButton && (
                       <button className="button-19" onClick={this.enterEditMode}>
                         Edit
                       </button>
-                    ) : null}
+                    )}
                   </div>
-                )}
-              </div>
+                )}              </div>
             )}
             {(generatedResponse || isEditing) && showWordCount && (
               <div className="word-count">
@@ -501,11 +501,11 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       analyzeAudiencePrompt,
                       false,
-                      "Analyzing your audience...",
+                      "These are the readers for whom the piece was written",
                     );
                     this.handlePaste();
                   }}
-                  title="AmplifAI analyzes your article's clarity, positioning, and the intended audience."
+                  title="AmplifAI analyzes your article's audience to ensure it aligns with your goals."
                 >
                   Audience Check
                 </button>
@@ -516,13 +516,13 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       keyTakeawaysPrompt,
                       false,
-                      "Top five takeaways from your article, according to AmplifAI:",
+                      "Top three takeaways of your article, according to AmplifAI:",
                     );
                     this.handlePaste();
                   }}
-                  title="AmplifAI extracts the top five takeaways of your piece as it is written."
+                  title="AmplifAI extracts the top takeaways that emerge from your work."
                 >
-                  AI Takeaways
+                  Takeaways
                 </button>
 
                 <button
@@ -535,7 +535,7 @@ class RequestData extends Component {
                     );
                     this.handlePaste();
                   }}
-                  title="AmplifAI proposes more audience-focused or specific titles."
+                  title="AmplifAI proposes audience-focused titles to help frame your work."
                 >
                   Alternate Titles
                 </button>
@@ -546,11 +546,11 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       taggingSuggestionsPrompt,
                       false,
-                      "Here are suggested practice and industry group tags for this article:",
+                      "Suggested practice group and industry team tags for this article:",
                     );
                     this.handlePaste();
                   }}
-                  title="AmplifAI suggests law firm tags based on content: practice groups and industries."
+                  title="AmplifAI suggests practice groups and industry teams for tagging your work."
                 >
                   Practice Focus
                 </button>
@@ -594,7 +594,7 @@ class RequestData extends Component {
                   }}
                   title="AmplifAI writes three concise social posts with hashtags."
                 >
-                  Social Media
+                  Bluesky/Twitter
                 </button>
 
                 <button
@@ -618,13 +618,13 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       websiteAbstractPrompt,
                       false,
-                      "Here’s a 150-word abstract you could use on your website:",
+                      "Here’s a short abstract you could use to promote the piece on your firm's website:",
                     );
                     this.handlePaste();
                   }}
                   title="AmplifAI generates a short, objective abstract for your website."
                 >
-                  Website
+                  Firm Website
                 </button>
 
               </div>
