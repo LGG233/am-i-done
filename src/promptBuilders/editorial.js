@@ -3,7 +3,6 @@
 export const analyzeAudiencePrompt = async (articleCopy, articleTitle, language) => {
   return `Read the legal article below and infer the intended audience based on tone, vocabulary, and content.
 
-- Begin your response with this bold heading: **Inferred Audience**
 - Limit your response to a short paragraph (75 words or fewer)
 - Do not comment on the writing quality or provide suggestions. 
 - Only describe the most likely readers of this piece.
@@ -18,7 +17,6 @@ ${articleCopy}
 export const keyTakeawaysPrompt = async (articleCopy, articleTitle, language) => {
   return `Review the legal article below and identify its three most important takeaways.
 
-- Begin your response with this bold heading: **Key Takeaways**
 - List each takeaway as a separate numbered item.
 - Use line breaks between each item.
 - Keep each takeaway to one concise sentence.
@@ -29,7 +27,9 @@ Your response must be in "${language}".
 \`\`\`
 ${articleCopy}
 \`\`\``;
-}; export const altTitlesPrompt = async (articleCopy, articleTitle, language) => {
+};
+
+export const altTitlesPrompt = async (articleCopy, articleTitle, language) => {
   return `You are the CMO of one of the top law firms in the country. You want to guide your lawyers to produce solutions-oriented thought leadership that is clear, concise, and directly relevant to clients.
   
   Please perform the following tasks:

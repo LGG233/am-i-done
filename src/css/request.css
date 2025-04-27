@@ -398,3 +398,15 @@ p {
     min-height: 200px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+.loading-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    opacity: 0.6;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #888;
+    text-align: center;
+}

@@ -18,6 +18,7 @@ import { sendToOpenAI } from "../utils/openaiClient";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import ReactMarkdown from "react-markdown";
+import { Circles } from 'react-loader-spinner';
 
 class RequestData extends Component {
   constructor(props) {
@@ -36,6 +37,8 @@ class RequestData extends Component {
       wordsCounted: false,
       showWordCount: false,
       showEditButton: false,
+      showCopyButton: false,
+      apiCallInProgress: false,
       editedResponse: "",
       detectedLanguage: "",
       language: "English",
@@ -58,6 +61,7 @@ class RequestData extends Component {
     toast.info("Working on your request...", { autoClose: 2500 });
 
     this.setState({
+      apiCallInProgress: true,
       headerText: headerText || "Analyzing your content...",
       generatedResponse: "",
     });
@@ -83,8 +87,15 @@ class RequestData extends Component {
       messages.push({ role: "user", content: prompt });
 
       const result = await sendToOpenAI(messages);
-      this.setState({ generatedResponse: result, showEditButton: true });
+      this.setState({
+        generatedResponse: result,
+        showEditButton: true,
+        showCopyButton: true,
+        showWordCount: true,
+        apiCallInProgress: false,
+      });
     } catch (error) {
+      this.setState({ apiCallInProgress: false });
       this.handleError("runPromptRequest", error);
     }
   };
@@ -95,6 +106,8 @@ class RequestData extends Component {
       headerText: "",
       altTitles: "",
       showEditButton: false,
+      showCopyButton: false,
+      showWordCount: false,
       isEditing: false,
       editedResponse: "",
     });
@@ -143,6 +156,7 @@ class RequestData extends Component {
       generatedResponse: "",
       showWordCount: false,
       showEditButton: false,
+      showCopyButton: false,
       error: null,
       responseDisplay: false,
       headerText: "",
@@ -437,7 +451,7 @@ class RequestData extends Component {
           </h1>
           <div>
             <p>
-              {headerText}
+              <strong>{headerText}</strong>
             </p>
           </div>
           <div>
@@ -466,31 +480,45 @@ class RequestData extends Component {
               </div>
             ) : (
               <div>
-
-                {!isEditing && generatedResponse && (
+                {this.state.apiCallInProgress ? (
                   <div className="api-response-box">
-                    <ReactMarkdown
-                      children={generatedResponse}
-                      components={{
-                        p: ({ children }) => <p style={{ marginBottom: "1em" }}>{children}</p>,
-                      }}
+                    <Circles
+                      height="80"
+                      width="80"
+                      color="#ff6b35"  // your AmplifAI orange!
+                      ariaLabel="loading"
                     />
-                    <button className="button-19" onClick={() => this.copyToClipboard(generatedResponse)}>
-                      Copy
-                    </button>
-                    {this.state.showEditButton && (
-                      <button className="button-19" onClick={this.enterEditMode}>
-                        Edit
-                      </button>
-                    )}
                   </div>
-                )}              </div>
+                ) : (
+                  !isEditing && generatedResponse && (
+                    <div className="api-response-box">
+                      <ReactMarkdown
+                        children={generatedResponse}
+                        components={{
+                          p: ({ children }) => <p style={{ marginBottom: "1em" }}>{children}</p>,
+                        }}
+                      />
+                      {this.state.showCopyButton && (
+                        <button className="button-19" onClick={() => this.copyToClipboard(generatedResponse)}>
+                          Copy
+                        </button>
+                      )}
+                      {this.state.showEditButton && (
+                        <button className="button-19" onClick={this.enterEditMode}>
+                          Edit
+                        </button>
+                      )}
+                    </div>
+                  )
+                )}
+              </div>
             )}
             {(generatedResponse || isEditing) && showWordCount && (
               <div className="word-count">
                 Words: {wordCount} | Characters: {characterCount}
               </div>
-            )}            <div>
+            )}
+            <div>
               <h4>
                 <b>Editorial</b>
               </h4>
@@ -501,7 +529,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       analyzeAudiencePrompt,
                       false,
-                      "These are the readers for whom the piece was written",
+                      "Inferred Audience:",
                     );
                     this.handlePaste();
                   }}
@@ -516,7 +544,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       keyTakeawaysPrompt,
                       false,
-                      "Top three takeaways of your article, according to AmplifAI:",
+                      "Key Takeaways:",
                     );
                     this.handlePaste();
                   }}
@@ -531,7 +559,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       altTitlesPrompt,
                       true,
-                      "AI-suggested alternative titles:",
+                      "Alternative Titles:",
                     );
                     this.handlePaste();
                   }}
@@ -546,7 +574,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       taggingSuggestionsPrompt,
                       false,
-                      "Suggested practice group and industry team tags for this article:",
+                      "Practices and Industries:",
                     );
                     this.handlePaste();
                   }}
@@ -573,7 +601,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       emailSynopsisPrompt,
                       false,
-                      "Here’s a 150-word promotional email for this article:",
+                      "Draft Email:",
                     );
                     this.handlePaste();
                   }}
@@ -588,7 +616,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       socialMediaPrompt,
                       false,
-                      "Here are three Twitter/X posts for promoting your article:",
+                      "Bluesky / Twitter Posts:",
                     );
                     this.handlePaste();
                   }}
@@ -603,7 +631,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       linkedInPrompt,
                       false,
-                      "Here’s a LinkedIn post you could publish with the article:",
+                      "LinkedIn Post:",
                     );
                     this.handlePaste();
                   }}
@@ -618,7 +646,7 @@ class RequestData extends Component {
                     this.runPromptRequest(
                       websiteAbstractPrompt,
                       false,
-                      "Here’s a short abstract you could use to promote the piece on your firm's website:",
+                      "Abstract for Website:",
                     );
                     this.handlePaste();
                   }}
