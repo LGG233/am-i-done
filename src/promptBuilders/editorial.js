@@ -1,11 +1,16 @@
 // promptBuilders/editorial.js
 
 export const analyzeAudiencePrompt = async (articleCopy, articleTitle, language) => {
-  return `Read the legal article below and infer the intended audience based on tone, vocabulary, and content.
+  return `You are a law firm Chief Marketing Officer (CMO). Read the legal article below.
 
-- Limit your response to a short paragraph (75 words or fewer)
-- Do not comment on the writing quality or provide suggestions. 
-- Only describe the most likely readers of this piece.
+Identify ONLY the intended audience based on tone, vocabulary, and subject matter.
+
+- DO NOT summarize or describe the article.
+- DO NOT comment on the article's writing quality, clarity, or structure.
+- DO NOT explain the article's topic or background.
+- Focus ONLY on who the likely readers are.
+- Phrase your answer as a short, strategic description.
+- Limit to 50–75 words.
 
 Your response must be in "${language}".
 

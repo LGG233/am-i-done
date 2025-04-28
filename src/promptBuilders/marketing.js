@@ -5,7 +5,12 @@ export const emailSynopsisPrompt = async (articleCopy, articleTitle, language) =
   
   Write a 100-word abstract to entice the right audience to click through and read the full piece.
   
-  Use third-person, avoid phrases like "This article," and focus on substance. Style the response as an email, to include 'Dear ______:' as the opening and 'Please don't hesitate to contact me if you have questions. Thank you.' as the closing.
+  1. Use third-person.
+  2. Avoid phrases like "This article." 
+  3. Focus on the substance and takeaways from the article. 
+  4. Style the response as an email, to include 'Dear [______]:' as the opening and 'Please don't hesitate to contact me if you have questions. Thank you.' as the closing.
+  5. Write the email in a conversational style, as if you were alterting a business contact to an issue that is critical for their success. 
+  6. Do not be overly pedantic, as if you were lecturing the recipient, or expounding on an important issue before a crowd. 
 
   \`\`\`
   ${articleCopy}
@@ -39,6 +44,8 @@ export const linkedInPrompt = async (articleCopy, articleTitle, language) => {
   2. Don't open with "This article"
   3. Communicate why the article is relevant to the inferred audience without using those words
   4. Use 2–3 hashtags
+  5. Do not enclose the post in quotation marks. 
+  6. Do NOT make reference to the article, as in "Our latest article..." or "Read our latest guide" 
   
   Tone: confident, editorial, informative.
   

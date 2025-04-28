@@ -46,16 +46,20 @@ class RequestData extends Component {
       languageToUse: "",
       isEditing: false,
       error: null,
+      useUserContext: false,
     };
   }
 
   runPromptRequest = async (promptFunction, includeTitle = false, headerText = "") => {
     if (this.isEditingInProgress()) return;
 
-    const {
-      useUserContext,
-      userContext,
-    } = this.props;
+    // const {
+    //   useUserContext,
+    //   userContext,
+    // } = this.props;
+
+    const { userContext } = this.props;
+    const { useUserContext } = this.state;
 
     this.clearState();
     toast.info("Working on your request...", { autoClose: 2500 });
@@ -378,7 +382,7 @@ class RequestData extends Component {
             onNewRequest={this.handleNewRequest}
             onSignOut={this.handleCancel}
           />
-          <div className="checkbox-group">
+          {/* <div className="checkbox-group">
             <label>
               <input
                 type="checkbox"
@@ -395,7 +399,7 @@ class RequestData extends Component {
                 </span>
               </span>
             </label>
-          </div>
+          </div> */}
 
           <div className="container-fluid">
 
